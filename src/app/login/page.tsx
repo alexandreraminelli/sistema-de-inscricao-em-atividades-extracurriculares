@@ -5,12 +5,11 @@ import Image from "next/image"
 export default function LoginPage() {
   return (
     <div
-      className="flex flex-col w-dvw h-dvh
-        align-center
-        py-4 px-2.5"
+      className="flex flex-row w-dvw h-dvh justify-between
+        py-4 md:py-3 px-2.5 md:px-3 gap-3.5"
     >
       {/* Conteúdo da página */}
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full md:px-14 md:py-1.5">
         <header className="flex flex-col items-center md:items-start gap-14">
           {/* Logo */}
           <Logo />
@@ -27,15 +26,25 @@ export default function LoginPage() {
 
         <aside className="flex flex-col items-center justify-end h-full gap-7">
           {/* Imagem decorativa */}
-          <Image src="/images/login-bg.jpg" alt="Fachada da universidade" width={360} height={278} className="rounded-xl shadow-lg" />
+          <Image src="/images/login-bg.jpg" alt="Fachada da universidade" width={360} height={278} className="min-md:hidden rounded-xl shadow-lg" />
 
           {/* Problemas */}
-          <p className="text-sm text-center text-slate-600 dark:text-slate-400 m-2">
+          <p className="text-sm text-center text-slate-600 dark:text-slate-400 m-2 object-cover">
             Está tendo problemas para acessar? <br />
             Entre em contato com o suporte da faculdade.
           </p>
         </aside>
       </div>
+
+      {/* Imagem desktop */}
+      <Image
+        src="/images/login-bg.jpg"
+        alt="Fachada da universidade"
+        width={626}
+        height={812}
+        className="rounded-xl rounded-bl-4xl shadow-lg 
+        object-cover transition-all max-md:hidden max-lg:w-2/5 lg:w-1/2"
+      />
     </div>
   )
 }
