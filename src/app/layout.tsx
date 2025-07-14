@@ -1,6 +1,7 @@
 import "@/style/globals.css" // Tailwind CSS
 import type { Metadata } from "next"
 import { Poppins } from "next/font/google" // fonte
+import { ThemeProvider } from "@/components/layout/theme-provider"
 
 /** Fonte padrão do site. */
 const poppins = Poppins({
@@ -25,7 +26,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${poppins.className} antialiased`}>{children}</body>
+      <body className={`${poppins.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system" // usar tema do sistema do usuário
+          enableSystem // detecção automática do tema do SO
+          disableTransitionOnChange // desabilitar animações (evitar flashes e tornar mudança mais suave)
+        >
+          {/* Componente filho */}
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
