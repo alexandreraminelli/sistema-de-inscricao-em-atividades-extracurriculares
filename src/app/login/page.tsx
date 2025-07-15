@@ -24,10 +24,7 @@ export default function LoginPage() {
         {/* Form */}
         <main>Formulário de login</main>
 
-        <aside className="flex flex-col items-center justify-end h-full gap-7">
-          {/* Imagem decorativa */}
-          <Image src="/images/login-bg.jpg" alt="Fachada da universidade" width={360} height={278} className="min-md:hidden rounded-xl shadow-lg" />
-
+        <aside className="flex flex-col items-center justify-end h-full">
           {/* Problemas */}
           <p className="text-sm text-center text-slate-600 dark:text-slate-400 my-2 lg:mx-2 object-cover">
             Está tendo problemas para acessar? <br />
