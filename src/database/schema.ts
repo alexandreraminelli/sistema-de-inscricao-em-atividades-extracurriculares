@@ -1,3 +1,4 @@
 // Schemas das tabelas do banco de dados
 
+export * from "./schema/student"
 export * from "./schema/users"
