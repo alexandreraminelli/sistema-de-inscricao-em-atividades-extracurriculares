@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, primaryKey, time, uuid } from "drizzle-orm/pg-core"
+import { pgEnum, pgTable, time, unique, uuid } from "drizzle-orm/pg-core"
 import { activity } from "./activity"
 
 /** Enumeração dos dias das semanas que uma atividade pode ser realizada. */
@@ -13,6 +13,8 @@ export const END_TIME_ENUM = pgEnum("end_time_enum", ["09:20", "11:10", "13:00",
 export const session = pgTable(
   "activity_session",
   {
+    /** ID do horário da atividade. */
+    id: uuid("session_id").primaryKey().defaultRandom(),
     /** Atividade extracurricular (FK). */
     activity: uuid("activity_id")
       .notNull()
@@ -20,8 +22,12 @@ export const session = pgTable(
     /** Dia da semana onde a atividade é realizada. */
     dayWeek: DAY_WEEK_ENUM("day_week").notNull(),
     /** Horário de início da atividade. */
-    startTime: time("start_time").notNull(),
+    startTime: START_TIME_ENUM("start_time").notNull(),
+    /** Horário de término da atividade. */
+    endTime: END_TIME_ENUM("end_time").notNull(),
   },
-  // PK composta
-  (table) => [primaryKey({ columns: [table.activity, table.dayWeek, table.startTime] })]
+  (table) => [
+    // Constraint para evitar duplicação de horários para a mesma atividade no mesmo dia da semana
+    unique().on(table.activity, table.dayWeek, table.startTime),
+  ]
 )
