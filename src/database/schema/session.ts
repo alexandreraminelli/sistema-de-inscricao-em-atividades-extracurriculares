@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, time, unique, uuid } from "drizzle-orm/pg-core"
+import { pgEnum, pgTable, unique, uuid } from "drizzle-orm/pg-core"
 import { activity } from "./activity"
 
 /** Enumeração dos dias das semanas que uma atividade pode ser realizada. */
