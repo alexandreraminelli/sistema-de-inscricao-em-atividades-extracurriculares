@@ -29,39 +29,40 @@ export default function LoginForm<T extends FieldValues>() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)} // Função para lidar com o envio
-        className="space-y-6"
+        className="space-y-7"
       >
-        {/* Campo e-mail */}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>E-mail</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder={`usuario${config.emailDomain}`} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Campo senha */}
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="Mesma senha usada no portal universitário" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          {/* Campo e-mail */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>E-mail</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder={`usuario${config.emailDomain}`} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Campo senha */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Senha</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Mesma senha usada no portal universitário" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* Botão de enviar */}
-        <Button className="w-full" type="submit">
+        <Button size="lg" className="w-full" type="submit">
           Entrar
         </Button>
       </form>

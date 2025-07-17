@@ -7,11 +7,11 @@ export default function LoginPage() {
   return (
     <div
       className="flex flex-row w-dvw h-dvh justify-between
-        py-4 md:py-3 px-2.5 md:px-3 gap-3.5"
+        py-4 md:py-3 px-[5vw] md:px-3 gap-3.5"
     >
       {/* Conteúdo da página */}
-      <div className="flex flex-col h-full w-full md:px-14 md:py-1.5">
-        <header className="flex flex-col items-center md:items-start gap-14">
+      <div className="flex flex-col h-full w-full md:px-14 md:py-1.5 ">
+        <header className="flex flex-col items-center md:items-start gap-14 mb-6">
           {/* Logo */}
           <Logo className="h-10 md:h-11 lg:h-12" />
 
