@@ -2,6 +2,7 @@ import "@/style/globals.css" // Tailwind CSS
 import type { Metadata } from "next"
 import { Poppins } from "next/font/google" // fonte
 import { ThemeProvider } from "@/components/layout/theme-provider"
+import { Toaster } from "sonner"
 
 /** Fonte padrão do site. */
 const poppins = Poppins({
@@ -35,6 +36,8 @@ export default function RootLayout({
         >
           {/* Componente filho */}
           {children}
+          {/* Sonner/Toast (notificações) */}
+          <Toaster richColors theme="system" position="top-right" />
         </ThemeProvider>
       </body>
     </html>
