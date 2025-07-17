@@ -9,6 +9,10 @@ const config = {
       /** URL de conexão com o banco de dados. */
       url: process.env.DATABASE_URL!,
     },
+    /** Variáveis de ambiente pro NextAuth. */
+    nextAuth: {
+      secret: process.env.AUTH_SECRET!,
+    },
   },
   /** Domínio de e-mail acadêmico. */
   emailDomain: "@loremipsum.edu.br",
