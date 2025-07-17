@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import config from "@/lib/config"
+import PasswordInput from "./PasswordInput"
 
 /**
  * Formulário de login do aplicativo.
@@ -54,7 +55,7 @@ export default function LoginForm<T extends FieldValues>() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Mesma senha usada no portal universitário" {...field} />
+                  <PasswordInput placeholder="Mesma senha usada no portal universitário" {...field} />
                 </FormControl>
               </FormItem>
             )}
