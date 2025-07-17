@@ -5,6 +5,18 @@ import { eq } from "drizzle-orm"
 import NextAuth, { User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
+// Extender o tipo de sessão do NextAuth
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string
+      name?: string | null
+      email?: string | null
+      role?: string | null
+    }
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Gerenciar sessão do usuário com JWT (JSON Web Token)
   session: {
@@ -47,4 +59,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  // Endpoint das páginas de autenticação
+  pages: {
+    signIn: "/login",
+  },
+
+  callbacks: {
+    // Retornar token JWT
+    async jwt({ token, user }) {
+      // Se usuário foi autenticado, adiciona informações ao token
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.name = user.name
+      }
+      return token
+    },
+    // Retornar sessão do usuário
+    async session({ session, token }) {
+      // Se o token contém informações do usuário, adiciona ao objeto de sessão
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.name = token.name as string
+        session.user.email = token.email as string
+        session.user.role = token.role as string
+      }
+      return session
+    },
+  },
 })
