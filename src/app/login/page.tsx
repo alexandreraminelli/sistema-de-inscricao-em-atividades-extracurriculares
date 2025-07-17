@@ -1,3 +1,4 @@
+import LoginForm from "@/components/custom/form/LoginForm"
 import Logo from "@/components/custom/Logo"
 import Image from "next/image"
 
@@ -22,7 +23,9 @@ export default function LoginPage() {
         </header>
 
         {/* Form */}
-        <main>Formulário de login</main>
+        <main>
+          <LoginForm />
+        </main>
 
         <aside className="flex flex-col items-center justify-end h-full">
           {/* Problemas */}
