@@ -1,5 +1,5 @@
 /** Tipagem das credenciais de autenticação. */
-export interface authCredentials {
+export interface AuthCredentials {
   /** Nome do usuário. */
   name: string
   /** E-mail do usuário. */
