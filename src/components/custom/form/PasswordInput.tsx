@@ -9,7 +9,7 @@ export default function PasswordInput({ className, ...props }: React.ComponentPr
   const [isView, setIsView] = useState(false)
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className={`flex flex-row gap-2 ${className}`}>
       <Input
         type={isView ? "text" : "password"} // visibilidade
         {...props}

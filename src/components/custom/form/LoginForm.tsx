@@ -3,17 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import config from "@/lib/config"
 import { loginSchema } from "@/schemas/loginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
+import { useForm, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
-import config from "@/lib/config"
 import PasswordInput from "./PasswordInput"
 
 /**
  * Formulário de login do aplicativo.
  */
-export default function LoginForm<T extends FieldValues>() {
+export default function LoginForm() {
   /** Definição do formulário. */
   const form: UseFormReturn<z.infer<typeof loginSchema>> = useForm({
     resolver: zodResolver(loginSchema), // Usar schema para validação
