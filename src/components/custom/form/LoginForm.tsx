@@ -11,11 +11,12 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
 import { toast } from "sonner"
+import { signIn } from "next-auth/react"
 
 /** Props do `LoginForm`. */
 interface Props {
   /** Função executada ao enviar o formulário. */
-  onSubmit: (data: z.infer<typeof loginSchema>) => Promise<{ success: boolean; error?: string }>
+  onSubmit: (data: z.infer<typeof loginSchema>) => Promise<{ success: boolean; error?: string; user?: any }>
 }
 
 /**
@@ -34,15 +35,29 @@ export default function LoginForm({ onSubmit }: Props) {
   const handleSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data) => {
     console.log("Valores enviados:\n", data) // DEBUG
 
-    // Enviar dados para o servidor
+    // Validar credenciais no servidor
     const result = await onSubmit(data)
 
     if (result.success) {
-      /* Login bem-sucedido */
-      // Notificação de sucesso
-      toast.success("Login realizado com sucesso!")
-      // Redirecionar para a página inicial
-      router.push("/")
+      /* Credenciais válidas - agora fazer login com NextAuth */
+      try {
+        const authResult = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        })
+
+        if (authResult?.error) {
+          toast.error("Erro ao autenticar.", { description: authResult.error })
+        } else {
+          // Login bem-sucedido
+          toast.success("Login realizado com sucesso!")
+          // Redirecionar para a página inicial
+          router.push("/")
+        }
+      } catch (error) {
+        toast.error("Erro ao autenticar.", { description: String(error) })
+      }
     } else {
       /* Login falhou */
       // Notificação de erro
