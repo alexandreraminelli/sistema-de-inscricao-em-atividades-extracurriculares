@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${poppins.className} antialiased`}>
+      <body className={`${poppins.className} antialiased bg-slate-200 dark:bg-black`}>
         <AuthSessionProvider>
           <ThemeProvider
             attribute="class"
