@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
+import { toast } from "sonner"
 
 /** Props do `LoginForm`. */
 interface Props {
@@ -39,14 +40,13 @@ export default function LoginForm({ onSubmit }: Props) {
     if (result.success) {
       /* Login bem-sucedido */
       // Notificação de sucesso
-      // TODO
-
+      toast.success("Login realizado com sucesso!")
       // Redirecionar para a página inicial
       router.push("/")
     } else {
       /* Login falhou */
       // Notificação de erro
-      // TODO
+      toast.error("Erro ao realizar o login.", { description: result.error || "Verifique suas credenciais e tente novamente." })
     }
   }
 
