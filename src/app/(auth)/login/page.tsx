@@ -1,5 +1,6 @@
 import LoginForm from "@/components/custom/form/LoginForm"
 import Logo from "@/components/custom/Logo"
+import { signInWithCredentials } from "@/lib/actions/auth"
 import Image from "next/image"
 
 /** Página de login. */
@@ -24,7 +25,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <main>
-          <LoginForm />
+          <LoginForm onSubmit={signInWithCredentials} />
         </main>
 
         <aside className="flex flex-col items-center justify-end h-full">

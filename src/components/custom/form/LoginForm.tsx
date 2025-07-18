@@ -6,14 +6,25 @@ import { Input } from "@/components/ui/input"
 import config from "@/lib/config"
 import { loginSchema } from "@/schemas/loginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, UseFormReturn } from "react-hook-form"
+import { useRouter } from "next/navigation"
+import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
+import { toast } from "sonner"
+import { signIn } from "next-auth/react"
+
+/** Props do `LoginForm`. */
+interface Props {
+  /** Função executada ao enviar o formulário. */
+  onSubmit: (data: z.infer<typeof loginSchema>) => Promise<{ success: boolean; error?: string; user?: any }>
+}
 
 /**
  * Formulário de login do aplicativo.
  */
-export default function LoginForm() {
+export default function LoginForm({ onSubmit }: Props) {
+  const router = useRouter()
+
   /** Definição do formulário. */
   const form: UseFormReturn<z.infer<typeof loginSchema>> = useForm({
     resolver: zodResolver(loginSchema), // Usar schema para validação
@@ -21,15 +32,44 @@ export default function LoginForm() {
   })
 
   /** Função executada ao submeter o formulário. */
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log("Valores enviados:", values) // DEBUG
+  const handleSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data) => {
+    console.log("Valores enviados:\n", data) // DEBUG
+
+    // Validar credenciais no servidor
+    const result = await onSubmit(data)
+
+    if (result.success) {
+      /* Credenciais válidas - agora fazer login com NextAuth */
+      try {
+        const authResult = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        })
+
+        if (authResult?.error) {
+          toast.error("Erro ao autenticar.", { description: authResult.error })
+        } else {
+          // Login bem-sucedido
+          toast.success("Login realizado com sucesso!")
+          // Redirecionar para a página inicial
+          router.push("/")
+        }
+      } catch (error) {
+        toast.error("Erro ao autenticar.", { description: String(error) })
+      }
+    } else {
+      /* Login falhou */
+      // Notificação de erro
+      toast.error("Erro ao realizar o login.", { description: result.error || "Verifique suas credenciais e tente novamente." })
+    }
   }
 
   // Componente
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)} // Função para lidar com o envio
+        onSubmit={form.handleSubmit(handleSubmit)} // Função para lidar com o envio
         className="space-y-7"
       >
         <div className="space-y-4">
