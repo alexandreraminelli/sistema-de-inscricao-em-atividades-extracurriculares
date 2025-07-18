@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { useState } from "react"
 
@@ -8,6 +9,9 @@ export default function PasswordInput({ className, ...props }: React.ComponentPr
   // Estado da visibilidade da senha
   const [isView, setIsView] = useState(false)
 
+  /** Rótulo do botão, dependendo da visibilidade atual. */
+  const label = isView ? "Ocultar senha" : "Mostrar senha"
+
   return (
     <div className={`flex flex-row gap-2 ${className}`}>
       <Input
@@ -15,24 +19,30 @@ export default function PasswordInput({ className, ...props }: React.ComponentPr
         {...props}
       />
       {/* Botão de ocultar/mostrar senha */}
-      <Button
-        type="button"
-        variant="outline"
-        size="icon"
-        onClick={() => {
-          // Alternar visibilidade
-          setIsView(!isView)
-        }}
-        aria-label={isView ? "Ocultar senha" : "Mostrar senha"}
-      >
-        {isView ? (
-          // Ícone de ocultar senha
-          <EyeIcon className="" />
-        ) : (
-          // Ícone de mostrar senha
-          <EyeOffIcon className="" />
-        )}
-      </Button>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              // Alternar visibilidade
+              setIsView(!isView)
+            }}
+            aria-label={label}
+          >
+            {isView ? (
+              // Ícone de ocultar senha
+              <EyeIcon className="" />
+            ) : (
+              // Ícone de mostrar senha
+              <EyeOffIcon className="" />
+            )}
+          </Button>
+        </TooltipTrigger>
+        {/* Texto do tooltip */}
+        <TooltipContent>{label}</TooltipContent>
+      </Tooltip>
     </div>
   )
 }
