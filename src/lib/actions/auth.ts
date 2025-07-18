@@ -4,7 +4,7 @@ import { db } from "@/database/drizzle"
 import { users } from "@/database/schema"
 import { compare } from "bcryptjs"
 import { eq } from "drizzle-orm"
-import { AuthCredentials } from "@/types/authCredentials"
+import { AuthCredentials } from "@/types/auth/authCredentials"
 
 /**
  * Função para realizar o login de um usuário com e-mail e senha.

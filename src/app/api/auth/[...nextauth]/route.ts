@@ -34,6 +34,7 @@ const handler = NextAuth({
           id: user.id.toString(),
           email: user.email.toString(),
           name: user.name.toString(),
+          role: user.role as "student" | "teacher",
         }
       },
     }),
