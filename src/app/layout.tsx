@@ -2,6 +2,7 @@ import "@/style/globals.css" // Tailwind CSS
 import type { Metadata } from "next"
 import { Poppins } from "next/font/google" // fonte
 import { ThemeProvider } from "@/components/layout/theme-provider"
+import AuthSessionProvider from "@/components/layout/session-provider"
 import { Toaster } from "sonner"
 
 /** Fonte padrão do site. */
@@ -28,17 +29,19 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${poppins.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system" // usar tema do sistema do usuário
-          enableSystem // detecção automática do tema do SO
-          disableTransitionOnChange // desabilitar animações (evitar flashes e tornar mudança mais suave)
-        >
-          {/* Componente filho */}
-          {children}
-          {/* Sonner/Toast (notificações) */}
-          <Toaster richColors theme="system" position="top-right" />
-        </ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system" // usar tema do sistema do usuário
+            enableSystem // detecção automática do tema do SO
+            disableTransitionOnChange // desabilitar animações (evitar flashes e tornar mudança mais suave)
+          >
+            {/* Componente filho */}
+            {children}
+            {/* Sonner/Toast (notificações) */}
+            <Toaster richColors theme="system" position="top-right" />
+          </ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   )
