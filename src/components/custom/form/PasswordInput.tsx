@@ -16,6 +16,7 @@ export default function PasswordInput({ className, ...props }: React.ComponentPr
       />
       {/* Botão de ocultar/mostrar senha */}
       <Button
+        type="button"
         variant="outline"
         size="icon"
         onClick={() => {
