@@ -6,8 +6,8 @@ export default function AppSidebar() {
   return (
     <Sidebar variant="floating" collapsible="icon">
       {/* Cabeçalho */}
-      <SidebarHeader>
-        <SidebarTrigger size="lg" />
+      <SidebarHeader className="flex flex-row">
+        <Favicon className="size-7" />
       </SidebarHeader>
 
       {/* Conteúdo */}
