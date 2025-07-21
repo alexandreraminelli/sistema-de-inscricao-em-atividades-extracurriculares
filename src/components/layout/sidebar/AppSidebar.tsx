@@ -1,4 +1,5 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar"
+import AppSidebarMenu from "./AppSidebarMenu"
 
 /** Sidebar do aplicativo exibido nas páginas do usuário (após autenticação). */
 export default function AppSidebar() {
@@ -9,8 +10,7 @@ export default function AppSidebar() {
 
       {/* Conteúdo */}
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <AppSidebarMenu />
       </SidebarContent>
 
       {/* Rodapé */}
