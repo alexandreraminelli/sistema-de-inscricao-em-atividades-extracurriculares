@@ -1,4 +1,4 @@
-import AppSidebar from "@/components/layout/Sidebar"
+import AppSidebar from "@/components/layout/sidebar/AppSidebar"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
