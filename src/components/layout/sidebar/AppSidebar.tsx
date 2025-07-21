@@ -4,7 +4,7 @@ import AppSidebarMenu from "./AppSidebarMenu"
 /** Sidebar do aplicativo exibido nas páginas do usuário (após autenticação). */
 export default function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       {/* Cabeçalho */}
       <SidebarHeader />
 
