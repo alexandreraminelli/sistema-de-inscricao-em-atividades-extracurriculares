@@ -20,7 +20,7 @@ export default function AppSidebarMenu() {
               >
                 <a href={item.href}>
                   <item.icon />
-                  {item.title}
+                  <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
