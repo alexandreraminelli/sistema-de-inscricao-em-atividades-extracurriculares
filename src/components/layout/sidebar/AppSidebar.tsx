@@ -18,7 +18,7 @@ export default function AppSidebar() {
         <AppSidebarMenu />
       </SidebarContent>
 
-      {/* <SidebarSeparator /> */}
+      <SidebarSeparator />
       {/* Rodapé */}
       <AppSidebarFooter />
     </Sidebar>
