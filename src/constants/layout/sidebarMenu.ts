@@ -13,9 +13,10 @@ export const sidebarMenu: SidebarGroupType[] = [
   },
   {
     label: "Explorar atividades",
+    collapsableMenu: true,
     menu: [
       // Todas as atividades
-      { title: "Atividades", href: "/atividades", description: "Lista de atividades oferecidas", icon: BookOpenIcon },
+      { title: "Todas as atividades", href: "/atividades", description: "Lista de atividades oferecidas", icon: BookOpenIcon },
     ],
   },
 ]
