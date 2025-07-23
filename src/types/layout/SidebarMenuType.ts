@@ -11,3 +11,11 @@ export interface SidebarItemsType {
   /** Ícone do link. */
   icon: LucideIcon
 }
+
+/** Tipagem dos grupos da sidebar. */
+export interface SidebarGroupType {
+  /** Nome do grupo. */
+  label: string
+  /** Links do menu. */
+  menu: SidebarItemsType[]
+}
