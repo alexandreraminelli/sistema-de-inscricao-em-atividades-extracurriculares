@@ -1,22 +1,23 @@
-import { SidebarGroupType } from "@/types/layout/SidebarMenuType"
+import { SidebarGroupType, SidebarItemsType } from "@/types/layout/SidebarMenuType"
 import { BookOpenIcon, ClipboardListIcon, HouseIcon } from "lucide-react"
+
+/** Menu de acesso rápido. */
+export const quickAccessMenu: SidebarItemsType[] = [
+  { title: "Início", role: "all", href: "/", icon: HouseIcon },
+  { title: "Suas Inscrições", role: "student", href: "/inscricoes", icon: ClipboardListIcon },
+]
 
 /** Dados dos ícones do menu. */
 export const sidebarMenu: SidebarGroupType[] = [
   {
     label: "Acesso Rápido",
-    menu: [
-      { title: "Início", href: "/", description: "Página inicial", icon: HouseIcon },
-
-      { title: "Suas Inscrições", href: "/inscricoes", description: "Suas inscrições", icon: ClipboardListIcon },
-    ],
+    menu: [],
   },
   {
     label: "Explorar atividades",
-    collapsableMenu: true,
     menu: [
       // Todas as atividades
-      { title: "Todas as atividades", href: "/atividades", description: "Lista de atividades oferecidas", icon: BookOpenIcon },
+      // { title: "Todas as atividades", href: "/atividades", icon: BookOpenIcon },
     ],
   },
 ]

@@ -6,10 +6,10 @@ export interface SidebarItemsType {
   title: string
   /** Endpoint do link. */
   href: string
-  /** Descrição da página. Exibido no tooltip. (opcional) */
-  description?: string
   /** Ícone do link. (opcional) */
   icon?: LucideIcon
+  /** Para quais tipos de usuários o item está visível. */
+  role: "student" | "teacher" | "all"
 }
 
 /** Tipagem dos grupos da sidebar. */

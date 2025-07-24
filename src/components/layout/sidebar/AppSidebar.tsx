@@ -1,7 +1,7 @@
 import Favicon from "@/components/custom/Favicon"
-import { Sidebar, SidebarContent, SidebarHeader, SidebarSeparator } from "@/components/ui/sidebar"
+import { Sidebar, SidebarHeader, SidebarSeparator } from "@/components/ui/sidebar"
 import AppSidebarFooter from "./AppSidebarFooter"
-import AppSidebarMenu from "./menu/AppSidebarMenu"
+import AppSidebarContent from "./menu/AppSidebarMenu"
 
 /** Sidebar do aplicativo exibido nas páginas do usuário (após autenticação). */
 export default function AppSidebar() {
@@ -14,9 +14,7 @@ export default function AppSidebar() {
       <SidebarSeparator />
 
       {/* Conteúdo */}
-      <SidebarContent>
-        <AppSidebarMenu />
-      </SidebarContent>
+      <AppSidebarContent />
 
       <SidebarSeparator />
       {/* Rodapé */}
