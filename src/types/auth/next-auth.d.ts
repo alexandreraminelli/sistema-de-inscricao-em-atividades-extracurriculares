@@ -7,7 +7,7 @@ declare module "next-auth" {
       id: string
       email: string
       name: string
-      role: "student" | "teacher"
+      role: UserRole
     }
   }
 
@@ -15,7 +15,7 @@ declare module "next-auth" {
     id: string
     email: string
     name: string
-    role: "student" | "teacher"
+    role: UserRole
   }
 }
 

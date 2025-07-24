@@ -2,6 +2,7 @@
 
 import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { quickAccessMenu } from "@/constants/layout/sidebarMenu"
+import { UserRole } from "@/types/auth/authCredentials"
 import { SidebarItemsType } from "@/types/layout/SidebarMenuType"
 import { LinkIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
@@ -36,7 +37,7 @@ function AppSidebarGroup({ label, children }: { label: string; children?: React.
 }
 
 /** Menu do Sidebar.  */
-function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; userRole: "student" | "teacher" }) {
+function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; userRole: UserRole }) {
   // Filtrar itens de acordo com o tipo de usuário
   itemList = itemList.filter((item) => item.role === "all" || item.role === userRole)
 
