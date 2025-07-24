@@ -1,12 +1,14 @@
 "use client"
 
-import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubItem } from "@/components/ui/sidebar"
 import { quickAccessMenu } from "@/constants/layout/sidebarMenu"
 import { UserRole } from "@/types/auth/authCredentials"
 import { SidebarItemsType } from "@/types/layout/SidebarMenuType"
-import { LinkIcon } from "lucide-react"
+import { ChevronRight, Grid2x2Icon, LinkIcon, LucideIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
+import { useState } from "react"
 
 /** Conteúdo principal do Sidebar */
 export default function AppSidebarContent() {
@@ -21,7 +23,10 @@ export default function AppSidebarContent() {
         <AppSidebarMenu itemList={quickAccessMenu} userRole={userRole} />
       </AppSidebarGroup>
       {/* Pesquisar atividades */}
-      <AppSidebarGroup label="Pesquisar atividades"></AppSidebarGroup>
+      <AppSidebarGroup label="Pesquisar atividades">
+        {/* Categorias */}
+        <AppSidebarCollapsibleMenu title="Categorias" Icon={Grid2x2Icon} itemList={[]} userRole={userRole} />
+      </AppSidebarGroup>
     </SidebarContent>
   )
 }
@@ -57,6 +62,39 @@ function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; 
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
+    </SidebarMenu>
+  )
+}
+
+/** Menu do sidebar colapsível. */
+function AppSidebarCollapsibleMenu({ title, Icon, itemList, userRole }: { title: string; Icon: LucideIcon; itemList: SidebarItemsType[]; userRole: UserRole }) {
+  // Status do collapsible (aberto ou fechado)
+  const [open, setOpen] = useState(true)
+
+  return (
+    <SidebarMenu>
+      <Collapsible defaultOpen={open} onOpenChange={setOpen} className="group/collapsible">
+        <SidebarMenuItem>
+          {/* Item principal */}
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton>
+              <Icon />
+              {title}
+              {/* Ícone de seta (animação ao expandir) */}
+              <ChevronRight className={`ms-auto transition-transform ${open ? "rotate-90" : ""}`} />
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+
+          {/* Sub-itens */}
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>Sub-item 1</SidebarMenuSubItem>
+              <SidebarMenuSubItem>Sub-item 1</SidebarMenuSubItem>
+              <SidebarMenuSubItem>Sub-item 1</SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
     </SidebarMenu>
   )
 }
