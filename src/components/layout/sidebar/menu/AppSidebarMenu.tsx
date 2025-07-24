@@ -17,10 +17,6 @@ export default function AppSidebarContent() {
     <SidebarContent>
       {/* Acesso Rápido */}
       <AppSidebarGroup label="Acesso Rápido">
-        {/* DEBUG */}
-        <p>Nome: {session?.user?.name || "sem nome"}</p>
-        <p>Role: {session?.user?.role || "desconhecido"}</p>
-
         <AppSidebarMenu itemList={quickAccessMenu} userRole={userRole} />
       </AppSidebarGroup>
       {/* Pesquisar atividades */}
