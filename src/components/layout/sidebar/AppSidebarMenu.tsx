@@ -3,6 +3,7 @@
 import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { sidebarMenu } from "@/constants/layout/sidebarMenu"
 import { SidebarItemsType } from "@/types/layout/SidebarMenuType"
+import { LinkIcon } from "lucide-react"
 import { usePathname } from "next/navigation"
 
 /** Menu da sidebar com os links do aplicativo. */
@@ -36,9 +37,10 @@ function AppSidebarMenuItem({ item }: { item: SidebarItemsType }) {
       <SidebarMenuButton
         asChild
         isActive={usePathname() === item.href} // se link está ativo
+        aria-label={item.description || item.title}
       >
         <a href={item.href}>
-          <item.icon /> {/* Ícone do item */}
+          {item.icon ? <item.icon /> : <LinkIcon />} {/* Ícone do item */}
           <span>{item.title}</span> {/* Título do item */}
         </a>
       </SidebarMenuButton>
