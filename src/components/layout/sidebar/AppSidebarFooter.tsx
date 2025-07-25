@@ -1,12 +1,14 @@
+"use client"
+
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { ChevronUpIcon, LogOutIcon, UserIcon } from "lucide-react"
-import { getServerSession } from "next-auth"
+import { signOut, useSession } from "next-auth/react"
 
 /** Rodapé do sidebar da aplicação. */
-export default async function AppSidebarFooter() {
+export default function AppSidebarFooter() {
   /** Sessão do usuário. */
-  const session = await getServerSession()
+  const { data: session } = useSession()
 
   return (
     <SidebarFooter>
@@ -25,8 +27,15 @@ export default async function AppSidebarFooter() {
 
             {/* Conteúdo do Dropdown */}
             <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-              {/* Opção de Logout */}
-              <DropdownMenuItem variant="destructive">
+              {/* Botão de Logout */}
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={
+                  // Realizar logout e redirecionar para página de login
+                  () => signOut({ callbackUrl: "/login" })
+                }
+                className="cursor-pointer"
+              >
                 <LogOutIcon />
                 <span>Sair da conta</span>
               </DropdownMenuItem>
