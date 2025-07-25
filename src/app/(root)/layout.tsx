@@ -1,5 +1,6 @@
+import Header from "@/components/layout/Header"
 import AppSidebar from "@/components/layout/sidebar/AppSidebar"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { getServerSession } from "next-auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
@@ -20,9 +21,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <AppSidebar />
 
-      <div className="m-2">
+      <div className="m-2 w-full">
         {/* Botão de expandir/compactar sidebar */}
-        <SidebarTrigger />
+        <Header />
+
         {/* Página */}
         {children}
       </div>
