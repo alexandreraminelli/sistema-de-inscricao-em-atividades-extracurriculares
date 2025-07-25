@@ -2,6 +2,7 @@
 
 import { db } from "@/database/drizzle"
 import { users } from "@/database/schema"
+import { UserRole } from "@/types/auth/authCredentials"
 import { compare } from "bcryptjs"
 import { eq } from "drizzle-orm"
 import NextAuth from "next-auth"
@@ -34,7 +35,7 @@ const handler = NextAuth({
           id: user.id.toString(),
           email: user.email.toString(),
           name: user.name.toString(),
-          role: user.role as "student" | "teacher",
+          role: user.role as UserRole,
         }
       },
     }),
@@ -48,6 +49,7 @@ const handler = NextAuth({
         token.id = user.id
         token.email = user.email
         token.name = user.name
+        token.role = user.role as UserRole
       }
       return token
     },
@@ -56,6 +58,7 @@ const handler = NextAuth({
         session.user.id = token.id as string
         session.user.name = token.name as string
         session.user.email = token.email as string
+        session.user.role = token.role as UserRole
       }
       return session
     },

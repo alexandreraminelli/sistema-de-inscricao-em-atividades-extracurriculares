@@ -7,5 +7,8 @@ export interface AuthCredentials {
   /** Senha do usuário. */
   password: string
   /** Papel do usuário. */
-  role: "student" | "teacher"
+  role: UserRole
 }
+
+/** Papel do usuário. */
+export type UserRole = "student" | "teacher"
