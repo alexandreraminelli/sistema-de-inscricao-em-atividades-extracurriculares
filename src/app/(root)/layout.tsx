@@ -20,7 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <AppSidebar />
 
-      <div>
+      <div className="m-2">
         {/* Botão de expandir/compactar sidebar */}
         <SidebarTrigger />
         {/* Página */}
