@@ -14,7 +14,7 @@ import { useState } from "react"
 export default function AppSidebarContent() {
   // Obter role do usuário
   const { data: session } = useSession()
-  const userRole = session?.user?.role!
+  const userRole = session?.user?.role
 
   return (
     <SidebarContent>
@@ -25,7 +25,7 @@ export default function AppSidebarContent() {
       {/* Pesquisar atividades */}
       <AppSidebarGroup label="Pesquisar atividades">
         {/* Categorias */}
-        <AppSidebarCollapsibleMenu title="Categorias" Icon={Grid2x2Icon} itemList={[]} userRole={userRole} />
+        <AppSidebarCollapsibleMenu title="Categorias" Icon={Grid2x2Icon} />
       </AppSidebarGroup>
     </SidebarContent>
   )
@@ -43,16 +43,19 @@ function AppSidebarGroup({ label, children }: { label: string; children?: React.
 
 /** Menu do Sidebar.  */
 function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; userRole: UserRole }) {
+  // Obter pathname atual
+  const pathname = usePathname()
+
   // Filtrar itens de acordo com o tipo de usuário
   itemList = itemList.filter((item) => item.role === "all" || item.role === userRole)
 
   return (
     <SidebarMenu>
       {itemList.map((item) => (
-        <SidebarMenuItem>
+        <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
             asChild
-            isActive={usePathname() === item.href} // se link está ativo
+            isActive={pathname === item.href} // se link está ativo
             aria-label={item.title}
           >
             <a href={item.href}>
@@ -67,7 +70,7 @@ function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; 
 }
 
 /** Menu do sidebar colapsível. */
-function AppSidebarCollapsibleMenu({ title, Icon, itemList, userRole }: { title: string; Icon: LucideIcon; itemList: SidebarItemsType[]; userRole: UserRole }) {
+function AppSidebarCollapsibleMenu({ title, Icon /*itemList, userRole*/ }: { title: string; Icon: LucideIcon /*itemList: SidebarItemsType[]; userRole: UserRole*/ }) {
   // Status do collapsible (aberto ou fechado)
   const [open, setOpen] = useState(true)
 
