@@ -5,9 +5,10 @@ export default function Header() {
   return (
     <header
       className="flex flex-row items-center
-        gap-3 p-0.5
+        gap- md:gap-3 p-0.5
+        sticky top-1
         bg-sidebar border-l border-sidebar-border
-        rounded-lg shadow-sm"
+        rounded-lg shadow-md"
     >
       {/* Botão de abrir/fechar sidebar */}
       <SidebarTrigger size="lg" />
