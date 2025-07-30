@@ -56,7 +56,8 @@ function AppSidebarMenu({ itemList, userRole }: { itemList: SidebarItemsType[]; 
           <SidebarMenuButton
             asChild
             isActive={pathname === item.href} // se link está ativo
-            aria-label={item.title}
+            aria-label={`Link para ${item.title}`}
+            tooltip={item.title} // tooltip para sidebar recolhida
           >
             <a href={item.href}>
               {item.icon ? <item.icon /> : <LinkIcon />} {/* Ícone do item */}
