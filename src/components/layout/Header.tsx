@@ -8,7 +8,7 @@ export default function Header() {
       className="flex flex-row items-center
         gap-1 md:gap-3 p-0.5
         sticky top-1
-        bg-sidebar border-l border-sidebar-border
+        bg-sidebar border border-sidebar-border
         rounded-lg shadow-md"
     >
       {/* Botão de abrir/fechar sidebar */}
