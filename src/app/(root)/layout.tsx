@@ -25,7 +25,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div
         className="w-full transition-all
           my-2
-          px-4 sm:px-0 md:mx-2
+          px-4 md:px-0 md:mx-2
           space-y-4"
       >
         {/* Cabeçalho */}
