@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { ChevronUpIcon, LogOutIcon, UserIcon } from "lucide-react"
 import { Session } from "next-auth"
-import { signOut, useSession } from "next-auth/react"
+import { signOut } from "next-auth/react"
 
 /** Rodapé do sidebar da aplicação. */
 export default function AppSidebarFooter({ session }: { session: Session }) {
