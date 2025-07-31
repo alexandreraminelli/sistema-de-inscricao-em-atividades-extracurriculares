@@ -13,29 +13,37 @@ interface Props {
 export default function HeroCards({ cards }: Props) {
   return (
     <section
-      className="flex
+      className="flex mb-4
         flex-col gap-4
-        md:flex-row"
+        md:flex-row md:flex-wrap"
     >
       {cards.map((card) => (
-        <Card key={card.href}>
-          {/* Cabeçalho */}
-          <CardHeader className="text-center">
-            <CardTitle>{card.title}</CardTitle>
-            <CardDescription>{card.description}</CardDescription>
-          </CardHeader>
+        <Card
+          key={card.href}
+          className="items-center justify-between px-2 
+          flex-col-reverse max-md:w-full 
+          sm:px-5 sm:flex-row
+          "
+        >
+          {/* Texto */}
+          <div className="w-full flex flex-col max-sm:items-center gap-2.5 pt-6">
+            {/* Cabeçalho */}
+            <CardHeader className="w-full text-center sm:text-start">
+              <CardTitle className="font-semibold text-xl">{card.title}</CardTitle>
+              <CardDescription>{card.description}</CardDescription>
+            </CardHeader>
+            {/* Ilustração */}
+            <CardContent>
+              {/* Botão */}
+              <Button asChild>
+                <Link href={card.href}>{card.buttonText}</Link>
+              </Button>
+            </CardContent>
+          </div>
           {/* Ilustração */}
-          <CardContent className="mx-auto">
-            <aside>
-              <Image src={card.image} alt={`${card.title} icon`} width={150} height={112} className="object-contain max-h-40" />
-            </aside>
-          </CardContent>
-          {/* Botão */}
-          <CardFooter className="mx-auto">
-            <Button asChild>
-              <Link href={card.href}>{card.buttonText}</Link>
-            </Button>
-          </CardFooter>
+          <aside>
+            <Image src={card.image} alt={`${card.title} icon`} width={150} height={112} className="object-contain max-h-40 sm:h-full aspect-auto" />
+          </aside>
         </Card>
       ))}
     </section>
