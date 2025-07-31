@@ -1,14 +1,15 @@
 import Header from "@/components/layout/Header"
 import AppSidebar from "@/components/layout/sidebar/AppSidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { authOptions } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-/** Layout dos componentes principais da aplicação. */
+/** Layout da aplicação (após autenticação). */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   /** Sessão do usuário. */
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if (!session) redirect("/login") // Redirecionar usuários não autenticados para a página de login
 
   /** Interface do Next para ler cookies no servidor. */
@@ -19,7 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       {/* Sidebar */}
-      <AppSidebar />
+      <AppSidebar session={session} />
 
       <div
         className="w-full transition-all
