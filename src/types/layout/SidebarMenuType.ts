@@ -7,5 +7,5 @@ export interface SidebarItemsType {
   /** Endpoint do link. */
   href: string
   /** Ícone do link. (opcional) */
-  icon?: LucideIcon
+  icon: LucideIcon
 }
