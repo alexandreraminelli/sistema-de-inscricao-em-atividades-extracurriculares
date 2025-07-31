@@ -2,18 +2,13 @@
 
 import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { studentSidebar, teacherSidebar } from "@/constants/layout/sidebarMenu"
-import { UserRole } from "@/types/auth/authCredentials"
-import { LinkIcon } from "lucide-react"
-import { useSession } from "next-auth/react"
+import { Session } from "next-auth"
 import { usePathname } from "next/navigation"
 
 /** Conteúdo principal do Sidebar */
-export default function AppSidebarContent() {
-  // Obter role do usuário
-  const { data: session } = useSession()
-  const userRole: UserRole = session?.user?.role
-  /** Itens do menu. Itens variam de acordo com o papel do usuário. */
-  const items = userRole === "student" ? studentSidebar : teacherSidebar
+export default function AppSidebarContent({ session }: { session: Session }) {
+  // Renderizar menu de acordo com o papel do usuário
+  const items = session?.user?.role === "student" ? studentSidebar : teacherSidebar
 
   /** Obter pathname atual. */
   const pathname = usePathname()

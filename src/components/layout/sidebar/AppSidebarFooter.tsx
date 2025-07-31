@@ -2,14 +2,12 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
-import { UserRole } from "@/types/auth/authCredentials"
 import { ChevronUpIcon, LogOutIcon, UserIcon } from "lucide-react"
+import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 
 /** Rodapé do sidebar da aplicação. */
-export default function AppSidebarFooter() {
-  /** Sessão do usuário. */
-  const { data: session } = useSession()
+export default function AppSidebarFooter({ session }: { session: Session }) {
   // Informações do usuário
   const userName = session?.user?.name || "Minha conta"
   const userRole = session?.user?.role === "student" ? "Aluno" : "Professor"
