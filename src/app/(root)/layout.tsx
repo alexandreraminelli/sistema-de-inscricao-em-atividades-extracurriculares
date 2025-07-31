@@ -21,10 +21,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <AppSidebar />
 
-      <div className="m-2 w-full">
-        {/* Botão de expandir/compactar sidebar */}
+      <div
+        className="w-full transition-all
+          my-2
+          px-4 sm:px-0 md:mx-2
+          space-y-4"
+      >
+        {/* Cabeçalho */}
         <Header />
-
         {/* Página */}
         {children}
       </div>
