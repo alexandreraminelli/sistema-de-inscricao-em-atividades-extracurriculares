@@ -31,12 +31,12 @@ export default function AppSidebarContent() {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.href} // se link está ativo
-                  aria-label={`Link para ${item.title}`}
-                  tooltip={item.title} // tooltip para sidebar recolhida
+                  aria-label={`Link para ${item.label}`}
+                  tooltip={item.label} // tooltip para sidebar recolhida
                 >
                   <a href={item.href}>
-                    {item.icon ? <item.icon /> : <LinkIcon />} {/* Ícone do item */}
-                    <span>{item.title}</span> {/* Título do item */}
+                    <item.icon /> {/* Ícone do item */}
+                    <span>{item.label}</span> {/* Rótulo do item */}
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
