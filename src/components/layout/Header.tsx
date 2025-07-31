@@ -14,9 +14,9 @@ export default function Header() {
       {/* Botão de abrir/fechar sidebar */}
       <SidebarTrigger size="lg" />
       {/* Título do App */}
-      <h1 className="font-semibold max-sm:text-sm text-md">Inscrição em Atividades Extracurriculares</h1>
+      <h1 className="font-semibold text-xs sm:text-sm md:text-md">Inscrição em Atividades Extracurriculares</h1>
       {/* Botão de tema */}
-      <div className="max-sm:hidden flex items-center ms-auto me-2">
+      <div className="flex items-center ms-auto me-2">
         <ModeToggle />
       </div>
     </header>
