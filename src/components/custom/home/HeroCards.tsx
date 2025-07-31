@@ -26,7 +26,7 @@ export default function HeroCards({ cards }: Props) {
           "
         >
           {/* Texto */}
-          <div className="w-full flex flex-col max-sm:items-center gap-2.5 pt-6">
+          <div className="w-full flex flex-col max-sm:items-center sm:justify-between h-full gap-2.5 pt-6">
             {/* Cabeçalho */}
             <CardHeader className="w-full text-center sm:text-start">
               <CardTitle className="font-semibold text-xl">{card.title}</CardTitle>
