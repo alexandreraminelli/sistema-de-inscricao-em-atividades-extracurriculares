@@ -2,6 +2,7 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { UserRole } from "@/types/auth/authCredentials"
 import { ChevronUpIcon, LogOutIcon, UserIcon } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
 
@@ -9,6 +10,9 @@ import { signOut, useSession } from "next-auth/react"
 export default function AppSidebarFooter() {
   /** Sessão do usuário. */
   const { data: session } = useSession()
+  // Informações do usuário
+  const userName = session?.user?.name || "Minha conta"
+  const userRole = session?.user?.role === "student" ? "Aluno" : "Professor"
 
   return (
     <SidebarFooter>
@@ -16,10 +20,13 @@ export default function AppSidebarFooter() {
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton>
+              <SidebarMenuButton tooltip={`${userName} (${userRole})`}>
                 <UserIcon />
                 {/* Nome do usuário */}
-                {session?.user?.name}
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{userName}</span>
+                  <span className="truncate text-xs">{userRole}</span>
+                </div>
                 {/* Ícone de abrir menu */}
                 <ChevronUpIcon className="ms-auto" />
               </SidebarMenuButton>
