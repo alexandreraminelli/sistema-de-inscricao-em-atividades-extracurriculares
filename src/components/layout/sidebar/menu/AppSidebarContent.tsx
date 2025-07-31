@@ -17,7 +17,7 @@ export default function AppSidebarContent({ session }: { session: Session }) {
     <SidebarContent>
       <SidebarGroup>
         {/* Título */}
-        <SidebarGroupLabel>Inscrição em Atividades Extracurriculares</SidebarGroupLabel>
+        <SidebarGroupLabel className="mb-2">Inscrição em Atividades Extracurriculares</SidebarGroupLabel>
         {/* Menu */}
         <SidebarGroupContent>
           <SidebarMenu>
