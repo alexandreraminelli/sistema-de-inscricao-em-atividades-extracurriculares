@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input"
 import config from "@/lib/config"
 import { loginSchema } from "@/schemas/loginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { LoaderCircle } from "lucide-react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
-import { toast } from "sonner"
-import { signIn } from "next-auth/react"
 
 /** Props do `LoginForm`. */
 interface Props {
@@ -103,7 +104,8 @@ export default function LoginForm({ onSubmit }: Props) {
         </div>
 
         {/* Botão de enviar */}
-        <Button size="lg" className="w-full" type="submit">
+        <Button size="lg" className="w-full" type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting && <LoaderCircle className="animate-spin" />} {/* Ícone de carregamento */}
           Entrar
         </Button>
       </form>
