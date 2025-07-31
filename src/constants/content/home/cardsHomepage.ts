@@ -1,7 +1,7 @@
 import { CardLinkType } from "@/types/content/CardType"
 
 /** Endpoint público das imagens. */
-const ILLUSTRATIONS_ENDPOINT = "images/illustrations/home"
+const ILLUSTRATIONS_ENDPOINT = "images/illustrations"
 /** Conteúdo dos cards da página inicial dos alunos.  */
 export const cardsHomepageStudent: CardLinkType[] = [
   {
