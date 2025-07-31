@@ -1,15 +1,17 @@
 import Favicon from "@/components/custom/Favicon"
 import { Sidebar, SidebarHeader, SidebarSeparator } from "@/components/ui/sidebar"
-import { authOptions } from "@/lib/auth"
-import { getServerSession } from "next-auth"
+import { Session } from "next-auth"
 import AppSidebarFooter from "./AppSidebarFooter"
 import AppSidebarContent from "./menu/AppSidebarContent"
 
-/** Sidebar do aplicativo exibido nas páginas do usuário (após autenticação). */
-export default async function AppSidebar() {
-  // Obter usuário logado
-  const session = await getServerSession(authOptions)
+/** Props do `AppSidebar`. */
+interface Props {
+  /** Sessão do usuário logado. */
+  session: Session
+}
 
+/** Sidebar do aplicativo exibido nas páginas do usuário (após autenticação). */
+export default function AppSidebar({ session }: Props) {
   return (
     <Sidebar variant="floating" collapsible="icon">
       {/* Cabeçalho */}
