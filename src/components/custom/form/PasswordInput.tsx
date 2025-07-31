@@ -31,10 +31,10 @@ export default function PasswordInput({ className, ...props }: React.ComponentPr
           <Button type="button" variant="outline" size="icon" onClick={handleToggleVisibility} aria-label={label}>
             {isView ? (
               // Ícone de ocultar senha
-              <EyeIcon className="" />
+              <EyeIcon />
             ) : (
               // Ícone de mostrar senha
-              <EyeOffIcon className="" />
+              <EyeOffIcon />
             )}
           </Button>
         </TooltipTrigger>
