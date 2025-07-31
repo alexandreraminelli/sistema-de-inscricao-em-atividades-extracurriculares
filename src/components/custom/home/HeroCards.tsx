@@ -22,7 +22,7 @@ export default function HeroCards({ cards }: Props) {
           key={card.href}
           className="items-center justify-between px-2 
           flex-col-reverse max-md:w-full 
-          sm:px-5 sm:flex-row
+          sm:px-5 sm:flex-row md:min-w-sm flex-1
           "
         >
           {/* Texto */}
@@ -42,7 +42,7 @@ export default function HeroCards({ cards }: Props) {
           </div>
           {/* Ilustração */}
           <aside>
-            <Image src={card.image} alt={`${card.title} icon`} width={150} height={112} className="object-contain max-h-40 sm:h-full aspect-auto" />
+            <Image src={card.image} alt={`${card.title} icon`} width={150} height={150} className="object-contain max-lg:max-h-40 sm:h-full aspect-auto" />
           </aside>
         </Card>
       ))}
