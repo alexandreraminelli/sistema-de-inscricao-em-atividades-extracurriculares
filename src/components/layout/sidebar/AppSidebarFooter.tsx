@@ -5,6 +5,7 @@ import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "
 import { ChevronUpIcon, LogOutIcon, UserIcon } from "lucide-react"
 import { Session } from "next-auth"
 import { signOut } from "next-auth/react"
+import { toast } from "sonner"
 
 /** Rodapé do sidebar da aplicação. */
 export default function AppSidebarFooter({ session }: { session: Session }) {
@@ -37,7 +38,10 @@ export default function AppSidebarFooter({ session }: { session: Session }) {
                 variant="destructive"
                 onClick={
                   // Realizar logout e redirecionar para página de login
-                  () => signOut({ callbackUrl: "/login" })
+                  () => {
+                    signOut({ callbackUrl: "/login" })
+                    toast.info("Sessão encerrada", { description: "Você foi desconectado com sucesso." }) // notificação
+                  }
                 }
                 className="cursor-pointer"
               >
