@@ -1,8 +1,11 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { db } from "@/database/drizzle"
 import { activity, category } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
+import { ClipboardCheckIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 
 /** Página de atividades. */
@@ -54,11 +57,11 @@ export default async function AtividadesPage() {
                   <h3 className="text-lg">{category.name}</h3>
                 </AccordionTrigger>
                 {/* Atividades da categoria */}
-                <AccordionContent>
+                <AccordionContent className="space-y-3.5">
                   {activities.length > 0 ? (
                     activities.map((activity) => (
                       // Card de atividade
-                      <div key={activity.id}>{activity.name}</div>
+                      <ActivityCard key={activity.id} activity={activity} />
                     ))
                   ) : (
                     // Se não houver atividades
@@ -71,5 +74,38 @@ export default async function AtividadesPage() {
         </section>
       </main>
     </div>
+  )
+}
+
+/** Props de ` */
+interface ActivityCardProps extends React.ComponentProps<typeof Card> {
+  /** Atividade do card. */
+  activity: typeof activity.$inferSelect
+}
+
+/** Card de atividade. */
+function ActivityCard({ activity, className, ...props }: ActivityCardProps) {
+  return (
+    <Card
+      className="px-2.5 md:px-3.5 justify-between
+      flex-col items-center 
+      md:flex-row md:items-start"
+    >
+      {/* Nome da atividade */}
+      <span className="text-center">{activity.name}</span>
+
+      {/* Botões de ação */}
+      <div className="flex flex-row items-center gap-3">
+        {/* Botão de abrir página */}
+        <Button variant="outline">
+          <SquareArrowOutUpRightIcon /> Veja mais
+        </Button>
+        {/* Botão de inscrição */}
+        <Button variant="default" disabled>
+          <ClipboardCheckIcon />
+          Inscrever
+        </Button>
+      </div>
+    </Card>
   )
 }
