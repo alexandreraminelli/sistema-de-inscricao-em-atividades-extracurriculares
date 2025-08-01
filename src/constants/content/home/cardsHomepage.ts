@@ -42,4 +42,7 @@ export const cardsHomepageStudent: CardLinkType[] = [
 ]
 
 /** Conteúdo dos cards da página inicial dos professores. */
-export const cardsHomepageTeacher: CardLinkType[] = []
+export const cardsHomepageTeacher: CardLinkType[] = [
+  { title: "Gerenciar Atividades", description: "Gerencie suas atividades, incluindo horários, salas e descrições", buttonText: "Editar Atividades", href: "/atividades", image: `${ILLUSTRATIONS_ENDPOINT}/atividades.svg` },
+  { title: "Gerenciar Inscrições", description: "Acompanhe as inscrições dos alunos e gerencie listas de presença", buttonText: "Ver Inscrições", href: "/inscricoes", image: `${ILLUSTRATIONS_ENDPOINT}/inscricoes.svg` },
+]
