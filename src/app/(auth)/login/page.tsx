@@ -14,7 +14,7 @@ export default function LoginPage() {
       <div className="flex flex-col h-full w-full md:px-14 md:py-1.5 ">
         <header className="flex flex-col items-center md:items-start gap-14 mb-6">
           {/* Logo */}
-          <Logo className="h-10 md:h-11 lg:h-12" />
+          <Logo className="w-fit mx-auto h-10 md:h-11 lg:h-12" />
 
           {/* Título e subtítulo */}
           <div className="space-y-4 text-center md:text-start">
