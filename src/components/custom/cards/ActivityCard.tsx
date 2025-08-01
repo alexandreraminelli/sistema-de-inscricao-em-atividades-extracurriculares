@@ -13,12 +13,12 @@ interface Props extends React.ComponentProps<typeof Card> {
 export default function ActivityCard({ activity, className, ...props }: Props) {
   return (
     <Card
-      className="px-2.5 md:px-3.5 justify-between
-      flex-col items-center 
-      md:flex-row md:items-start"
+      className="justify-between items-center 
+        px-2.5 flex-col
+        sm:px-3.5 sm:flex-row"
     >
       {/* Nome da atividade */}
-      <span className="text-center">{activity.name}</span>
+      <span className="h-fit text-center sm:text-start">{activity.name}</span>
 
       {/* Botões de ação */}
       <div className="flex flex-row items-center gap-3">
@@ -26,10 +26,11 @@ export default function ActivityCard({ activity, className, ...props }: Props) {
         <Button variant="outline">
           <SquareArrowOutUpRightIcon /> Veja mais
         </Button>
+
         {/* Botão de inscrição */}
         <Button variant="default" disabled>
           <ClipboardCheckIcon />
-          Inscrever
+          Inscrever-se
         </Button>
       </div>
     </Card>
