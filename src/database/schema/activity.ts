@@ -5,7 +5,7 @@ import { category } from "./category"
 /** Schema da tabela de atividades extracurriculares. */
 export const activity = pgTable("extracurricular_activity", {
   /** ID da atividade. */
-  id: uuid("activity_id").primaryKey(),
+  id: uuid("activity_id").primaryKey().defaultRandom(),
   /** Nome da atividade extracurricular. */
   name: varchar("name", { length: 100 }).notNull().unique(),
   /** Categoria da atividade. */

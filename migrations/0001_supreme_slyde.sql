@@ -1,0 +1,1 @@
+ALTER TABLE "extracurricular_activity" ALTER COLUMN "activity_id" SET DEFAULT gen_random_uuid();
