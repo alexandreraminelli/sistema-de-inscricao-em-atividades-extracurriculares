@@ -1,6 +1,7 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { db } from "@/database/drizzle"
-import { category } from "@/database/schema"
+import { activity, category } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 
@@ -12,6 +13,13 @@ export default async function AtividadesPage() {
 
   // Categorias
   const categories = await db.select().from(category).orderBy(category.name)
+  // Atividades
+  const activities = await db.select().from(activity)
+  // Agrupar atividades por categoria
+  const activitiesByCategory = categories.map((category) => ({
+    category: category,
+    activities: activities.filter((activity) => activity.category === category.id),
+  }))
 
   return (
     <div>
@@ -36,11 +44,30 @@ export default async function AtividadesPage() {
           <p className="text-sm md:text-base text-muted-foreground">Veja as atividades extracurriculares abertas para inscrição e escolha as que mais combinam com você.</p>
         </header>
 
-        {/* Teste categorias */}
+        {/* Listar atividades por categorias */}
         <section>
-          {categories.map((cat) => (
-            <p>{cat.name}</p>
-          ))}
+          <Accordion type="multiple">
+            {activitiesByCategory.map(({ category, activities }) => (
+              <AccordionItem key={category.id} value={category.id}>
+                {/* Título da categoria */}
+                <AccordionTrigger>
+                  <h3 className="text-lg">{category.name}</h3>
+                </AccordionTrigger>
+                {/* Atividades da categoria */}
+                <AccordionContent>
+                  {activities.length > 0 ? (
+                    activities.map((activity) => (
+                      // Card de atividade
+                      <div key={activity.id}>{activity.name}</div>
+                    ))
+                  ) : (
+                    // Se não houver atividades
+                    <p className="text-muted-foreground">Sem atividades.</p>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </section>
       </main>
     </div>
