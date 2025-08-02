@@ -3,8 +3,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { db } from "@/database/drizzle"
 import { activity, category } from "@/database/schema"
-import { authOptions } from "@/lib/auth"
-import { getServerSession } from "next-auth"
 
 /** Página de atividades. */
 export default async function ActivityPage() {
