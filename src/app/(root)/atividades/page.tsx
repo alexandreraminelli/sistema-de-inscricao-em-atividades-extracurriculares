@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth"
 export default async function ActivityPage() {
   // Obter sessão do usuário
   const session = await getServerSession(authOptions)
-  const userRole = session?.user?.role
+  // const userRole = session?.user?.role
 
   // Categorias
   const categories = await db.select().from(category).orderBy(category.name)

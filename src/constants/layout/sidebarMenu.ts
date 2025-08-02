@@ -1,5 +1,5 @@
 import { SidebarItemsType } from "@/types/layout/SidebarMenuType"
-import { BookOpenIcon, CalendarIcon, ClipboardCheckIcon, ClipboardPenIcon, GraduationCapIcon, HouseIcon, InfoIcon, NotebookPenIcon, UserCogIcon, UserPenIcon, UserRoundCogIcon } from "lucide-react"
+import { BookOpenIcon, CalendarIcon, ClipboardCheckIcon, ClipboardPenIcon, GraduationCapIcon, HouseIcon, InfoIcon, UserCogIcon } from "lucide-react"
 
 /** Menu da sidebar para alunos. */
 export const studentSidebar: SidebarItemsType[] = [

@@ -10,12 +10,13 @@ interface Props extends React.ComponentProps<typeof Card> {
 }
 
 /** Card de atividades. */
-export default function ActivityCard({ activity, className, ...props }: Props) {
+export default function ActivityCard({ activity, ...props }: Props) {
   return (
     <Card
       className="justify-between items-center 
         px-2.5 flex-col
         sm:px-3.5 sm:flex-row"
+      {...props}
     >
       {/* Nome da atividade */}
       <span className="h-fit text-center sm:text-start">{activity.name}</span>
