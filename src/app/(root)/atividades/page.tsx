@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth"
 /** Página de atividades. */
 export default async function ActivityPage() {
   // Obter sessão do usuário
-  const session = await getServerSession(authOptions)
+  // const session = await getServerSession(authOptions)
   // const userRole = session?.user?.role
 
   // Categorias
