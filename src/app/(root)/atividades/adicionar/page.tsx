@@ -1,3 +1,4 @@
+import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@/types/auth/authCredentials"
@@ -30,6 +31,11 @@ export default async function CreateActivityPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      {/* Formulário */}
+      <main>
+        <ActivityForm />
+      </main>
     </div>
   )
 }
