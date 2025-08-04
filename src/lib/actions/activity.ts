@@ -5,7 +5,7 @@ import { activity } from "@/database/schema"
 import { toast } from "sonner"
 
 /** Função para adicionar uma atividade extracurricular no banco de dados. */
-export async function createActivity(params: typeof activity.$inferSelect) {
+export async function createActivity(params: typeof activity.$inferInsert) {
   try {
     /** Adiciona e recupera a atividade no banco de dados. */
     const newActivity = await db.insert(activity).values(params).returning()
