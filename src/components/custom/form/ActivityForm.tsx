@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,6 +13,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import z from "zod"
+import { useEffect, useState } from "react"
 
 /** Props de `ActivityForm`. */
 interface Props {
@@ -23,6 +25,47 @@ interface Props {
 export default function ActivityForm({ type }: Props) {
   /** Hook do Next.js para manipulação de rotas. */
   const router = useRouter()
+
+  /** Estados para dados das APIs */
+  const [categories, setCategories] = useState<ComboboxOption[]>([])
+  const [teachers, setTeachers] = useState<ComboboxOption[]>([])
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [isLoadingTeachers, setIsLoadingTeachers] = useState(true)
+
+  /** Buscar dados das APIs */
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Buscar categorias e professores em paralelo
+        const [categoriesResponse, teachersResponse] = await Promise.all([fetch("/api/data/categories"), fetch("/api/data/teacher")])
+
+        const [categoriesData, teachersData] = await Promise.all([categoriesResponse.json(), teachersResponse.json()])
+
+        // Converter categorias para o formato do Combobox
+        const formattedCategories: ComboboxOption[] = categoriesData.map((cat: any) => ({
+          value: cat.id,
+          label: cat.name,
+        }))
+
+        // Converter professores para o formato do Combobox
+        const formattedTeachers: ComboboxOption[] = teachersData.map((teacher: any) => ({
+          value: teacher.id,
+          label: teacher.name,
+        }))
+
+        setCategories(formattedCategories)
+        setTeachers(formattedTeachers)
+      } catch (error) {
+        toast.error("Erro ao carregar dados do formulário", { description: String(error) })
+      } finally {
+        // Atualizar estados de carregamento
+        setIsLoadingCategories(false)
+        setIsLoadingTeachers(false)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   /** Definição do formulário. */
   const form = useForm<z.infer<typeof activitySchema>>({
@@ -84,7 +127,9 @@ export default function ActivityForm({ type }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Categoria</FormLabel>
-                <FormControl></FormControl>
+                <FormControl>
+                  <Combobox options={categories} value={field.value} onValueChange={field.onChange} placeholder={isLoadingCategories ? "Carregando categorias..." : "Selecione uma categoria..."} searchPlaceholder="Buscar categoria..." emptyMessage="Nenhuma categoria encontrada." disabled={isLoadingCategories} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -112,7 +157,9 @@ export default function ActivityForm({ type }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Aplicador</FormLabel>
-                <FormControl></FormControl>
+                <FormControl>
+                  <Combobox options={teachers} value={field.value} onValueChange={field.onChange} placeholder={isLoadingTeachers ? "Carregando professores..." : "Selecione um professor..."} searchPlaceholder="Buscar professor..." emptyMessage="Nenhum professor encontrado." disabled={isLoadingTeachers} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
