@@ -1,16 +1,19 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { activity } from "@/database/schema"
+import { UserRole } from "@/types/auth/authCredentials"
 import { ClipboardCheckIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 
 /** Props de `ActivityCard`. */
 interface Props extends React.ComponentProps<typeof Card> {
   /** Atividade do card. */
   activity: typeof activity.$inferSelect
+  /** Papel do usuário. */
+  userRole: UserRole
 }
 
 /** Card de atividades. */
-export default function ActivityCard({ activity, ...props }: Props) {
+export default function ActivityCard({ activity, userRole, ...props }: Props) {
   return (
     <Card
       className="justify-between items-center 
@@ -29,10 +32,12 @@ export default function ActivityCard({ activity, ...props }: Props) {
         </Button>
 
         {/* Botão de inscrição */}
-        <Button variant="default" disabled>
-          <ClipboardCheckIcon />
-          Inscrever-se
-        </Button>
+        {userRole === "student" && (
+          <Button variant="default" disabled>
+            <ClipboardCheckIcon />
+            Inscrever-se
+          </Button>
+        )}
       </div>
     </Card>
   )

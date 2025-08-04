@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { db } from "@/database/drizzle"
 import { activity, category } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
+import { UserRole } from "@/types/auth/authCredentials"
 import { PlusIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 import Link from "next/link"
@@ -13,8 +14,7 @@ import Link from "next/link"
 export default async function ActivityPage() {
   // Obter sessão do usuário
   const session = await getServerSession(authOptions)
-  // É professor
-  const isTeacher = session?.user?.role === "teacher"
+  const userRole = session?.user?.role as UserRole
 
   // Categorias
   const categories = await db.select().from(category).orderBy(category.name)
@@ -50,7 +50,7 @@ export default async function ActivityPage() {
             <p className="text-sm md:text-base text-muted-foreground">Veja as atividades extracurriculares abertas para inscrição e escolha as que mais combinam com você.</p>
           </div>
           {/* Botão de adicionar atividade (apenas para professores) */}
-          {isTeacher && (
+          {userRole === "teacher" && (
             <Button asChild>
               <Link href="/atividades/adicionar">
                 <PlusIcon />
@@ -74,7 +74,7 @@ export default async function ActivityPage() {
                   {activities.length > 0 ? (
                     activities.map((activity) => (
                       // Card de atividade
-                      <ActivityCard key={activity.id} activity={activity} />
+                      <ActivityCard key={activity.id} activity={activity} userRole={userRole} />
                     ))
                   ) : (
                     // Se não houver atividades
