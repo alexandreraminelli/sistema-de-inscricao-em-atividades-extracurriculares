@@ -23,7 +23,7 @@ export default async function ActivityPage() {
   return (
     <div>
       {/* Breadcrumb */}
-      <Breadcrumb className="my-3.5">
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Início</BreadcrumbLink>
