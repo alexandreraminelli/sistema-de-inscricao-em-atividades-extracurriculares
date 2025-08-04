@@ -77,8 +77,8 @@ function OptionsList({ options, onValueChange, setOpen, searchPlaceholder, empty
   return (
     <Command>
       <CommandInput placeholder={searchPlaceholder} />
-      <CommandList>
-        <CommandEmpty>{emptyMessage}</CommandEmpty>
+      <CommandList className="w-full">
+        <CommandEmpty className="text-center my-6 mx-10">{emptyMessage}</CommandEmpty>
         <CommandGroup>
           {options.map((option) => (
             <CommandItem
