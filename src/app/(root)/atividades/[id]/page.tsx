@@ -32,9 +32,7 @@ export default async function ActivityInfoPage({ params }: Params) {
             <BreadcrumbLink href="/atividades">Atividades Extracurriculares</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{category.name}</BreadcrumbPage>
-          </BreadcrumbItem>
+          <BreadcrumbItem>{category.name}</BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>{activity.name}</BreadcrumbPage>
@@ -42,9 +40,21 @@ export default async function ActivityInfoPage({ params }: Params) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      {/* Teste */}
-      <h1>{activity.name}</h1>
-      <p>{activity.description}</p>
+      <main className="my-4">
+        <article className="max-w-5xl mx-auto">
+          {/* Título */}
+          <header>
+            <h1 className="my-4 md:my-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center">{activity.name}</h1>
+          </header>
+
+          {/* Descrição */}
+          <div className="space-y-4 text-justify text-foreground/90">
+            {activity.description.split("\n").map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+        </article>
+      </main>
     </div>
   )
 }
