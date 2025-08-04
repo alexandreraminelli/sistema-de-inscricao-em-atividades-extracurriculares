@@ -2,21 +2,28 @@
 
 import { db } from "@/database/drizzle"
 import { activity } from "@/database/schema"
-import { toast } from "sonner"
 
+/** Retorno de `createActivity`. Se success for `true` acompanha o atributo `data`, senão, acompanha o atributo `message`. */
+type CreateActivityResult =
+  | {
+      success: true
+      data: typeof activity.$inferSelect
+    }
+  | {
+      success: false
+      message: string
+    }
 /** Função para adicionar uma atividade extracurricular no banco de dados. */
-export async function createActivity(params: typeof activity.$inferInsert) {
+export async function createActivity(params: typeof activity.$inferInsert): Promise<CreateActivityResult> {
   try {
     /** Adiciona e recupera a atividade no banco de dados. */
     const newActivity = await db.insert(activity).values(params).returning()
     // Retornar atividade criada
-    toast.success("Atividade criada com sucesso!", { description: `Atividade '${newActivity[0].name}' criada.` })
     return {
       success: true,
       data: JSON.parse(JSON.stringify(newActivity[0])),
     }
   } catch (error) {
-    toast.error("Erro ao criar atividade!", { description: `${error}` })
-    return { success: false, message: "Um erro ocorreu ao criar a atividade." }
+    return { success: false, message: `${error || "Um erro ocorreu ao criar a atividade."}` }
   }
 }
