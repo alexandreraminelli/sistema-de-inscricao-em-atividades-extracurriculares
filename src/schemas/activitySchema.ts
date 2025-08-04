@@ -7,7 +7,7 @@ export const activitySchema = z.object({
   /** Categoria da atividade. */
   category: z.uuid("Selecione uma categoria."),
   /** Descrição da atividade. */
-  description: z.string().default("Sem descrição."),
+  description: z.string().optional(),
   /** Professor responsável por aplicar a atividade. */
   teacher: z.uuid("Selecione um professor."),
   /** Imagem de capa da atividade. */
