@@ -5,21 +5,27 @@ import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { activity } from "@/database/schema"
 import { createActivity } from "@/lib/actions/activity"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PlusIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import z from "zod"
-import { useEffect, useState } from "react"
 
 /** Props de `ActivityForm`. */
-interface Props {
-  /** Tipo de formulário (criar ou editar atividade). */
-  type?: "create" | "edit"
-}
+type Props =
+  | {
+      type: "create"
+    }
+  | {
+      type: "edit"
+      /** Atividade a ser editada. */
+      activity: typeof activity.$inferSelect
+    }
 
 /** Formulário de criação ou edição de atividades extracurriculares. */
 export default function ActivityForm({ type }: Props) {
@@ -101,7 +107,7 @@ export default function ActivityForm({ type }: Props) {
     <section className="space-y-4">
       {/* Título do formulário */}
       <header>
-        <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">Formulário de Atividades</h1>
+        <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{type === "create" ? "Adicionar Atividade" : "Editar Atividade"}</h1>
       </header>
 
       <Form {...form}>
