@@ -74,8 +74,28 @@ interface OptionsListProps {
 }
 
 function OptionsList({ options, onValueChange, setOpen, searchPlaceholder, emptyMessage, selectedValue }: OptionsListProps) {
+  /** Função para normalizar texto para busca (converter pra lower-case e desconsiderar acentos). */
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+  }
+
   return (
-    <Command>
+    <Command
+      // Algoritmo de busca
+      filter={(value, search) => {
+        const option = options.find((opt) => opt.value === value) // Encontra a opção pelo value
+        if (!option) return 0 // Se não encontrou, retorna 0 (não corresponde)
+
+        // Normalizar busca
+        const normalizedLabel = normalizeText(option.label)
+        const normalizedSearch = normalizeText(search)
+
+        return normalizedLabel.includes(normalizedSearch) ? 1 : 0
+      }}
+    >
       <CommandInput placeholder={searchPlaceholder} />
       <CommandList className="w-full">
         <CommandEmpty className="text-center my-6 mx-10">{emptyMessage}</CommandEmpty>
