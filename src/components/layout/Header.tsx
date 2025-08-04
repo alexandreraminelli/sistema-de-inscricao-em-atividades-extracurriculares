@@ -7,7 +7,7 @@ export default function Header() {
     <header
       className="flex flex-row items-center
         gap-1 md:gap-3 p-0.5
-        sticky top-1 z-20
+        sticky top-1 md:top-2 z-20
         bg-sidebar border border-sidebar-border
         rounded-lg shadow-md"
     >
