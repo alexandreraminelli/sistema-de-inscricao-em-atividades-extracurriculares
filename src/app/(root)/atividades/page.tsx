@@ -1,14 +1,20 @@
 import ActivityCard from "@/components/custom/cards/ActivityCard"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
 import { db } from "@/database/drizzle"
 import { activity, category } from "@/database/schema"
+import { authOptions } from "@/lib/auth"
+import { PlusIcon } from "lucide-react"
+import { getServerSession } from "next-auth"
+import Link from "next/link"
 
 /** Página de atividades. */
 export default async function ActivityPage() {
   // Obter sessão do usuário
-  // const session = await getServerSession(authOptions)
-  // const userRole = session?.user?.role
+  const session = await getServerSession(authOptions)
+  // É professor
+  const isTeacher = session?.user?.role === "teacher"
 
   // Categorias
   const categories = await db.select().from(category).orderBy(category.name)
@@ -38,9 +44,20 @@ export default async function ActivityPage() {
       {/* Conteúdo */}
       <main className="space-y-4">
         {/* Título */}
-        <header className="space-y-1 text-center md:text-justify">
-          <h2 className="font-semibold text-3xl">Atividades Oferecidas</h2>
-          <p className="text-sm md:text-base text-muted-foreground">Veja as atividades extracurriculares abertas para inscrição e escolha as que mais combinam com você.</p>
+        <header className="flex items-center justify-between gap-4 flex-col md:flex-row">
+          <div className="space-y-1 text-center md:text-justify">
+            <h2 className="font-semibold text-3xl">Atividades Oferecidas</h2>
+            <p className="text-sm md:text-base text-muted-foreground">Veja as atividades extracurriculares abertas para inscrição e escolha as que mais combinam com você.</p>
+          </div>
+          {/* Botão de adicionar atividade (apenas para professores) */}
+          {isTeacher && (
+            <Button asChild>
+              <Link href="/atividades/adicionar">
+                <PlusIcon />
+                Adicionar Atividade
+              </Link>
+            </Button>
+          )}
         </header>
 
         {/* Listar atividades por categorias */}
