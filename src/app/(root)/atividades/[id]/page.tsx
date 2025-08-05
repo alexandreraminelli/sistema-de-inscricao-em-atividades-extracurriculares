@@ -42,12 +42,12 @@ export default async function ActivityInfoPage({ params: { id } }: Params) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <main className="my-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
+      <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
         {/* Descrição da atividade */}
         <article className="max-w-5xl space-y-6">
           {/* Título */}
           <header>
-            <h1 className="my-4 md:my-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{activity.name}</h1>
+            <h1 className="mb-4 md:mb-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{activity.name}</h1>
           </header>
           {/* Descrição */}
           <section className="space-y-4 text-justify text-foreground/90">
