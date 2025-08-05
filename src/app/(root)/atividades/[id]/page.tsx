@@ -1,8 +1,11 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category as categoryDb, teacher as teacherDb, users } from "@/database/schema"
+import { activity as activityDb, category, category as categoryDb, users } from "@/database/schema"
 import { eq } from "drizzle-orm"
+import { ClipboardCheckIcon } from "lucide-react"
 
 /** Parâmetros da rota dinâmica de `ActivityInfoPage`. */
 interface Params {
@@ -39,12 +42,12 @@ export default async function ActivityInfoPage({ params: { id } }: Params) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <main className="my-4">
+      <main className="my-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
         {/* Descrição da atividade */}
-        <article className="max-w-5xl mx-auto space-y-6">
+        <article className="max-w-5xl space-y-6">
           {/* Título */}
           <header>
-            <h1 className="my-4 md:my-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center">{activity.name}</h1>
+            <h1 className="my-4 md:my-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{activity.name}</h1>
           </header>
           {/* Descrição */}
           <section className="space-y-4 text-justify text-foreground/90">
@@ -62,7 +65,47 @@ export default async function ActivityInfoPage({ params: { id } }: Params) {
             </section>
           </Card>
         </article>
+        {/* Resumo rápido e botões de ação */}
+        <aside>
+          <SummaryCard activity={activity} teacher={teacher} category={category} />
+        </aside>
       </main>
     </div>
+  )
+}
+
+/** Props de `SummaryCard`. */
+interface SummaryCardProps {
+  activity: typeof activityDb.$inferSelect
+  category: typeof categoryDb.$inferSelect
+  teacher: typeof users.$inferSelect
+}
+/** Card de resumo da atividade. */
+function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
+  return (
+    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4 max-w-2xs">
+      {/* Categoria */}
+      <div className="text-center">
+        <h3 className="font-medium">Categoria</h3>
+        <p className="font-light">{category.name}</p>
+      </div>
+      {/* Aplicador */}
+      <div className="text-center">
+        <h3 className="font-medium">Aplicador</h3>
+        <p className="font-light">{teacher.name}</p>
+      </div>
+      {/* Número Máximo de Participantes */}
+      <div className="text-center">
+        <h3 className="font-medium">Máx. de Participantes</h3>
+        <p className="font-light">N/A</p>
+      </div>
+
+      <Separator />
+      {/* Opção de se inscrever */}
+      <Button variant="default" disabled>
+        <ClipboardCheckIcon />
+        Inscrever-se
+      </Button>
+    </Card>
   )
 }
