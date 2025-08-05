@@ -1,6 +1,6 @@
 import Logo from "@/components/custom/Logo"
 import { Button } from "@/components/ui/button"
-import { HomeIcon } from "lucide-react"
+import { BookOpenIcon, HomeIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import AppLayout from "./(root)/layout"
@@ -27,11 +27,19 @@ export default function NotFound() {
           <p>A página que você está tentando acessar não existe ou não é possível acessá-la no momento.</p>
           <p>Verifique se o endereço inserido está correto ou tente novamente mais tarde.</p>
 
-          {/* Botão pro início */}
-          <Button size="lg" className="mt-2 md:mt-4 w-fit">
-            <HomeIcon />
-            <Link href="/">Voltar pro início</Link>
-          </Button>
+          {/* Botões */}
+          <section className="flex flex-row justify-center gap-x-4 gap-y-1.5 flex-wrap">
+            {/* Botão pro início */}
+            <Button size="lg" className="mt-2 md:mt-4 w-fit">
+              <HomeIcon />
+              <Link href="/">Voltar pro início</Link>
+            </Button>
+            {/* Botão de atividades */}
+            <Button size="lg" variant="secondary" className="mt-2 md:mt-4 w-fit">
+              <BookOpenIcon />
+              <Link href="/atividades">Explorar Atividades</Link>
+            </Button>
+          </section>
         </main>
         {/* Rodapé */}
         <footer className="mt-8">
