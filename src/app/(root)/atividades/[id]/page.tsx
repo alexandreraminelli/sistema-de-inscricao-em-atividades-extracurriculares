@@ -23,7 +23,7 @@ export default async function ActivityInfoPage({ params }: Params) {
 
     // Obter dados do DB
     const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
-    if (!activity) return <NotFound title="Atividade Não Encontrada" message={["A atividade buscada não foi encontrada. Ela pode não estar mais disponível ou ter.", "Volte para a página de atividades"]} /> // se não encontrar atividade
+    if (!activity) return <NotFound title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
 
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
     const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
