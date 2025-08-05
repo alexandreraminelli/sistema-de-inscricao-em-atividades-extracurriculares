@@ -66,7 +66,7 @@ export default async function ActivityInfoPage({ params: { id } }: Params) {
           </Card>
         </article>
         {/* Resumo rápido e botões de ação */}
-        <aside>
+        <aside className="md:sticky top-16">
           <SummaryCard activity={activity} teacher={teacher} category={category} />
         </aside>
       </main>
@@ -83,7 +83,7 @@ interface SummaryCardProps {
 /** Card de resumo da atividade. */
 function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
   return (
-    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4 max-w-2xs">
+    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4">
       {/* Categoria */}
       <div className="text-center">
         <h3 className="font-medium">Categoria</h3>
