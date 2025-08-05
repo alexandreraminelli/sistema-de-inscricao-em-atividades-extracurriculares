@@ -1,6 +1,6 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
 import { activity as activityDb, category, category as categoryDb, users } from "@/database/schema"
@@ -66,7 +66,7 @@ export default async function ActivityInfoPage({ params: { id } }: Params) {
           </Card>
         </article>
         {/* Resumo rápido e botões de ação */}
-        <aside className="md:sticky top-16">
+        <aside className="max-md:w-full md:sticky top-16">
           <SummaryCard activity={activity} teacher={teacher} category={category} />
         </aside>
       </main>
@@ -89,22 +89,28 @@ function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
     { title: "Máx. de Participantes", value: "N/A" },
   ]
   return (
-    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4 text-center md:max-w-3xs">
-      <h2 className="font-medium">{activity.name}</h2>
+    <Card className="p-6  max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
+      <CardHeader className="p-0 m-0 w-full">
+        <CardTitle>{activity.name}</CardTitle>
+      </CardHeader>
       <Separator />
       {/* Resumo */}
-      {activityResume.map((item) => (
-        <div key={item.title}>
-          <h3 className="font-medium text-base">{item.title}</h3>
-          <p className="font-light text-sm">{item.value}</p>
-        </div>
-      ))}
+      <CardContent className="p-0 m-0 w-full space-y-2.5 md:space-y-4">
+        {activityResume.map((item) => (
+          <div key={item.title}>
+            <h3 className="font-medium text-base">{item.title}</h3>
+            <p className="font-light text-sm">{item.value}</p>
+          </div>
+        ))}
+      </CardContent>
       <Separator />
-      {/* Opção de se inscrever */}
-      <Button variant="default" disabled>
-        <ClipboardCheckIcon />
-        Inscrever-se
-      </Button>
+      <CardFooter className="p-0 m-0 w-full flex-col items-center">
+        {/* Opção de se inscrever */}
+        <Button variant="default" disabled>
+          <ClipboardCheckIcon />
+          Inscrever-se
+        </Button>
+      </CardFooter>
     </Card>
   )
 }
