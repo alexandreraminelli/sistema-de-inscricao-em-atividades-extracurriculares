@@ -82,24 +82,22 @@ interface SummaryCardProps {
 }
 /** Card de resumo da atividade. */
 function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
+  /** Informações de resumo da atividade. */
+  const activityResume = [
+    { title: "Categoria", value: category.name },
+    { title: "Aplicador", value: teacher.name },
+    { title: "Máx. de Participantes", value: "N/A" },
+  ]
+
   return (
     <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4">
-      {/* Categoria */}
-      <div className="text-center">
-        <h3 className="font-medium">Categoria</h3>
-        <p className="font-light">{category.name}</p>
-      </div>
-      {/* Aplicador */}
-      <div className="text-center">
-        <h3 className="font-medium">Aplicador</h3>
-        <p className="font-light">{teacher.name}</p>
-      </div>
-      {/* Número Máximo de Participantes */}
-      <div className="text-center">
-        <h3 className="font-medium">Máx. de Participantes</h3>
-        <p className="font-light">N/A</p>
-      </div>
-
+      {/* Resumo */}
+      {activityResume.map((item) => (
+        <div key={item.title} className="text-center">
+          <h3 className="font-medium text-base">{item.title}</h3>
+          <p className="font-light text-sm">{item.value}</p>
+        </div>
+      ))}
       <Separator />
       {/* Opção de se inscrever */}
       <Button variant="default" disabled>
