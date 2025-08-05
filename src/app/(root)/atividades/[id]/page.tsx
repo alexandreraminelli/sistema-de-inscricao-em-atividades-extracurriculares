@@ -1,3 +1,4 @@
+import NotFound from "@/components/custom/NotFound"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,65 +17,72 @@ interface Params {
 }
 /** Página de informações da atividade extracurricular. */
 export default async function ActivityInfoPage({ params }: Params) {
-  // Desestruturar parâmetros da rota dinâmica
-  const { id } = await params
+  try {
+    // Desestruturar parâmetros da rota dinâmica
+    const { id } = await params
 
-  // Obter dados do DB
-  const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
-  const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
-  const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+    // Obter dados do DB
+    const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
+    if (!activity) return <NotFound title="Atividade Não Encontrada" message={["A atividade buscada não foi encontrada. Ela pode não estar mais disponível ou ter.", "Volte para a página de atividades"]} /> // se não encontrar atividade
 
-  return (
-    <div>
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Início</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/atividades">Atividades Extracurriculares</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>{category.name}</BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{activity.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
+    const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
 
-      <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
-        {/* Descrição da atividade */}
-        <article className="max-w-5xl space-y-6">
-          {/* Título */}
-          <header>
-            <h1 className="mb-4 md:mb-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{activity.name}</h1>
-          </header>
-          {/* Descrição */}
-          <section className="space-y-4 text-justify text-foreground/90">
-            {activity.description.split("\n").map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </section>
-          {/* Dados do aplicador */}
-          <Card className="p-6">
-            <section className="space-y-3">
-              {/* Nome do aplicador */}
-              <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacher.name}</h3>
-              {/* Descrição do aplicador */}
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, quod impedit excepturi cupiditate, deserunt aspernatur assumenda eveniet odio itaque est quam dicta voluptate vitae porro perferendis qui enim. Aperiam, numquam.</p>
+    return (
+      <div>
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Início</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/atividades">Atividades Extracurriculares</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>{category.name}</BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{activity.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
+          {/* Descrição da atividade */}
+          <article className="max-w-5xl space-y-6">
+            {/* Título */}
+            <header>
+              <h1 className="mb-4 md:mb-6 font-semibold text-2xl sm:text-3xl md:text-4xl text-center md:text-start">{activity.name}</h1>
+            </header>
+            {/* Descrição */}
+            <section className="space-y-4 text-justify text-foreground/90">
+              {activity.description.split("\n").map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </section>
-          </Card>
-        </article>
-        {/* Resumo rápido e botões de ação */}
-        <aside className="max-md:w-full md:sticky top-16">
-          <SummaryCard activity={activity} teacher={teacher} category={category} />
-        </aside>
-      </main>
-    </div>
-  )
+            {/* Dados do aplicador */}
+            <Card className="p-6">
+              <section className="space-y-3">
+                {/* Nome do aplicador */}
+                <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacher.name}</h3>
+                {/* Descrição do aplicador */}
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, quod impedit excepturi cupiditate, deserunt aspernatur assumenda eveniet odio itaque est quam dicta voluptate vitae porro perferendis qui enim. Aperiam, numquam.</p>
+              </section>
+            </Card>
+          </article>
+          {/* Resumo rápido e botões de ação */}
+          <aside className="max-md:w-full md:sticky top-16">
+            <SummaryCard activity={activity} teacher={teacher} category={category} />
+          </aside>
+        </main>
+      </div>
+    )
+  } catch (error) {
+    console.error("Erro ao carregar atividade:", error)
+    return <NotFound title="Erro ao carregar atividade" message={["Não foi possível carregar os dados da atividade no momento.", "Tente novamente em alguns instantes ou volte para a página de atividades."]} />
+  }
 }
 
 /** Props de `SummaryCard`. */
