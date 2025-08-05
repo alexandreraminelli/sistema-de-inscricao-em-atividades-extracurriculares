@@ -88,12 +88,13 @@ function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
     { title: "Aplicador", value: teacher.name },
     { title: "Máx. de Participantes", value: "N/A" },
   ]
-
   return (
-    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4">
+    <Card className="p-6 h-fit items-center flex-col max-md:w-full gap-4 text-center md:max-w-3xs">
+      <h2 className="font-medium">{activity.name}</h2>
+      <Separator />
       {/* Resumo */}
       {activityResume.map((item) => (
-        <div key={item.title} className="text-center">
+        <div key={item.title}>
           <h3 className="font-medium text-base">{item.title}</h3>
           <p className="font-light text-sm">{item.value}</p>
         </div>
