@@ -3,19 +3,22 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category, category as categoryDb, users } from "@/database/schema"
+import { activity as activityDb, category as categoryDb, users } from "@/database/schema"
 import { eq } from "drizzle-orm"
 import { ClipboardCheckIcon } from "lucide-react"
 
 /** Parâmetros da rota dinâmica de `ActivityInfoPage`. */
 interface Params {
-  params: {
+  params: Promise<{
     /** ID da atividade. */
     id: string
-  }
+  }>
 }
 /** Página de informações da atividade extracurricular. */
-export default async function ActivityInfoPage({ params: { id } }: Params) {
+export default async function ActivityInfoPage({ params }: Params) {
+  // Desestruturar parâmetros da rota dinâmica
+  const { id } = await params
+
   // Obter dados do DB
   const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
   const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
