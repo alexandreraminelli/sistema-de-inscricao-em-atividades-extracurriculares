@@ -6,13 +6,23 @@ import { compare } from "bcryptjs"
 import { eq } from "drizzle-orm"
 import { AuthCredentials } from "@/types/auth/authCredentials"
 
+/** Return da função `signInWithCredentials()`. */
+type SignInResult =
+  | {
+      success: true
+      user: { id: string; email: string; name: string }
+    }
+  | {
+      success: false
+      error: string
+    }
 /**
  * Função para realizar o login de um usuário com e-mail e senha.
  *
  * @param email E-mail do usuário.
  * @param password Senha do usuário.
  */
-export async function signInWithCredentials({ email, password }: Pick<AuthCredentials, "email" | "password">) {
+export async function signInWithCredentials({ email, password }: Pick<AuthCredentials, "email" | "password">): Promise<SignInResult> {
   try {
     // Validar credenciais diretamente no banco de dados
     if (!email || !password) {
