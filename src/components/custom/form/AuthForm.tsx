@@ -3,68 +3,82 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { users } from "@/database/schema"
+import { SignInResult, SignUpResult } from "@/lib/actions/auth"
 import config from "@/lib/config"
-import { loginSchema } from "@/schemas/loginSchema"
+import { signInSchema, signUpSchema } from "@/schemas/loginSchema"
+import { roleLabels } from "@/types/auth/UserRole"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LoaderCircle, UserPlusIcon } from "lucide-react"
+import { LoaderCircle } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
-import { SignInResult, SignUpResult } from "@/lib/actions/auth"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { users } from "@/database/schema"
-import { roleLabels } from "@/types/auth/UserRole"
 
 /** Props de `AuthForm`. */
-interface Props {
-  /** Tipo de formulário (sign-in ou sign-up). */
-  type: "sign-in" | "sign-up"
-  /** Função executada ao enviar o formulário. */
-  onSubmit: (data: z.infer<typeof loginSchema>) => Promise<SignUpResult | SignInResult>
-}
-/** Formulário de autenticação do aplicativo.
+type Props =
+  | {
+      /** Tipo de formulário (sign-in ou sign-up). */
+      type: "sign-in"
+      /** Função executada ao enviar o formulário. */
+      onSubmit: (data: z.infer<typeof signInSchema>) => Promise<SignUpResult | SignInResult>
+    }
+  | {
+      /** Tipo de formulário (sign-in ou sign-up). */
+      type: "sign-up"
+      /** Função executada ao enviar o formulário. */
+      onSubmit: (data: z.infer<typeof signUpSchema>) => Promise<SignUpResult | SignInResult>
+    }
+/**
+ * Formulário de autenticação do aplicativo.
  * @param onSubmit Função executada ao enviar o formulário.
  */
 export default function AuthForm({ type, onSubmit }: Props) {
   const router = useRouter()
   /** Se formulário é de cadastro. */
   const isSignUp = type === "sign-up"
+  /** Zod schema para validação do formulário. */
+  const authSchema = isSignUp ? signUpSchema : signInSchema
 
   /** Definição do formulário. */
-  const form: UseFormReturn<z.infer<typeof loginSchema>> = useForm({
-    resolver: zodResolver(loginSchema), // Usar schema para validação
-    defaultValues: { email: "", password: "" },
+  const form: UseFormReturn<z.infer<typeof authSchema>> = useForm({
+    resolver: zodResolver(authSchema), // Usar schema para validação
+    defaultValues: isSignUp ? { email: "", password: "", name: "", role: undefined } : { email: "", password: "" },
   })
 
   /** Função executada ao submeter o formulário. */
-  const handleSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data) => {
-    console.log("Valores enviados:\n", data) // DEBUG
-
+  const handleSubmit: SubmitHandler<z.infer<typeof authSchema>> = async (data) => {
     // Validar credenciais no servidor
     const result = await onSubmit(data)
 
     if (result.success) {
-      /* Credenciais válidas - agora fazer login com NextAuth */
-      try {
-        const authResult = await signIn("credentials", {
-          email: data.email,
-          password: data.password,
-          redirect: false,
-        })
+      if (isSignUp) {
+        // Para cadastro: mostrar notificação de sucesso
+        toast.success("Conta criada com sucesso!", { description: "Você já pode fazer login." })
+        form.reset() // limpar form
+      } else {
+        // Para login: autenticar com NextAuth
+        try {
+          const authResult = await signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            redirect: false,
+          })
 
-        if (authResult?.error) {
-          toast.error("Erro ao autenticar.", { description: authResult.error })
-        } else {
-          // Login bem-sucedido
-          toast.success("Login realizado com sucesso!")
-          // Redirecionar para a página inicial
-          router.push("/")
+          if (authResult?.error) {
+            toast.error("Erro ao autenticar.", { description: authResult.error })
+          } else {
+            // Login bem-sucedido
+            toast.success("Login realizado com sucesso!")
+            // Redirecionar para a página inicial
+            router.push("/")
+          }
+        } catch (error) {
+          toast.error("Erro ao autenticar.", { description: String(error) })
         }
-      } catch (error) {
-        toast.error("Erro ao autenticar.", { description: String(error) })
       }
     } else {
       /* Login falhou */

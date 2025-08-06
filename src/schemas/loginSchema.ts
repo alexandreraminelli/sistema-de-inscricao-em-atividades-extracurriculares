@@ -2,8 +2,8 @@ import { users } from "@/database/schema"
 import config from "@/lib/config"
 import { z } from "zod"
 
-/** Zod Schema para o formulário de login. */
-export const loginSchema = z.object({
+/** Zod Schema para o formulário de cadastro. */
+export const signUpSchema = z.object({
   /** Nome do usuário. */
   name: z.string().min(2, "Por favor, insira um nome completo."),
   /** E-mail acadêmico do usuário. */
@@ -13,3 +13,6 @@ export const loginSchema = z.object({
   /** Tipo de usuário. */
   role: z.enum(users.role.enumValues, "Selecione um tipo de usuário."),
 })
+
+/** Zod Schema para formulário de login. */
+export const signInSchema = signUpSchema.pick({ email: true, password: true })
