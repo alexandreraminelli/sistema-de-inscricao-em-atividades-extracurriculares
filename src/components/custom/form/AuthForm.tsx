@@ -147,6 +147,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
                       </SelectContent>
                     </Select>
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

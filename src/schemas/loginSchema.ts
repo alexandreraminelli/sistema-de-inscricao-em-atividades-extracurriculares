@@ -11,5 +11,5 @@ export const loginSchema = z.object({
   /** Senha do usuário. */
   password: z.string("Por favor, insira sua senha.").min(8, "A senha tem que ter pelo menos 8 caracteres."),
   /** Tipo de usuário. */
-  role: z.enum(users.role.enumValues),
+  role: z.enum(users.role.enumValues, "Selecione um tipo de usuário."),
 })
