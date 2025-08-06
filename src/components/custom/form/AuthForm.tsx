@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { users } from "@/database/schema"
-import { SignInResult, SignUpResult } from "@/lib/actions/auth"
+import { SignInResult, signUp, SignUpResult } from "@/lib/actions/auth"
 import config from "@/lib/config"
 import { signInSchema, signUpSchema } from "@/schemas/loginSchema"
 import { roleLabels } from "@/types/auth/UserRole"
@@ -17,6 +17,13 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
+
+/** Tipagem dos dados do form de login. */
+type SignInFormData = z.infer<typeof signInSchema>
+/** Tipagem dos dados do form de cadastro. */
+type SignUpFormData = z.infer<typeof signUpSchema>
+/** Tipagem do form (Union Type). */
+type FormData = SignInFormData | SignUpFormData
 
 /** Props de `AuthForm`. */
 type Props =
@@ -44,7 +51,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
   const authSchema = isSignUp ? signUpSchema : signInSchema
 
   /** Definição do formulário. */
-  const form: UseFormReturn<z.infer<typeof authSchema>> = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(authSchema), // Usar schema para validação
     defaultValues: isSignUp ? { email: "", password: "", name: "", role: undefined } : { email: "", password: "" },
   })
