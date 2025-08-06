@@ -14,6 +14,9 @@ import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
 import { SignInResult, SignUpResult } from "@/lib/actions/auth"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { users } from "@/database/schema"
+import { roleLabels } from "@/types/auth/UserRole"
 
 /** Props de `AuthForm`. */
 interface Props {
@@ -122,6 +125,32 @@ export default function AuthForm({ type, onSubmit }: Props) {
               </FormItem>
             )}
           />
+          {/* Campo tipo de usuário */}
+          {isSignUp && (
+            <FormField
+              control={form.control}
+              name="userRole"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipo de usuário</FormLabel>
+                  <FormControl>
+                    <Select>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Tipo de usuário" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {users.role.enumValues.map((role) => (
+                          <SelectItem key={role} value={role}>
+                            {roleLabels[role]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         {/* Botão de enviar */}
