@@ -1,6 +1,9 @@
 import LoginForm from "@/components/custom/form/LoginForm"
 import Logo from "@/components/custom/Logo"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { signInWithCredentials } from "@/lib/actions/auth"
+import { UserPlusIcon } from "lucide-react"
 import Image from "next/image"
 
 /** Página de login. */
@@ -24,17 +27,41 @@ export default function LoginPage() {
         </header>
 
         {/* Form */}
-        <main>
+        <main className="space-y-4">
           <LoginForm onSubmit={signInWithCredentials} />
+          {/* Botão de adicionar usuário (apenas para ambiente de desenvolvimento) */}
+          {process.env.NODE_ENV === "development" && (
+            <Sheet>
+              <SheetTrigger className="w-full">
+                <Button variant="secondary" className="w-full">
+                  <UserPlusIcon /> Adicionar Usuário
+                </Button>
+              </SheetTrigger>
+              {/* Sheet com form de criar conta */}
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Adicionar Usuário</SheetTitle>
+                  <SheetDescription>Adicione um novo usuário no sistema para fins de teste (somente no modo de desenvolvimento).</SheetDescription>
+                </SheetHeader>
+                {/* Form de adicionar usuário */}
+                <section className="p-4">Form de adicionar usuário</section>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button variant="destructive">Cancelar</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          )}
         </main>
 
-        <aside className="flex flex-col items-center justify-end h-full">
+        <footer className="flex flex-col items-center justify-end h-full">
           {/* Problemas */}
           <p className="text-sm text-center text-slate-600 dark:text-slate-400 my-2 lg:mx-2 object-cover">
             Está tendo problemas para acessar? <br />
             Entre em contato com o suporte da faculdade.
           </p>
-        </aside>
+        </footer>
       </div>
 
       {/* Imagem desktop */}
