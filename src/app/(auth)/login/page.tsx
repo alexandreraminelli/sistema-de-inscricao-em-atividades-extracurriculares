@@ -2,7 +2,7 @@ import AuthForm from "@/components/custom/form/AuthForm"
 import Logo from "@/components/custom/Logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { signInWithCredentials } from "@/lib/actions/auth"
+import { signInWithCredentials, signUp } from "@/lib/actions/auth"
 import { UserPlusIcon } from "lucide-react"
 import Image from "next/image"
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <main className="space-y-4">
-          <AuthForm onSubmit={signInWithCredentials} />
+          <AuthForm type="sign-in" onSubmit={signInWithCredentials} />
           {/* Botão de adicionar usuário (apenas para ambiente de desenvolvimento) */}
           {process.env.NODE_ENV === "development" && (
             <Sheet>
@@ -44,7 +44,9 @@ export default function LoginPage() {
                   <SheetDescription>Adicione um novo usuário no sistema para fins de teste (somente no modo de desenvolvimento).</SheetDescription>
                 </SheetHeader>
                 {/* Form de adicionar usuário */}
-                <section className="px-4">Form de adicionar usuário</section>
+                <section className="px-4">
+                  <AuthForm type="sign-up" onSubmit={signUp} />
+                </section>
                 <SheetFooter>
                   <SheetClose asChild>
                     <Button variant="destructive">Cancelar</Button>

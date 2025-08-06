@@ -6,7 +6,7 @@ import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
 
 /** Return da função `signInWithCredentials()`. */
-type SignInResult =
+export type SignInResult =
   | {
       success: true
       user: { id: string; email: string; name: string }
@@ -54,7 +54,7 @@ export async function signInWithCredentials({ email, password }: Pick<typeof use
 }
 
 /** Retorno da função `signUp()`. */
-type SignUpResult =
+export type SignUpResult =
   | {
       success: true
     }
