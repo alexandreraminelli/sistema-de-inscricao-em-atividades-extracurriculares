@@ -2,7 +2,7 @@
 
 import { db } from "@/database/drizzle"
 import { users } from "@/database/schema"
-import { UserRole } from "@/types/auth/authCredentials"
+import { UserRole } from "@/types/auth/UserRole"
 import { compare } from "bcryptjs"
 import { eq } from "drizzle-orm"
 import { NextAuthOptions } from "next-auth"

@@ -2,17 +2,26 @@
 
 import { db } from "@/database/drizzle"
 import { users } from "@/database/schema"
-import { compare } from "bcryptjs"
+import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
-import { AuthCredentials } from "@/types/auth/authCredentials"
 
+/** Return da função `signInWithCredentials()`. */
+export type SignInResult =
+  | {
+      success: true
+      user: { id: string; email: string; name: string }
+    }
+  | {
+      success: false
+      error: string
+    }
 /**
  * Função para realizar o login de um usuário com e-mail e senha.
  *
  * @param email E-mail do usuário.
  * @param password Senha do usuário.
  */
-export async function signInWithCredentials({ email, password }: Pick<AuthCredentials, "email" | "password">) {
+export async function signInWithCredentials({ email, password }: Pick<typeof users.$inferSelect, "email" | "password">): Promise<SignInResult> {
   try {
     // Validar credenciais diretamente no banco de dados
     if (!email || !password) {
@@ -41,5 +50,38 @@ export async function signInWithCredentials({ email, password }: Pick<AuthCreden
   } catch (error) {
     // Se ocorrer um erro
     return { success: false, error: `Erro ao realizar login: ${error}` }
+  }
+}
+
+/** Retorno da função `signUp()`. */
+export type SignUpResult =
+  | {
+      success: true
+    }
+  | {
+      success: false
+      error: string
+    }
+/**
+ * Função para realizar o cadastro de um novo usuário.
+ *
+ * @param params Campos do novo usuário.
+ */
+export async function signUp(params: typeof users.$inferInsert): Promise<SignUpResult> { 
+  // Desestruturar os parâmetros
+  const { name, email, password, role } = params
+
+  // Verificar se usuário já existe no banco de dados
+  const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
+  if (existingUser.length > 0) return { success: false, error: "E-mail já cadastrado!" }
+
+  /** Hash da senha */
+  const hashedPassword = await hash(password, 14)
+  try {
+    // Inserir nvo usuário no banco de dados
+    await db.insert(users).values({ name, email, password: hashedPassword, role })
+    return { success: true }
+  } catch (error) {
+    return { success: false, error: `Erro ao cadastrar usuário: ${error}` }
   }
 }

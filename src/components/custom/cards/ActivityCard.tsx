@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { activity } from "@/database/schema"
-import { UserRole } from "@/types/auth/authCredentials"
+import { UserRole } from "@/types/auth/UserRole"
 import { ClipboardCheckIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 import Link from "next/link"
 
