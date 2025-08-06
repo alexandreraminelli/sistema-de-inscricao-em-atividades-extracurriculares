@@ -1,4 +1,4 @@
-import LoginForm from "@/components/custom/form/LoginForm"
+import AuthForm from "@/components/custom/form/AuthForm"
 import Logo from "@/components/custom/Logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -28,7 +28,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <main className="space-y-4">
-          <LoginForm onSubmit={signInWithCredentials} />
+          <AuthForm onSubmit={signInWithCredentials} />
           {/* Botão de adicionar usuário (apenas para ambiente de desenvolvimento) */}
           {process.env.NODE_ENV === "development" && (
             <Sheet>

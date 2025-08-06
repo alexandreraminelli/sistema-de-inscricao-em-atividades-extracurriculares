@@ -14,16 +14,15 @@ import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
 
-/** Props do `LoginForm`. */
+/** Props de `AuthForm`. */
 interface Props {
   /** Função executada ao enviar o formulário. */
   onSubmit: (data: z.infer<typeof loginSchema>) => Promise<{ success: boolean; error?: string; user?: any }>
 }
-
-/**
- * Formulário de login do aplicativo.
+/** Formulário de autenticação do aplicativo.
+ * @param onSubmit Função executada ao enviar o formulário.
  */
-export default function LoginForm({ onSubmit }: Props) {
+export default function AuthForm({ onSubmit }: Props) {
   const router = useRouter()
 
   /** Definição do formulário. */
