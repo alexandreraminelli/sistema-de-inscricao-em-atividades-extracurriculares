@@ -134,7 +134,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>Tipo de usuário</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Tipo de usuário" />
                       </SelectTrigger>
