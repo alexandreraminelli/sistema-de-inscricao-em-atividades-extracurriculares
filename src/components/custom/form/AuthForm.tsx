@@ -118,6 +118,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
                 <FormControl>
                   <PasswordInput placeholder="Mesma senha usada no portal universitário" {...field} autoComplete={isSignUp ? "new-password" : "current-password"} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
