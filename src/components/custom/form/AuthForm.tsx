@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { users } from "@/database/schema"
-import { SignInResult, signUp, SignUpResult } from "@/lib/actions/auth"
+import { SignInResult, SignUpResult } from "@/lib/actions/auth"
 import config from "@/lib/config"
 import { signInSchema, signUpSchema } from "@/schemas/loginSchema"
 import { roleLabels } from "@/types/auth/UserRole"
@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircle } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
@@ -59,7 +59,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
   /** Função executada ao submeter o formulário. */
   const handleSubmit: SubmitHandler<z.infer<typeof authSchema>> = async (data) => {
     // Validar credenciais no servidor
-    const result = await onSubmit(data)
+    const result = await onSubmit(data as any)
 
     if (result.success) {
       if (isSignUp) {
