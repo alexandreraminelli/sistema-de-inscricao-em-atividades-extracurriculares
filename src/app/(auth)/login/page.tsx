@@ -44,7 +44,7 @@ export default function LoginPage() {
                   <SheetDescription>Adicione um novo usuário no sistema para fins de teste (somente no modo de desenvolvimento).</SheetDescription>
                 </SheetHeader>
                 {/* Form de adicionar usuário */}
-                <section className="p-4">Form de adicionar usuário</section>
+                <section className="px-4">Form de adicionar usuário</section>
                 <SheetFooter>
                   <SheetClose asChild>
                     <Button variant="destructive">Cancelar</Button>
