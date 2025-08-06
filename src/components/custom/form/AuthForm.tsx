@@ -129,7 +129,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
           {isSignUp && (
             <FormField
               control={form.control}
-              name="userRole"
+              name="role"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tipo de usuário</FormLabel>
