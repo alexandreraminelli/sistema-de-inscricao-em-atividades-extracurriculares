@@ -32,7 +32,7 @@ export default function LoginPage() {
           {/* Botão de adicionar usuário (apenas para ambiente de desenvolvimento) */}
           {process.env.NODE_ENV === "development" && (
             <Sheet>
-              <SheetTrigger className="w-full">
+              <SheetTrigger className="w-full" asChild>
                 <Button variant="secondary" className="w-full">
                   <UserPlusIcon /> Adicionar Usuário
                 </Button>
