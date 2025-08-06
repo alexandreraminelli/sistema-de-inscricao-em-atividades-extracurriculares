@@ -4,8 +4,6 @@ import { db } from "@/database/drizzle"
 import { users } from "@/database/schema"
 import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
-import { AuthCredentials } from "@/types/auth/authCredentials"
-import { use } from "react"
 
 /** Return da função `signInWithCredentials()`. */
 type SignInResult =
@@ -23,7 +21,7 @@ type SignInResult =
  * @param email E-mail do usuário.
  * @param password Senha do usuário.
  */
-export async function signInWithCredentials({ email, password }: Pick<AuthCredentials, "email" | "password">): Promise<SignInResult> {
+export async function signInWithCredentials({ email, password }: Pick<typeof users.$inferSelect, "email" | "password">): Promise<SignInResult> {
   try {
     // Validar credenciais diretamente no banco de dados
     if (!email || !password) {
@@ -69,7 +67,7 @@ type SignUpResult =
  *
  * @param params Campos do novo usuário.
  */
-export async function signUp(params: AuthCredentials): Promise<SignUpResult> {
+export async function signUp(params: typeof users.$inferInsert): Promise<SignUpResult> { 
   // Desestruturar os parâmetros
   const { name, email, password, role } = params
 

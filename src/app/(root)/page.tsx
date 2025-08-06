@@ -1,6 +1,6 @@
 import HeroCards from "@/components/custom/home/HeroCards"
 import { cardsHomepageStudent, cardsHomepageTeacher } from "@/constants/content/home/cardsHomepage"
-import { UserRole } from "@/types/auth/authCredentials"
+import { UserRole } from "@/types/auth/UserRole"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 

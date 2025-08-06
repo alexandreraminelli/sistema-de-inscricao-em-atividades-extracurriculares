@@ -1,7 +1,7 @@
 import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { authOptions } from "@/lib/auth"
-import { UserRole } from "@/types/auth/authCredentials"
+import { UserRole } from "@/types/auth/UserRole"
 import { getServerSession } from "next-auth"
 import Image from "next/image"
 import { redirect } from "next/navigation"
