@@ -87,7 +87,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Nome completo" {...field} />
+                    <Input type="text" placeholder="Nome completo" autoComplete="name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,7 +102,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
               <FormItem>
                 <FormLabel>E-mail</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder={`usuario${config.emailDomain}`} {...field} />
+                  <Input type="email" placeholder={`usuario${config.emailDomain}`} autoComplete="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,7 +116,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <PasswordInput placeholder="Mesma senha usada no portal universitário" {...field} />
+                  <PasswordInput placeholder="Mesma senha usada no portal universitário" {...field} autoComplete={isSignUp ? "new-password" : "current-password"} />
                 </FormControl>
               </FormItem>
             )}
