@@ -166,3 +166,21 @@ pnpm db:studio
 O Drizzle Studio será iniciado e você poderá acessá-lo no seu browser em `https://local.drizzle.team`.
 
 > ⚠️ Em browsers com recursos de segurança (como Safari e Brave), pode ser necessário desabilitar as proteções para esse domínio.
+
+## 🚀 Executar o Projeto
+
+Para executar o projeto, você pode escolher entre dois modos: **desenvolvimento** ou **produção**.
+
+### 🧑‍💻 Executar em desenvolvimento
+
+```bash
+pnpm dev
+```
+
+### 📦 Executar em produção
+
+```bash
+pnpm build && pnpm start
+```
+
+Em ambos os casos, o projeto estará acessível em `http://localhost:3000` (ou outra porta se `3000` estiver sendo usada por outro programa).
