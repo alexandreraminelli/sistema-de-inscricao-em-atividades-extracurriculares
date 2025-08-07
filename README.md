@@ -130,3 +130,39 @@ NEXTAUTH_URL=http://localhost:3000
 ```
 
 > ⚠️ Caso deseje rodar o projeto em produção, substitua `NEXTAUTH_URL` pela URL do seu domínio.
+
+## 🗃️ Configurar Banco de Dados
+
+**5. Execute as migrações do banco de dados usando o [Drizzle ORM](https://orm.drizzle.team):**
+
+```bash
+pnpm db:migrate
+```
+
+### Realizar atualizações no banco de dados
+
+Para realizar atualizações no banco de dados após editar os arquivos de schema (na pasta `src/database/schema`), execute as etapas abaixo:
+
+1. Crie um novo arquivo de migração:
+
+```bash
+pnpm db:generate
+```
+
+2. Execute a migração:
+
+```bash
+pnpm db:migrate
+```
+
+### Executar [Drizzle Studio](https://orm.drizzle.team/drizzle-studio/overview)
+
+Para executar o Drizzle Studio, que permite visualizar e interagir com o banco de dados e suas tabelas usando uma interface gráfica intuitiva, execute o seguinte comando:
+
+```bash
+pnpm db:studio
+```
+
+O Drizzle Studio será iniciado e você poderá acessá-lo no seu browser em `https://local.drizzle.team`.
+
+> ⚠️ Em browsers com recursos de segurança (como Safari e Brave), pode ser necessário desabilitar as proteções para esse domínio.
