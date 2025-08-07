@@ -94,7 +94,7 @@ Este projeto é uma aplicação web para facilitar a **gestão e inscrição em 
 
 - [Node.js](https://nodejs.org)
 - [pnpm](https://pnpm.io)
-- [Visual Studio Code](https://code.visualstudio.com) (optional, mas recomendado)
+- [Visual Studio Code](https://code.visualstudio.com) (opcional, mas recomendado)
 
 ## Clonar repositório e instalar dependências
 
@@ -156,7 +156,7 @@ NEXTAUTH_URL=
 npx auth secret
 ```
 
-**4.4. Insira em `NEXTAUTH_URL` a URL onde você executará o projeto. Se estiver rodando localmente, use `http://localhost:` seguido pela porta usada (padrão `3000):**
+**4.4. Insira em `NEXTAUTH_URL` a URL onde você executará o projeto. Se estiver rodando localmente, use `http://localhost:` seguido pela porta usada (padrão `3000`):**
 
 ```env
 NEXTAUTH_URL=http://localhost:3000
