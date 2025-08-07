@@ -88,3 +88,45 @@ code .
 ```bash
 pnpm install
 ```
+
+## ⚙️ Configurar variáveis de ambiente
+
+**4. Copie o arquivo `.env.example` para `.env.local`:**
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+# Modelo de variáveis de ambiente
+
+# Banco de Dados
+DATABASE_URL=
+# NextAuth
+AUTH_SECRET=
+NEXTAUTH_URL=
+```
+
+### 🗃️ Conexão com banco de dados
+
+**4.1. Crie um banco de dados PostgreSQL localmente ou em algum provedor online.**
+
+> Recomendação: [Neon](https://neon.tech) ou [Supabase](https://supabase.com)
+
+**4.2. Insira na variável `DATABASE_URL` a URL de conexão do banco de dados.**
+
+### 🔐 Configuração do NextAuth
+
+**4.3. Execute o seguinte comando para gerar um segredo do [NextAuth](https://next-auth.js.org) para a variável `AUTH_SECRET`:**
+
+```bash
+npx auth secret
+```
+
+**4.4. Insira em `NEXTAUTH_URL` a URL onde você executará o projeto. Se estiver rodando localmente, use `http://localhost:` seguido pela porta usada (padrão `3000):**
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+```
+
+> ⚠️ Caso deseje rodar o projeto em produção, substitua `NEXTAUTH_URL` pela URL do seu domínio.
