@@ -22,6 +22,8 @@ Este projeto é uma aplicação web para facilitar a **gestão e inscrição em 
 
 ## 🛠️ Tecnologias Utilizadas
 
+### Linguagens e Frameworks
+
 <div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
   <!-- Typescript -->
   <a href="https://www.typescriptlang.org/" target="_blank"><img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=TypeScript&logoColor=white" height="40" alt="Typescript logo"  /></a>
@@ -33,20 +35,51 @@ Este projeto é uma aplicação web para facilitar a **gestão e inscrição em 
   <a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-5FA04E.svg?style=for-the-badge&logo=nodedotjs&logoColor=white" height="40" alt="Node.js logo"  /></a>
   <!-- pnpm -->
   <a href="https://pnpm.io/" target="_blank"><img src="https://img.shields.io/badge/pnpm-F69220.svg?style=for-the-badge&logo=pnpm&logoColor=white" height="40" alt="pnpm logo"  /></a>
+</div>
+
+### Estilização e UI
+
+<div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
   <!-- Tailwind CSS -->
   <a href="https://tailwindcss.com/" target="_blank"><img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4.svg?style=for-the-badge&logo=Tailwind-CSS&logoColor=white" height="40" alt="Tailwind CSS logo"  /></a>
-  <!-- Shadcn -->
+   <!-- Shadcn -->
   <a href="https://ui.shadcn.com/" target="_blank"><img src="https://img.shields.io/badge/shadcn/ui-000000.svg?style=for-the-badge&logo=shadcn/ui&logoColor=white" height="40" alt="Shadcn logo"  /></a>
-  <!-- Lucide Icons -->
-  <a href="https://lucide.dev/" target="_blank"><img src="https://img.shields.io/badge/Lucide-F56565.svg?style=for-the-badge&logo=Lucide&logoColor=white" height="40" alt="Lucide logo"  /></a>
+</div>
+
+### Banco de Dados e ORM
+
+<div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
   <!-- PostgreSQL -->
   <a href="https://www.postgresql.org/" target="_blank"><img src="https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=for-the-badge&logo=PostgreSQL&logoColor=white" height="40" alt="PostgreSQL logo"  /></a>
+  <!-- Neon -->
+  <a href="https://neon.com/" target="_blank"><img src="https://img.shields.io/badge/Neon-black.svg?style=for-the-badge&logo=neon&logoColor=white" height="40" alt="Neon logo"  /></a>
   <!-- Drizzle ORM -->
   <a href="https://orm.drizzle.team/" target="_blank"><img src="https://img.shields.io/badge/Drizzle-black.svg?style=for-the-badge&logo=Drizzle&logoColor=C5F74F" height="40" alt="Drizzle ORM logo"  /></a>
+</div>
+
+### Formulário, Autenticação e Validação
+
+<div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
   <!-- React Hook Form -->
   <a href="https://react-hook-form.com/" target="_blank"><img src="https://img.shields.io/badge/React%20Hook%20Form-EC5990.svg?style=for-the-badge&logo=React-Hook-Form&logoColor=white" height="40" alt="React Hook Form logo"  /></a>
   <!-- Zod  -->
   <a href="https://zod.dev/" target="_blank"><img src="https://img.shields.io/badge/Zod-3E67B1.svg?style=for-the-badge&logo=Zod&logoColor=white" height="40" alt="Zod logo"  /></a>
+  <!-- NextAuth.js -->
+  <a href="https://next-auth.js.org/" target="_blank"><img src="https://img.shields.io/badge/NextAuth.js-1786fb.svg?style=for-the-badge&logo=NextAuth&logoColor=black" height="40" alt="NextAuth.js logo"  /></a>
+</div>
+
+### Ícones e Ilustrações
+
+<div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
+  <!-- Lucide Icons -->
+  <a href="https://lucide.dev/" target="_blank"><img src="https://img.shields.io/badge/Lucide-F56565.svg?style=for-the-badge&logo=Lucide&logoColor=white" height="40" alt="Lucide logo"  /></a>
+  <!-- unDraw -->
+  <a href="https://undraw.co/" target="_blank"><img src="https://img.shields.io/badge/unDraw-665df5.svg?style=for-the-badge&logo=unDraw&logoColor=white" height="40" alt="Lucide logo"  /></a>
+</div>
+
+### Hospedagem e Deploy
+
+<div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; padding-bottom: 12px;">
   <!-- Vercel -->
   <a href="https://vercel.com/" target="_blank"><img src="https://img.shields.io/badge/Vercel-000000.svg?style=for-the-badge&logo=Vercel&logoColor=white" height="40" alt="Vercel logo"  /></a>
 </div>
