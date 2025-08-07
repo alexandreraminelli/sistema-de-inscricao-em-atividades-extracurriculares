@@ -54,3 +54,37 @@ Este projeto é uma aplicação web para facilitar a **gestão e inscrição em 
 ---
 
 <!-- Instruções -->
+
+# 🚀 Como Executar o Projeto
+
+## 🔧 Requisitos
+
+- [Node.js](https://nodejs.org)
+- [pnpm](https://pnpm.io)
+- [Visual Studio Code](https://code.visualstudio.com) (optional, mas recomendado)
+
+## Clonar repositório e instalar dependências
+
+**1. Clone o repositório:**
+
+```bash
+git clone https://github.com/alexandreraminelli/sistema-de-inscricao-em-atividades-extracurriculares.git
+```
+
+**2. Abra a pasta do projeto:**
+
+```bash
+cd sistema-de-inscricao-em-atividades-extracurriculares
+```
+
+Recomendação: abra o projeto no VS Code:
+
+```bash
+code .
+```
+
+**3. Instale as dependências:**
+
+```bash
+pnpm install
+```
