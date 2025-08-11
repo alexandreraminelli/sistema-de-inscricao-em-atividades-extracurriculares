@@ -183,7 +183,23 @@ export default function AuthForm({ type, onSubmit }: Props) {
           )}
 
           {/* Campos para aluno */}
-          {isSignUp && watchedRole === "student" && <>Campos do aluno</>}
+          {isSignUp && watchedRole === "student" && (
+            <>
+              <FormField
+                control={form.control}
+                name="enrollment_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RA (Registro do Aluno)</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Ex: 12.34567-8" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
 
           {/* Campos para professor */}
           {isSignUp && watchedRole === "teacher" && (
@@ -192,7 +208,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
               <FormField
                 control={form.control}
                 name="isAdmin"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="flex flex-row">
                     <FormLabel>Administrador</FormLabel>
                     <FormControl>

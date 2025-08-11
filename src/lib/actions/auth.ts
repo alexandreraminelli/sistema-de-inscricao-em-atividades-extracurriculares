@@ -68,10 +68,10 @@ export type SignUpResult =
  * @param params Campos do novo usuário.
  */
 export async function signUp(
-  params: typeof users.$inferInsert & Partial<typeof teacher.$inferInsert> // params
+  params: typeof users.$inferInsert & Partial<typeof teacher.$inferInsert> & Partial<typeof student.$inferInsert> // params
 ): Promise<SignUpResult> {
   // Desestruturar os parâmetros
-  const { name, email, password, role, isAdmin } = params
+  const { name, email, password, role, isAdmin, enrollment_number } = params
 
   // Verificar se usuário já existe no banco de dados
   const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
@@ -83,8 +83,8 @@ export async function signUp(
     // Inserir novo usuário no banco de dados
     const [user] = await db.insert(users).values({ name, email, password: hashedPassword, role }).returning({ id: users.id })
     // Inserir usuário na tabela correspondente
-    if (role === "teacher") await db.insert(teacher).values({ id: user.id, isAdmin })
-    if (role === "student") await db.insert(student).values({ id: user.id, enrollment_number: "(...)" })
+    if (role === "teacher") await db.insert(teacher).values({ id: user.id, isAdmin: isAdmin ?? false })
+    if (role === "student") await db.insert(student).values({ id: user.id, enrollment_number: enrollment_number || "N/A" })
 
     return { success: true }
   } catch (error) {
