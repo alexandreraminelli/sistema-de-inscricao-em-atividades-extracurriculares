@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircle } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
@@ -54,6 +54,12 @@ export default function AuthForm({ type, onSubmit }: Props) {
   const form = useForm<FormData>({
     resolver: zodResolver(authSchema), // Usar schema para validação
     defaultValues: isSignUp ? { email: "", password: "", name: "", role: undefined } : { email: "", password: "" },
+  })
+
+  /** Observar valor do campo "role". */
+  const watchedRole = useWatch({
+    control: form.control,
+    name: "role",
   })
 
   /** Função executada ao submeter o formulário. */
@@ -173,6 +179,10 @@ export default function AuthForm({ type, onSubmit }: Props) {
               )}
             />
           )}
+          {/* Campos para aluno */}
+          {isSignUp && watchedRole === "student" && <p>Campos para aluno</p>}
+          {/* Campos para professor */}
+          {isSignUp && watchedRole === "teacher" && <p>Campos para professor</p>}
         </div>
 
         {/* Botão de enviar */}
