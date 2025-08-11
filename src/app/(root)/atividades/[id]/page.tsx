@@ -80,6 +80,7 @@ export default async function ActivityInfoPage({ params }: Params) {
       </div>
     )
   } catch (error) {
+    console.error("Erro ao carregar atividade:", error)
     return <ErrorMessage image="/images/illustrations/sem-resultados.svg" title="Atividade Não Encontrada" message={["A atividade que você está procurando não foi encontrada ou não está mais disponível.", "Confira se o endereço está correto ou navegue pela lista de atividades disponíveis."]} />
   }
 }
