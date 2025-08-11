@@ -1,7 +1,7 @@
 /* Configurações do NextAuth. */
 
 import { db } from "@/database/drizzle"
-import { users } from "@/database/schema"
+import { users, teacher } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
 import { compare } from "bcryptjs"
 import { eq } from "drizzle-orm"
@@ -22,7 +22,20 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const userResponse = await db.select().from(users).where(eq(users.email, credentials.email.toString())).limit(1)
+        // Buscar usuário com JOIN para pegar isAdmin se for professor
+        const userResponse = await db
+          .select({
+            id: users.id,
+            email: users.email,
+            name: users.name,
+            password: users.password,
+            role: users.role,
+            isAdmin: teacher.isAdmin,
+          })
+          .from(users)
+          .leftJoin(teacher, eq(users.id, teacher.id))
+          .where(eq(users.email, credentials.email.toString()))
+          .limit(1)
 
         if (userResponse.length === 0) return null
         const user = userResponse[0]
@@ -36,6 +49,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email.toString(),
           name: user.name.toString(),
           role: user.role as UserRole,
+          isAdmin: user.isAdmin || false,
         }
       },
     }),
@@ -50,6 +64,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email
         token.name = user.name
         token.role = user.role as UserRole
+        token.isAdmin = user.isAdmin ?? false
       }
       return token
     },
@@ -59,6 +74,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name as string
         session.user.email = token.email as string
         session.user.role = token.role as UserRole
+        session.user.isAdmin = token.isAdmin as boolean
       }
       return session
     },

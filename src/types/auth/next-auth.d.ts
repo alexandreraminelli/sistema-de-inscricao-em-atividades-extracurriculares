@@ -8,6 +8,7 @@ declare module "next-auth" {
       email: string
       name: string
       role: UserRole
+      isAdmin?: boolean
     }
   }
 
@@ -16,6 +17,7 @@ declare module "next-auth" {
     email: string
     name: string
     role: UserRole
+    isAdmin?: boolean
   }
 }
 
@@ -24,5 +26,7 @@ declare module "next-auth/jwt" {
     id: string
     email: string
     name: string
+    role: string
+    isAdmin: boolean
   }
 }

@@ -2,14 +2,17 @@
 
 import { db } from "@/database/drizzle"
 import { student, teacher, users } from "@/database/schema"
+import { UserRole } from "@/types/auth/UserRole"
 import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
+import { Session } from "inspector/promises"
+import { User } from "next-auth"
 
 /** Return da função `signInWithCredentials()`. */
 export type SignInResult =
   | {
       success: true
-      user: { id: string; email: string; name: string }
+      user: User
     }
   | {
       success: false
@@ -29,7 +32,19 @@ export async function signInWithCredentials({ email, password }: Pick<typeof use
     }
 
     // Buscar usuário no banco de dados
-    const userResponse = await db.select().from(users).where(eq(users.email, email)).limit(1)
+    const userResponse = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: users.name,
+        password: users.password,
+        role: users.role,
+        isAdmin: teacher.isAdmin,
+      })
+      .from(users)
+      .leftJoin(teacher, eq(users.id, teacher.id)) // encontrar professor se for o caso
+      .where(eq(users.email, email))
+      .limit(1)
 
     // Se usuário não for encontrado
     if (userResponse.length === 0) {
@@ -46,7 +61,7 @@ export async function signInWithCredentials({ email, password }: Pick<typeof use
     }
 
     // Credenciais válidas
-    return { success: true, user: { id: user.id, email: user.email, name: user.name } }
+    return { success: true, user: { id: user.id, email: user.email, name: user.name, role: user.role, isAdmin: user.isAdmin || false } }
   } catch (error) {
     // Se ocorrer um erro
     return { success: false, error: `Erro ao realizar login: ${error}` }
