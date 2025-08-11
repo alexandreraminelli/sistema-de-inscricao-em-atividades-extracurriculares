@@ -80,6 +80,7 @@ export default function ActivityForm({ type }: Props) {
       name: "",
       category: "",
       description: "",
+      maxParticipants: 20,
       teacher: "",
       coverImg: "",
     },
@@ -149,7 +150,16 @@ export default function ActivityForm({ type }: Props) {
               <FormItem>
                 <FormLabel>Quantidade máxima de participantes</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Entre 15 a 40 alunos" min={15} max={40} step={1} {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Entre 15 a 40 alunos"
+                    min={15}
+                    max={40}
+                    step={1}
+                    {...field}
+                    value={field.value}
+                    onChange={(e) => field.onChange(Number(e.target.value))} // Garantir que o valor seja um número
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
