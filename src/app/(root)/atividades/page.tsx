@@ -1,5 +1,6 @@
 import ActivityCard from "@/components/custom/cards/ActivityCard"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { db } from "@/database/drizzle"
@@ -65,9 +66,13 @@ export default async function ActivityPage() {
           <Accordion type="multiple">
             {activitiesByCategory.map(({ category, activities }) => (
               <AccordionItem key={category.id} value={category.id}>
-                {/* Título da categoria */}
                 <AccordionTrigger>
+                  {/* Título da categoria */}
                   <h3 className="text-lg">{category.name}</h3>
+                  {/* Quantidades de atividades */}
+                  <Badge variant="secondary" className="ms-auto">
+                    {activities.length}
+                  </Badge>
                 </AccordionTrigger>
                 {/* Atividades da categoria */}
                 <AccordionContent className="space-y-3.5">
