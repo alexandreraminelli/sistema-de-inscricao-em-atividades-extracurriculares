@@ -33,13 +33,13 @@ export default async function CreateActivityPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col md:flex-row gap-5 lg:gap-10  justify-between">
+      <div className="flex flex-col md:flex-row gap-5 lg:gap-10 justify-between">
         {/* Formulário */}
         <main className="w-full max-w-4xl md:min-w-2/3 lg:min-w-xl">
           <ActivityForm type="create" />
         </main>
         {/* Imagem */}
-        <aside className="self-center">
+        <aside className="self-center max-w-sm md:self-start md:sticky top-16">
           <Image src="/images/illustrations/atividades.svg" alt="Ilustração de atividades" width={752} height={556} className="object-cover" />
         </aside>
       </div>
