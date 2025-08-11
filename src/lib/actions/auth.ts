@@ -2,10 +2,8 @@
 
 import { db } from "@/database/drizzle"
 import { student, teacher, users } from "@/database/schema"
-import { UserRole } from "@/types/auth/UserRole"
 import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
-import { Session } from "inspector/promises"
 import { User } from "next-auth"
 
 /** Return da função `signInWithCredentials()`. */
