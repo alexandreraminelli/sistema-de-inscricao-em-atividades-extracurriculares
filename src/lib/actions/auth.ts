@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/database/drizzle"
-import { users } from "@/database/schema"
+import { student, teacher, users } from "@/database/schema"
 import { compare, hash } from "bcryptjs"
 import { eq } from "drizzle-orm"
 
@@ -67,9 +67,11 @@ export type SignUpResult =
  *
  * @param params Campos do novo usuário.
  */
-export async function signUp(params: typeof users.$inferInsert): Promise<SignUpResult> { 
+export async function signUp(
+  params: typeof users.$inferInsert & Partial<typeof teacher.$inferInsert> & Partial<typeof student.$inferInsert> // params
+): Promise<SignUpResult> {
   // Desestruturar os parâmetros
-  const { name, email, password, role } = params
+  const { name, email, password, role, isAdmin, enrollment_number } = params
 
   // Verificar se usuário já existe no banco de dados
   const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
@@ -78,8 +80,12 @@ export async function signUp(params: typeof users.$inferInsert): Promise<SignUpR
   /** Hash da senha */
   const hashedPassword = await hash(password, 14)
   try {
-    // Inserir nvo usuário no banco de dados
-    await db.insert(users).values({ name, email, password: hashedPassword, role })
+    // Inserir novo usuário no banco de dados
+    const [user] = await db.insert(users).values({ name, email, password: hashedPassword, role }).returning({ id: users.id })
+    // Inserir usuário na tabela correspondente
+    if (role === "teacher") await db.insert(teacher).values({ id: user.id, isAdmin: isAdmin ?? false })
+    if (role === "student") await db.insert(student).values({ id: user.id, enrollment_number: enrollment_number || "N/A" })
+
     return { success: true }
   } catch (error) {
     return { success: false, error: `Erro ao cadastrar usuário: ${error}` }

@@ -13,10 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircle } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 /** Tipagem dos dados do form de login. */
 type SignInFormData = z.infer<typeof signInSchema>
@@ -54,6 +56,12 @@ export default function AuthForm({ type, onSubmit }: Props) {
   const form = useForm<FormData>({
     resolver: zodResolver(authSchema), // Usar schema para validação
     defaultValues: isSignUp ? { email: "", password: "", name: "", role: undefined } : { email: "", password: "" },
+  })
+
+  /** Observar valor do campo "role". */
+  const watchedRole = useWatch({
+    control: form.control,
+    name: "role",
   })
 
   /** Função executada ao submeter o formulário. */
@@ -172,6 +180,45 @@ export default function AuthForm({ type, onSubmit }: Props) {
                 </FormItem>
               )}
             />
+          )}
+
+          {/* Campos para aluno */}
+          {isSignUp && watchedRole === "student" && (
+            <>
+              {/* RA do aluno */}
+              <FormField
+                control={form.control}
+                name="enrollment_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RA (Registro do Aluno)</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Ex: 12.34567-8" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
+          {/* Campos para professor */}
+          {isSignUp && watchedRole === "teacher" && (
+            <>
+              {/* Se é admin */}
+              <FormField
+                control={form.control}
+                name="isAdmin"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row">
+                    <FormLabel>Administrador</FormLabel>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </>
           )}
         </div>
 
