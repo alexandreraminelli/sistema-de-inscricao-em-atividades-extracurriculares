@@ -10,18 +10,20 @@ interface Props {
   title: string
   /** Array com parágrafos das mensagens */
   message: string[]
+  /** Imagem da mensagem. */
+  image?: string
 }
 /** Componente de página/item não encontrado. */
-export default function NotFound({ title, message }: Props) {
+export default function ErrorMessage({ title, message, image = "/images/illustrations/error.svg" }: Props) {
   return (
     <div
-      className="flex flex-col items-center 
+      className="flex flex-col items-center
         gap-4 px-4 pt-6
         md:gap-6 md:px-24"
     >
       {/* Imagem */}
       <aside>
-        <Image src="/images/illustrations/404.svg" alt="Ilustração de cachorro olhando triste após comer a página" width={185} height={216} className="max-h-full" />
+        <Image src={image} alt="Imagem Ilustrativa" width={185} height={216} className="max-h-full" />
       </aside>
       {/* Título */}
       <header>

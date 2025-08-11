@@ -1,4 +1,4 @@
-import NotFound from "@/components/custom/NotFound"
+import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -23,7 +23,7 @@ export default async function ActivityInfoPage({ params }: Params) {
 
     // Obter dados do DB
     const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
-    if (!activity) return <NotFound title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
+    if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
 
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
     const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
@@ -80,8 +80,7 @@ export default async function ActivityInfoPage({ params }: Params) {
       </div>
     )
   } catch (error) {
-    console.error("Erro ao carregar atividade:", error)
-    return <NotFound title="Erro ao carregar atividade" message={["Não foi possível carregar os dados da atividade no momento.", "Tente novamente em alguns instantes ou volte para a página de atividades."]} />
+    return <ErrorMessage image="/images/illustrations/sem-resultados.svg" title="Atividade Não Encontrada" message={["A atividade que você está procurando não foi encontrada ou não está mais disponível.", "Confira se o endereço está correto ou navegue pela lista de atividades disponíveis."]} />
   }
 }
 
