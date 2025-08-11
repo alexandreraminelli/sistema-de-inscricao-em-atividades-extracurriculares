@@ -1,0 +1,1 @@
+ALTER TABLE "extracurricular_activity" ADD COLUMN "max_participants" integer DEFAULT 20 NOT NULL;

@@ -8,6 +8,8 @@ export const activitySchema = z.object({
   category: z.uuid("Selecione uma categoria."),
   /** Descrição da atividade. */
   description: z.string().optional(),
+  /** Número máximo de participantes por turma. */
+  maxParticipants: z.coerce.number({ error: "Informe a quantidade máxima de participantes." }).min(15, "As turmas devem ter mais de 15 alunos.").max(40, "As turmas não podem ter mais de 40 alunos."),
   /** Professor responsável por aplicar a atividade. */
   teacher: z.uuid("Selecione um professor."),
   /** Imagem de capa da atividade. */

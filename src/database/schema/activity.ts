@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text } from "drizzle-orm/pg-core"
+import { pgTable, uuid, varchar, text, integer } from "drizzle-orm/pg-core"
 import { teacher } from "./teacher"
 import { category } from "./category"
 
@@ -14,6 +14,8 @@ export const activity = pgTable("extracurricular_activity", {
     .references(() => category.id),
   /** Texto de descrição da atividade. */
   description: text("description").notNull().default("Sem descrição"),
+  /** Número máximo de participantes por turma. */
+  maxParticipants: integer("max_participants").notNull().default(20),
   /** Professor responsável pela atividade. */
   teacher: uuid("teacher_id")
     .notNull()

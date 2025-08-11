@@ -141,6 +141,21 @@ export default function ActivityForm({ type }: Props) {
             )}
           />
 
+          {/* Quantidade de participantes */}
+          <FormField
+            control={form.control}
+            name="maxParticipants"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Quantidade máxima de participantes</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Entre 15 a 40 alunos" min={15} max={40} step={1} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Descrição */}
           <FormField
             control={form.control}

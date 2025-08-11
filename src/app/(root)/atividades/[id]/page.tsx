@@ -97,7 +97,7 @@ function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
   const activityResume = [
     { title: "Categoria", value: category.name },
     { title: "Aplicador", value: teacher.name },
-    { title: "Máx. de Participantes", value: "N/A" },
+    { title: "Máx. de Participantes", value: activity.maxParticipants },
   ]
   return (
     <Card className="p-6  max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
