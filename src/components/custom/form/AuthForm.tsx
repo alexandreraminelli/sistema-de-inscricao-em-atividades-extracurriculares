@@ -185,6 +185,7 @@ export default function AuthForm({ type, onSubmit }: Props) {
           {/* Campos para aluno */}
           {isSignUp && watchedRole === "student" && (
             <>
+              {/* RA do aluno */}
               <FormField
                 control={form.control}
                 name="enrollment_number"
@@ -204,15 +205,15 @@ export default function AuthForm({ type, onSubmit }: Props) {
           {/* Campos para professor */}
           {isSignUp && watchedRole === "teacher" && (
             <>
-              {/* Descrição do professor */}
+              {/* Se é admin */}
               <FormField
                 control={form.control}
                 name="isAdmin"
-                render={() => (
+                render={({ field }) => (
                   <FormItem className="flex flex-row">
                     <FormLabel>Administrador</FormLabel>
                     <FormControl>
-                      <Switch />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
