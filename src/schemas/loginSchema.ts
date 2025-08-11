@@ -12,6 +12,10 @@ export const signUpSchema = z.object({
   password: z.string("Por favor, insira sua senha.").min(8, "A senha tem que ter pelo menos 8 caracteres."),
   /** Tipo de usuário. */
   role: z.enum(users.role.enumValues, "Selecione um tipo de usuário."),
+
+  // Para professores
+  /** Se o professor é administrador. */
+  isAdmin: z.boolean().default(false),
 })
 
 /** Zod Schema para formulário de login. */

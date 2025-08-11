@@ -17,6 +17,8 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 /** Tipagem dos dados do form de login. */
 type SignInFormData = z.infer<typeof signInSchema>
@@ -179,10 +181,28 @@ export default function AuthForm({ type, onSubmit }: Props) {
               )}
             />
           )}
+
           {/* Campos para aluno */}
-          {isSignUp && watchedRole === "student" && <p>Campos para aluno</p>}
+          {isSignUp && watchedRole === "student" && <>Campos do aluno</>}
+
           {/* Campos para professor */}
-          {isSignUp && watchedRole === "teacher" && <p>Campos para professor</p>}
+          {isSignUp && watchedRole === "teacher" && (
+            <>
+              {/* Descrição do professor */}
+              <FormField
+                control={form.control}
+                name="isAdmin"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row">
+                    <FormLabel>Administrador</FormLabel>
+                    <FormControl>
+                      <Switch />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
         </div>
 
         {/* Botão de enviar */}
