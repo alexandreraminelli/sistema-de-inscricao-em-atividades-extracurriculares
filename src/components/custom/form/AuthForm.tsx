@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { users } from "@/database/schema"
 import { SignInResult, SignUpResult } from "@/lib/actions/auth"
 import config from "@/lib/config"
@@ -17,8 +18,6 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import PasswordInput from "./PasswordInput"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 
 /** Tipagem dos dados do form de login. */
 type SignInFormData = z.infer<typeof signInSchema>
