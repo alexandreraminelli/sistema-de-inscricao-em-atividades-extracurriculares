@@ -9,7 +9,7 @@ import { activity } from "@/database/schema"
 import { createActivity } from "@/lib/actions/activity"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { PlusIcon } from "lucide-react"
+import { LoaderCircleIcon, PlusIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -199,7 +199,8 @@ export default function ActivityForm({ type }: Props) {
           {/* Imagem */}
 
           {/* Botão de enviar */}
-          <Button type="submit" className="mt-5 max-md:w-full">
+          <Button type="submit" className="mt-5 max-md:w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
             <PlusIcon />
             Adicionar Atividade
           </Button>
