@@ -5,8 +5,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
 import { activity as activityDb, category as categoryDb, users } from "@/database/schema"
+import { authOptions } from "@/lib/auth"
+import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
-import { ClipboardCheckIcon } from "lucide-react"
+import { ClipboardCheckIcon, PencilIcon, Trash2Icon } from "lucide-react"
+import { getServerSession } from "next-auth"
+import Link from "next/link"
 
 /** Parâmetros da rota dinâmica de `ActivityInfoPage`. */
 interface Params {
@@ -27,6 +31,10 @@ export default async function ActivityInfoPage({ params }: Params) {
 
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
     const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+
+    // Obter sessão do usuário
+    const session = await getServerSession(authOptions)
+    const userRole = session?.user?.role as UserRole
 
     return (
       <div>
@@ -74,7 +82,7 @@ export default async function ActivityInfoPage({ params }: Params) {
           </article>
           {/* Resumo rápido e botões de ação */}
           <aside className="max-md:w-full md:sticky top-16">
-            <SummaryCard activity={activity} teacher={teacher} category={category} />
+            <SummaryCard activity={activity} teacher={teacher} category={category} userRole={userRole} />
           </aside>
         </main>
       </div>
@@ -90,9 +98,11 @@ interface SummaryCardProps {
   activity: typeof activityDb.$inferSelect
   category: typeof categoryDb.$inferSelect
   teacher: typeof users.$inferSelect
+
+  userRole: UserRole
 }
 /** Card de resumo da atividade. */
-function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
+function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps) {
   /** Informações de resumo da atividade. */
   const activityResume = [
     { title: "Categoria", value: category.name },
@@ -115,12 +125,35 @@ function SummaryCard({ activity, category, teacher }: SummaryCardProps) {
         ))}
       </CardContent>
       <Separator />
-      <CardFooter className="p-0 m-0 w-full flex-col items-center">
-        {/* Opção de se inscrever */}
-        <Button variant="default" disabled>
-          <ClipboardCheckIcon />
-          Inscrever-se
-        </Button>
+      <CardFooter className="p-0 m-0 w-full flex-row flex-wrap items-center gap-4 *:flex-1">
+        {/* Botões de ação pra atividade */}
+        {/* Botões pro aluno */}
+        {userRole === "student" && (
+          <>
+            {/* Opção de se inscrever */}
+            <Button variant="default" disabled>
+              <ClipboardCheckIcon />
+              Inscrever-se
+            </Button>
+          </>
+        )}
+        {/* Botões pro professor */}
+        {userRole === "teacher" && (
+          <>
+            {/* Opção de se inscrever */}
+            <Button variant="default" asChild>
+              <Link href={`/atividades/${activity.id}/editar`}>
+                <PencilIcon />
+                Editar
+              </Link>
+            </Button>
+            {/* Botão de excluir */}
+            <Button variant="destructive">
+              <Trash2Icon />
+              Excluir
+            </Button>
+          </>
+        )}
       </CardFooter>
     </Card>
   )
