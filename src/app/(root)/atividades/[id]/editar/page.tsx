@@ -1,0 +1,53 @@
+import ErrorMessage from "@/components/custom/ErrorMessage"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { db } from "@/database/drizzle"
+import { activity as activityDb, category as categoryDb } from "@/database/schema"
+import { eq } from "drizzle-orm"
+
+/** Parâmetros da rota dinâmica de `ActivityInfoPage`. */
+interface Params {
+  params: Promise<{
+    /** ID da atividade. */
+    id: string
+  }>
+}
+/** Página de editar atividades. */
+export default async function EditActivityPage({ params }: Params) {
+  // Desestruturar parâmetros da rota dinâmica
+  const { id } = await params
+
+  // Obter dados do DB
+  const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
+  if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
+  // Carregar categoria
+  const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
+
+  return (
+    <>
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Início</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/atividades">Atividades Extracurriculares</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>{category.name}</BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/atividades/${id}`}>{activity.name}</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Editar</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <h1>Editar Atividade #{id}</h1>
+    </>
+  )
+}
