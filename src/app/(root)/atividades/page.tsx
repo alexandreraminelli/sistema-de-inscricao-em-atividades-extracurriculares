@@ -70,7 +70,7 @@ export default async function ActivityPage() {
                   {/* Título da categoria */}
                   <h3 className="text-lg">{category.name}</h3>
                   {/* Quantidades de atividades */}
-                  <Badge variant="secondary" className="ms-auto">
+                  <Badge variant="secondary" className="self-center ms-auto w-7">
                     {activities.length}
                   </Badge>
                 </AccordionTrigger>
