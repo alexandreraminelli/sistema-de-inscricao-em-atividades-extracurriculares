@@ -83,7 +83,7 @@ export default async function ActivityPage() {
                     ))
                   ) : (
                     // Se não houver atividades
-                    <p className="text-muted-foreground">Sem atividades.</p>
+                    <p className="text-muted-foreground ms-2.5">Sem atividades.</p>
                   )}
                 </AccordionContent>
               </AccordionItem>
