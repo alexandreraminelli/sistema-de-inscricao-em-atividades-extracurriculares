@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { activity } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
-import { ClipboardCheckIcon, SquareArrowOutUpRightIcon } from "lucide-react"
+import { ClipboardCheckIcon, PencilIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 import Link from "next/link"
 
 /** Props de `ActivityCard`. */
@@ -34,12 +34,27 @@ export default function ActivityCard({ activity, userRole, ...props }: Props) {
           </Link>
         </Button>
 
-        {/* Botão de inscrição */}
+        {/* Botões para professores */}
+        {userRole === "teacher" && (
+          <>
+            {/* Botão de editar */}
+            <Button variant="default" asChild>
+              <Link href={`/atividades/${activity.id}/editar`}>
+                <PencilIcon /> Editar
+              </Link>
+            </Button>
+          </>
+        )}
+
+        {/* Botões para alunos */}
         {userRole === "student" && (
-          <Button variant="default" disabled>
-            <ClipboardCheckIcon />
-            Inscrever-se
-          </Button>
+          <>
+            {/* Botão de inscrição */}
+            <Button variant="default" disabled>
+              <ClipboardCheckIcon />
+              Inscrever-se
+            </Button>
+          </>
         )}
       </div>
     </Card>
