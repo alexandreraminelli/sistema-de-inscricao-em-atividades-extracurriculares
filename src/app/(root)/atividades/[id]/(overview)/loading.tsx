@@ -47,36 +47,25 @@ export default function ActivityInfoSkeleton() {
               </h1>
             </header>
             <section className="space-y-4">
-              <p>
-                <Skeleton className="w-[584px] h-4 max-w-full" />
-              </p>
-              <p></p>
-              <p>
-                <Skeleton className="w-[280px] h-4 max-w-full" />
-              </p>
-              <p></p>
-              <p>
-                <Skeleton className="w-full h-4 max-w-full" />
-              </p>
-              <p></p>
-              <p>
-                <Skeleton className="w-full h-4 max-w-full" />
-              </p>
-              <p>
-                <Skeleton className="w-[280px] h-4 max-w-full" />
-              </p>
-              <p>
-                <Skeleton className="w-full h-4 max-w-full" />
-              </p>
+              <Skeleton className="w-[584px] h-4 max-w-full" />
+
+              <Skeleton className="w-[280px] h-4 max-w-full" />
+
+              <Skeleton className="w-full h-4 max-w-full" />
+
+              <Skeleton className="w-full h-4 max-w-full" />
+
+              <Skeleton className="w-[280px] h-4 max-w-full" />
+
+              <Skeleton className="w-full h-4 max-w-full" />
             </section>
             <div className="flex flex-col gap-6 border shadow-sm p-6 rounded-lg">
               <section className="space-y-3">
                 <h3>
                   <Skeleton className="w-[240px] h-6 max-w-full" />
                 </h3>
-                <p>
-                  <Skeleton className="w-full h-4 max-w-full" />
-                </p>
+
+                <Skeleton className="w-full h-4 max-w-full" />
               </section>
             </div>
           </article>
@@ -90,28 +79,16 @@ export default function ActivityInfoSkeleton() {
               <div className="bg-border shrink-0 w-full h-px"></div>
               <main className="p-0 m-0 w-full space-y-2.5 md:space-y-4">
                 <div>
-                  <h3>
-                    <Skeleton className="w-[72px] h-5 max-w-full mb-1" />
-                  </h3>
-                  <p>
-                    <Skeleton className="w-[152px] h-4 max-w-full" />
-                  </p>
+                  <Skeleton className="w-[72px] h-5 max-w-full mb-1" />
+                  <Skeleton className="w-[152px] h-4 max-w-full" />
                 </div>
                 <div>
-                  <h3>
-                    <Skeleton className="w-[72px] h-5 max-w-full mb-1" />
-                  </h3>
-                  <p>
-                    <Skeleton className="w-[152px] h-4 max-w-full" />
-                  </p>
+                  <Skeleton className="w-[72px] h-5 max-w-full mb-1" />
+                  <Skeleton className="w-[152px] h-4 max-w-full" />
                 </div>
                 <div>
-                  <h3>
-                    <Skeleton className="w-[168px] h-5 max-w-full mb-1" />
-                  </h3>
-                  <p>
-                    <Skeleton className="w-[16px] h-4 max-w-full" />
-                  </p>
+                  <Skeleton className="w-[168px] h-5 max-w-full mb-1" />
+                  <Skeleton className="w-[16px] h-4 max-w-full" />
                 </div>
               </main>
               <div className="bg-border shrink-0 w-full h-px"></div>
