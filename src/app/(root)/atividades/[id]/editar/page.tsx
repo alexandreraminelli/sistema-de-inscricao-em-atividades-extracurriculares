@@ -1,4 +1,5 @@
 import ErrorMessage from "@/components/custom/ErrorMessage"
+import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { db } from "@/database/drizzle"
 import { activity as activityDb, category as categoryDb } from "@/database/schema"
@@ -47,7 +48,7 @@ export default async function EditActivityPage({ params }: Params) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <h1>Editar Atividade #{id}</h1>
+      <ActivityForm type="edit" activity={activity} />
     </>
   )
 }

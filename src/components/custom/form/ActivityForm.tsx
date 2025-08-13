@@ -5,7 +5,7 @@ import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { activity } from "@/database/schema"
+import { activity as activityDb } from "@/database/schema"
 import { createActivity } from "@/lib/actions/activity"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,18 +17,14 @@ import { toast } from "sonner"
 import z from "zod"
 
 /** Props de `ActivityForm`. */
-type Props =
-  | {
-      type: "create"
-    }
-  | {
-      type: "edit"
-      /** Atividade a ser editada. */
-      activity: typeof activity.$inferSelect
-    }
-
+interface Props {
+  /** Tipo de formulário: criar ou editar atividade. */
+  type: "create" | "edit"
+  /** Atividade a ser editada. */
+  activity?: typeof activityDb.$inferSelect
+}
 /** Formulário de criação ou edição de atividades extracurriculares. */
-export default function ActivityForm({ type }: Props) {
+export default function ActivityForm({ type, activity }: Props) {
   /** Hook do Next.js para manipulação de rotas. */
   const router = useRouter()
 
@@ -77,12 +73,13 @@ export default function ActivityForm({ type }: Props) {
   const form = useForm<z.infer<typeof activitySchema>>({
     resolver: zodResolver(activitySchema), // Usar schema para validação
     defaultValues: {
-      name: "",
-      category: "",
-      description: "",
-      maxParticipants: 20,
-      teacher: "",
-      coverImg: "",
+      // valores padrão do formulário
+      name: activity?.name ?? "",
+      category: activity?.category ?? "",
+      description: activity?.description ?? "",
+      maxParticipants: activity?.maxParticipants ?? 20,
+      teacher: activity?.teacher ?? "",
+      coverImg: activity?.coverImg ?? "",
     },
   })
 
