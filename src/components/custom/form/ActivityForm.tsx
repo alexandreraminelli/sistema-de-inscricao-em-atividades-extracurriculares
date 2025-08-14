@@ -86,12 +86,14 @@ export default function ActivityForm({ type, activity }: Props) {
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
-    const result = type === "create" ? await createActivity(values) : await updateActivity(activity?.id!, values)
+    const result = type === "create" ? await createActivity(values) : await updateActivity(activity?.id!, values) // executar criação/atualização
+
+    const operationName = type === "create" ? "criada" : "atualizada"
 
     // Atividade criada com sucesso
     if (result.success)
-      toast.success("Atividade criada com sucesso!", {
-        description: `Atividade '${result.data.name}' criada.`,
+      toast.success(`Atividade ${operationName} com sucesso!`, {
+        description: `Atividade '${result.data.name}' ${operationName}.`,
         action: {
           // botão para abrir página da atividade
           label: "Ver atividade",
@@ -99,7 +101,7 @@ export default function ActivityForm({ type, activity }: Props) {
         },
       })
     // Erro ao criar atividade
-    else toast.error("Erro ao criar atividade!", { description: result.message })
+    else toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} atividade!`, { description: result.message })
   }
 
   return (
