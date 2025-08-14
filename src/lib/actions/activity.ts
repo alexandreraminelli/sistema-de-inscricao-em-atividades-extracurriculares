@@ -32,3 +32,28 @@ export async function createActivity(params: typeof activity.$inferInsert): Prom
     return { success: false, message: `${error || "Um erro ocorreu ao criar a atividade."}` }
   }
 }
+
+/** Função para atualizar uma atividade extracurricular no banco de dados. */
+export async function updateActivity(id: string, params: typeof activity.$inferInsert): Promise<ActivityResult> {
+  try {
+    // Verificar se atividade existe
+    const existingActivity = await db.select().from(activity).where(eq(activity.id, id)).limit(1)
+    if (existingActivity.length === 0) return { success: false, message: "A atividade não foi encontrada no banco de dados. \nEla pode ter sido excluída recentemente." }
+
+    // Se nome for atualizado, verificar se já existe outra atividade com o mesmo nome
+    if (params.name) {
+      const activityWithSameName = await db.select().from(activity).where(eq(activity.name, params.name)).limit(1)
+      if (activityWithSameName.length > 0 && activityWithSameName[0].id !== id) return { success: false, message: `Esse nome já está sendo utilizado. \nEscolha outro nome ou edite a atividade ${params.name}.` }
+    }
+
+    // Executar atualização
+    const [updatedActivity] = await db.update(activity).set(params).where(eq(activity.id, id)).returning()
+    // Retornar atividade atualizada
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(updatedActivity)),
+    }
+  } catch (error) {
+    return { success: false, message: `${error || "Um erro ocorreu ao atualizar a atividade."}` }
+  }
+}

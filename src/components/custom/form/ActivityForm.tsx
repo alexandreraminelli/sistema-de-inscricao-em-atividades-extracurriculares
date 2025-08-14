@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { activity as activityDb } from "@/database/schema"
-import { createActivity } from "@/lib/actions/activity"
+import { createActivity, updateActivity } from "@/lib/actions/activity"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { EraserIcon, LoaderCircleIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react"
@@ -86,7 +86,7 @@ export default function ActivityForm({ type, activity }: Props) {
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
-    const result = await createActivity(values)
+    const result = type === "create" ? await createActivity(values) : await updateActivity(activity?.id!, values)
 
     // Atividade criada com sucesso
     if (result.success)
