@@ -1,5 +1,6 @@
 "use client"
 
+import ButtonWithAlertDialog, { ButtonWithAlertDialogProps } from "@/components/custom/button/ButtonWithAlertDialog"
 import { Button } from "@/components/ui/button"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -212,21 +213,45 @@ export default function ActivityForm({ type, activity }: Props) {
               )}
             </Button>
             {/* Botões para edição */}
-            {type === "edit" && (
-              <>
-                {/* Botão de descartar alterações */}
-                <Button type="reset" variant="secondary">
-                  <EraserIcon /> Descartar alterações
-                </Button>
-                {/* Botão para excluir atividade */}
-                <Button type="button" variant="destructive">
-                  <Trash2Icon /> Excluir atividade
-                </Button>
-              </>
-            )}
+            {type === "edit" && <EditButtons />}
           </footer>
         </form>
       </Form>
     </section>
+  )
+}
+
+/** Botões para edição. */
+function EditButtons() {
+  /** Botões de edição. */
+  const buttons: ButtonWithAlertDialogProps[] = [
+    {
+      button: {
+        // botão de descartar alterações
+        type: "reset",
+        variant: "secondary",
+        text: "Descartar alterações",
+        Icon: EraserIcon,
+      },
+      alertDialog: { title: "Descartar alterações", description: "Tem certeza que deseja descartar as alterações feitas neste formulário? Todas as informações não salvas serão perdidas." },
+    },
+    {
+      button: {
+        // botão de descartar alterações
+        type: "button",
+        variant: "destructive",
+        text: "Excluir atividade",
+        Icon: Trash2Icon,
+      },
+      alertDialog: { title: "Excluir atividade", description: "Tem certeza que deseja excluir essa atividade?\n" },
+    },
+  ]
+
+  return (
+    <>
+      {buttons.map((button, index) => (
+        <ButtonWithAlertDialog key={index} button={button.button} alertDialog={button.alertDialog} />
+      ))}
+    </>
   )
 }
