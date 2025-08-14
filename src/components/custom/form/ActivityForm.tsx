@@ -9,7 +9,7 @@ import { activity as activityDb } from "@/database/schema"
 import { createActivity } from "@/lib/actions/activity"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LoaderCircleIcon, PlusIcon, SaveIcon } from "lucide-react"
+import { EraserIcon, LoaderCircleIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -195,21 +195,36 @@ export default function ActivityForm({ type, activity }: Props) {
 
           {/* Imagem */}
 
-          {/* Botão de enviar */}
-          <Button type="submit" className="mt-5 max-md:w-full" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
-            {type === "create" ? (
+          <footer className="mt-5 flex flex-row flex-wrap items-center gap-4 *:flex-1">
+            {/* Botão de enviar */}
+            <Button type="submit" className="max-md:w-full" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
+              {type === "create" ? (
+                <>
+                  <PlusIcon />
+                  Adicionar Atividade
+                </>
+              ) : (
+                <>
+                  <SaveIcon />
+                  Salvar Alterações
+                </>
+              )}
+            </Button>
+            {/* Botões para edição */}
+            {type === "edit" && (
               <>
-                <PlusIcon />
-                Adicionar Atividade
-              </>
-            ) : (
-              <>
-                <SaveIcon />
-                Salvar Alterações
+                {/* Botão de descartar alterações */}
+                <Button type="reset" variant="secondary">
+                  <EraserIcon /> Descartar alterações
+                </Button>
+                {/* Botão para excluir atividade */}
+                <Button type="button" variant="destructive">
+                  <Trash2Icon /> Excluir atividade
+                </Button>
               </>
             )}
-          </Button>
+          </footer>
         </form>
       </Form>
     </section>
