@@ -48,7 +48,14 @@ export default async function EditActivityPage({ params }: Params) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <ActivityForm type="edit" activity={activity} />
+      <div className="flex flex-col md:flex-row gap-5 lg:gap-10 justify-between">
+        {/* Formulário */}
+        <main className="w-full max-w-4xl md:min-w-2/3 lg:min-w-xl">
+          <ActivityForm type="edit" activity={activity} />
+        </main>
+        {/* Imagem */}
+        <aside className="self-center max-w-sm md:self-start md:sticky top-16">Informações da atividade</aside>
+      </div>
     </>
   )
 }
