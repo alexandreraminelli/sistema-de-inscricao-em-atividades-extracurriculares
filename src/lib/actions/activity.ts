@@ -34,7 +34,7 @@ export async function createActivity(params: typeof activity.$inferInsert): Prom
 }
 
 /** Função para atualizar uma atividade extracurricular no banco de dados. */
-export async function updateActivity(id: string, params: typeof activity.$inferInsert): Promise<ActivityResult> {
+export async function updateActivity(id: string, params: Partial<typeof activity.$inferInsert>): Promise<ActivityResult> {
   try {
     // Verificar se atividade existe
     const existingActivity = await db.select().from(activity).where(eq(activity.id, id)).limit(1)

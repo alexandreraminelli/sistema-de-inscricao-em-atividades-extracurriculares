@@ -120,7 +120,20 @@ export default function ActivityForm({ type, activity }: Props) {
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
-    const result = type === "create" ? await createActivity(values) : await updateActivity(activity?.id!, values) // executar criação/atualização
+    let result
+    if (type === "create") result = await createActivity(values)
+    else {
+      // atualizar somente os campos alterados
+      const changedFields: Partial<typeof activityDb.$inferInsert> = {}
+      Object.keys(originalValues).forEach((key) => {
+        const fieldKey = key as keyof typeof originalValues
+        if (values[fieldKey] !== originalValues[fieldKey]) {
+          changedFields[fieldKey] = values[fieldKey] as any
+        }
+      })
+
+      result = await updateActivity(activity?.id!, changedFields)
+    }
 
     const operationName = type === "create" ? "criada" : "atualizada"
 
@@ -225,7 +238,7 @@ export default function ActivityForm({ type, activity }: Props) {
 
           <footer className="mt-5 flex flex-row flex-wrap items-center gap-4 *:flex-1">
             {/* Botão de enviar */}
-            <Button type="submit" className="max-md:w-full" disabled={form.formState.isSubmitting || type === "edit" && !hasChanges}>
+            <Button type="submit" className="max-md:w-full" disabled={form.formState.isSubmitting || (type === "edit" && !hasChanges)}>
               {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
               {type === "create" ? (
                 <>
