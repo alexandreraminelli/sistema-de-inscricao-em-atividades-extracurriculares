@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { activity as activityDb } from "@/database/schema"
 import { createActivity, updateActivity } from "@/lib/actions/activity"
+import { cn } from "@/lib/utils"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { EraserIcon, LoaderCircleIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import z from "zod"
@@ -34,6 +35,19 @@ export default function ActivityForm({ type, activity }: Props) {
   const [teachers, setTeachers] = useState<ComboboxOption[]>([])
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
   const [isLoadingTeachers, setIsLoadingTeachers] = useState(true)
+
+  /** Valores originais do form para comparação e destaque das alterações. */
+  const originalValues = useMemo(
+    () => ({
+      name: activity?.name ?? "",
+      category: activity?.category ?? "",
+      description: activity?.description ?? "",
+      maxParticipants: activity?.maxParticipants ?? 20,
+      teacher: activity?.teacher ?? "",
+      coverImg: activity?.coverImg ?? "",
+    }),
+    [activity] // Dependência para atualizar os valores originais quando a atividade mudar
+  )
 
   /** Buscar dados das APIs */
   useEffect(() => {
@@ -73,16 +87,28 @@ export default function ActivityForm({ type, activity }: Props) {
   /** Definição do formulário. */
   const form = useForm<z.infer<typeof activitySchema>>({
     resolver: zodResolver(activitySchema), // Usar schema para validação
-    defaultValues: {
-      // valores padrão do formulário
-      name: activity?.name ?? "",
-      category: activity?.category ?? "",
-      description: activity?.description ?? "",
-      maxParticipants: activity?.maxParticipants ?? 20,
-      teacher: activity?.teacher ?? "",
-      coverImg: activity?.coverImg ?? "",
-    },
+    defaultValues: originalValues,
   })
+
+  /** Função para verificar se um campo foi alterado. */
+  const isFieldChanged = (fieldName: keyof typeof originalValues) => {
+    const currentValue = form.watch(fieldName) // Obter valor atual do field
+    return currentValue !== originalValues[fieldName] // Comparar com o valor original
+  }
+  /** Função para obter classes CSS para campos alterados. */
+  const getFieldClasses = (fieldName: keyof typeof originalValues) => {
+    if (type === "create") return "" // não afetar campos em form de criação
+    return isFieldChanged(fieldName)
+      ? "ring-2 ring-green-700 border-green-700 dark:border-green-400 bg-green-50 dark:bg-green-950/20" // estilo para campos alterados
+      : ""
+  }
+  /** Função para obter classes CSS para label de campos alterados. */
+  const getLabelClasses = (fieldName: keyof typeof originalValues) => {
+    if (type === "create") return ""
+    return isFieldChanged(fieldName)
+      ? "text-green-700 dark:text-green-400" // estilo para label de campos alterados
+      : ""
+  }
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
@@ -119,9 +145,9 @@ export default function ActivityForm({ type, activity }: Props) {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome da atividade</FormLabel>
+                <FormLabel className={cn(getLabelClasses("name"))}>Nome da atividade</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Nome da atividade" {...field} />
+                  <Input type="text" placeholder="Nome da atividade" className={cn(getFieldClasses("name"))} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -133,9 +159,9 @@ export default function ActivityForm({ type, activity }: Props) {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel className={cn(getLabelClasses("category"))}>Categoria</FormLabel>
                 <FormControl>
-                  <Combobox options={categories} value={field.value} onValueChange={field.onChange} placeholder={isLoadingCategories ? "Carregando categorias..." : "Selecione uma categoria..."} searchPlaceholder="Buscar categoria..." emptyMessage="Nenhuma categoria encontrada." disabled={isLoadingCategories} />
+                  <Combobox options={categories} value={field.value} onValueChange={field.onChange} placeholder={isLoadingCategories ? "Carregando categorias..." : "Selecione uma categoria..."} searchPlaceholder="Buscar categoria..." emptyMessage="Nenhuma categoria encontrada." className={cn(getFieldClasses("category"))} disabled={isLoadingCategories} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,18 +174,9 @@ export default function ActivityForm({ type, activity }: Props) {
             name="maxParticipants"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Quantidade máxima de participantes</FormLabel>
+                <FormLabel className={cn(getLabelClasses("maxParticipants"))}>Quantidade máxima de participantes</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Entre 15 a 40 alunos"
-                    min={15}
-                    max={40}
-                    step={1}
-                    {...field}
-                    value={field.value}
-                    onChange={(e) => field.onChange(Number(e.target.value))} // Garantir que o valor seja um número
-                  />
+                  <Input type="number" placeholder="Entre 15 a 40 alunos" min={15} max={40} step={1} {...field} value={field.value} onChange={(e) => field.onChange(Number(e.target.value)) /* garantir que valor seja um número */} className={cn(getFieldClasses("maxParticipants"))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -172,9 +189,9 @@ export default function ActivityForm({ type, activity }: Props) {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Descrição</FormLabel>
+                <FormLabel className={cn(getLabelClasses("description"))}>Descrição</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Descrição da atividade. Objetivos, competências desenvolvidas, tópicos abordados, etc." {...field} />
+                  <Textarea placeholder="Descrição da atividade. Objetivos, competências desenvolvidas, tópicos abordados, etc." className={cn(getFieldClasses("description"))} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -187,9 +204,9 @@ export default function ActivityForm({ type, activity }: Props) {
             name="teacher"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Aplicador</FormLabel>
+                <FormLabel className={cn(getLabelClasses("teacher"))}>Aplicador</FormLabel>
                 <FormControl>
-                  <Combobox options={teachers} value={field.value} onValueChange={field.onChange} placeholder={isLoadingTeachers ? "Carregando professores..." : "Selecione um professor..."} searchPlaceholder="Buscar professor..." emptyMessage="Nenhum professor encontrado." disabled={isLoadingTeachers} />
+                  <Combobox options={teachers} value={field.value} onValueChange={field.onChange} placeholder={isLoadingTeachers ? "Carregando professores..." : "Selecione um professor..."} searchPlaceholder="Buscar professor..." emptyMessage="Nenhum professor encontrado." disabled={isLoadingTeachers} className={cn(getFieldClasses("teacher"))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
