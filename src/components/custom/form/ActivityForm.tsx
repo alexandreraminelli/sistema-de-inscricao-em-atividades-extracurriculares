@@ -109,6 +109,14 @@ export default function ActivityForm({ type, activity }: Props) {
       ? "text-green-700 dark:text-green-400" // estilo para label de campos alterados
       : ""
   }
+  /** Função para verificar se há algum campo alterado para controlar o botão de salvar alterações (apenas form de edição). */
+  const hasChanges = useMemo(() => {
+    if (type === "create") return true // sempre habilitado para criação
+    return Object.keys(originalValues).some((key) => {
+      const fieldKey = key as keyof typeof originalValues
+      return form.watch(fieldKey) !== originalValues[fieldKey]
+    })
+  }, [form.watch(), originalValues, type])
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
@@ -217,7 +225,7 @@ export default function ActivityForm({ type, activity }: Props) {
 
           <footer className="mt-5 flex flex-row flex-wrap items-center gap-4 *:flex-1">
             {/* Botão de enviar */}
-            <Button type="submit" className="max-md:w-full" disabled={form.formState.isSubmitting}>
+            <Button type="submit" className="max-md:w-full" disabled={form.formState.isSubmitting || type === "edit" && !hasChanges}>
               {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
               {type === "create" ? (
                 <>
