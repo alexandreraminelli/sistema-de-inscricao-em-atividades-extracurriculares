@@ -58,7 +58,7 @@ export default async function ActivityInfoPage({ params }: Params) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
+        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-x-4 gap-y-8">
           {/* Descrição da atividade */}
           <article className="max-w-5xl space-y-6">
             {/* Título */}
@@ -111,7 +111,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
     { title: "Máx. de Participantes", value: activity.maxParticipants },
   ]
   return (
-    <Card className="p-6  max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
+    <Card className="p-6 max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
       <CardHeader className="p-0 m-0 w-full">
         <CardTitle>{activity.name}</CardTitle>
       </CardHeader>
