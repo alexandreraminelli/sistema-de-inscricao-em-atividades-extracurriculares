@@ -85,7 +85,7 @@ export default async function ActivityInfoPage({ params }: Params) {
             </Card>
           </article>
           {/* Resumo rápido e botões de ação */}
-          <aside className="w-full md:sticky top-16 space-y-5">
+          <aside className="h-fit md:sticky top-16 space-y-5">
             {/* Resumo */}
             <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
             {/* Horários */}
@@ -119,21 +119,21 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
   return (
     <Card className="p-6 max-md:mx-auto w-full h-fit items-center flex-col gap-3 text-center">
       <CardHeader className="p-0 m-0 w-full">
-        <CardTitle>{activity.name}</CardTitle>
+        <CardTitle className="text-lg leading-5">{activity.name}</CardTitle>
       </CardHeader>
       <Separator />
       {/* Resumo */}
-      <CardContent className="p-0 m-0 w-full space-y-2.5 md:space-y-4">
+      <CardContent className="p-0 m-0 w-full flex flex-row md:flex-col flex-wrap gap-2.5 md:gap-4 *:flex-1">
         {activityResume.map((item) => (
-          <div key={item.title}>
+          <div key={item.title} className="min-w-40">
             <h3 className="font-medium text-base">{item.title}</h3>
             <p className="font-light text-sm">{item.value}</p>
           </div>
         ))}
       </CardContent>
       <Separator />
+      {/* Botões de ação pra atividade */}
       <CardFooter className="p-0 m-0 w-full flex-row flex-wrap items-center gap-4 *:flex-1">
-        {/* Botões de ação pra atividade */}
         {/* Botões pro aluno */}
         {userRole === "student" && (
           <>
