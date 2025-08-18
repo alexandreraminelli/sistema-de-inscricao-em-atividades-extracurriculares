@@ -156,6 +156,8 @@ export default function ActivityForm({ type, activity }: Props) {
           onClick: () => router.push(`/atividades/${result.data.id}`),
         },
       })
+      // Limpar form de criação
+      if (type === "create") form.reset()
     }
     // Erro ao criar atividade
     else toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} atividade!`, { description: result.message })
