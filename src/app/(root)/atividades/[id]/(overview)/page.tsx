@@ -89,7 +89,7 @@ export default async function ActivityInfoPage({ params }: Params) {
             {/* Resumo */}
             <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
             {/* Horários */}
-            <SessionCard activity={activity} />
+            <SessionCard activity={activity} userRole={userRole} />
           </aside>
         </main>
       </div>
