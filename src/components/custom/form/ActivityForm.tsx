@@ -265,7 +265,7 @@ export default function ActivityForm({ type, activity }: Props) {
               )}
             </Button>
             {/* Botões para edição */}
-            {type === "edit" && <EditButtons />}
+            {type === "edit" && <EditButtons form={form} />}
           </footer>
         </form>
       </Form>
@@ -274,7 +274,7 @@ export default function ActivityForm({ type, activity }: Props) {
 }
 
 /** Botões para edição. */
-function EditButtons() {
+function EditButtons({ form }: { form: ReturnType<typeof useForm<z.infer<typeof activitySchema>>> }) {
   /** Botões de edição. */
   const buttons: ButtonWithAlertDialogProps[] = [
     {
@@ -285,7 +285,7 @@ function EditButtons() {
         text: "Descartar alterações",
         Icon: EraserIcon,
       },
-      alertDialog: { title: "Descartar alterações", description: "Tem certeza que deseja descartar as alterações feitas neste formulário? Todas as informações não salvas serão perdidas." },
+      alertDialog: { title: "Descartar alterações", description: "Tem certeza que deseja descartar as alterações feitas neste formulário? Todas as informações não salvas serão perdidas.", onAction: () => form.reset() },
     },
     {
       button: {
@@ -295,7 +295,7 @@ function EditButtons() {
         text: "Excluir atividade",
         Icon: Trash2Icon,
       },
-      alertDialog: { title: "Excluir atividade", description: "Tem certeza que deseja excluir essa atividade?\n" },
+      alertDialog: { title: "Excluir atividade", description: "Tem certeza que deseja excluir essa atividade?" },
     },
   ]
 
