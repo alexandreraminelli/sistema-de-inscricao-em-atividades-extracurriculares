@@ -1,4 +1,5 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
+import SessionCard from "@/components/custom/cards/SessionCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
@@ -60,7 +61,7 @@ export default async function ActivityInfoPage({ params }: Params) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-x-4 gap-y-8">
+        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-x-4 gap-y-8 xl:gap-x-8">
           {/* Descrição da atividade */}
           <article className="max-w-5xl space-y-6">
             {/* Título */}
@@ -84,8 +85,11 @@ export default async function ActivityInfoPage({ params }: Params) {
             </Card>
           </article>
           {/* Resumo rápido e botões de ação */}
-          <aside className="max-md:w-full md:sticky top-16">
+          <aside className="w-full md:sticky top-16 space-y-5">
+            {/* Resumo */}
             <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
+            {/* Horários */}
+            <SessionCard activity={activity} />
           </aside>
         </main>
       </div>
@@ -113,7 +117,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
     { title: "Máx. de Participantes", value: activity.maxParticipants },
   ]
   return (
-    <Card className="p-6 max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
+    <Card className="p-6 max-md:mx-auto w-full h-fit items-center flex-col gap-3 text-center">
       <CardHeader className="p-0 m-0 w-full">
         <CardTitle>{activity.name}</CardTitle>
       </CardHeader>
