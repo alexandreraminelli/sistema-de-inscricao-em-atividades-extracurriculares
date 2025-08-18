@@ -57,3 +57,22 @@ export async function updateActivity(id: string, params: Partial<typeof activity
     return { success: false, message: `${error || "Um erro ocorreu ao atualizar a atividade."}` }
   }
 }
+
+/** Função para deletar uma atividade no banco de dados. */
+export async function deleteActivity(id: string): Promise<ActivityResult> {
+  try {
+    // Verificar se atividade existe
+    const existingActivity = await db.select().from(activity).where(eq(activity.id, id)).limit(1)
+    if (existingActivity.length === 0) return { success: false, message: "A atividade não foi encontrada no banco de dados. \nEla pode ter sido excluída recentemente." }
+
+    // Executar deleção
+    const [deletedActivity] = await db.delete(activity).where(eq(activity.id, id)).returning()
+    // Retornar atividade deletada
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(deletedActivity)),
+    }
+  } catch (error) {
+    return { success: false, message: "Ocorreu um erro ao excluir a atividade." }
+  }
+}

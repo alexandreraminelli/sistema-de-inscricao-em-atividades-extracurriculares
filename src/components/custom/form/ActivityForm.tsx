@@ -7,12 +7,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { activity as activityDb } from "@/database/schema"
-import { createActivity, updateActivity } from "@/lib/actions/activity"
+import { createActivity, deleteActivity, updateActivity } from "@/lib/actions/activity"
 import { cn } from "@/lib/utils"
 import { activitySchema } from "@/schemas/activitySchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { EraserIcon, LoaderCircleIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -265,7 +265,7 @@ export default function ActivityForm({ type, activity }: Props) {
               )}
             </Button>
             {/* Botões para edição */}
-            {type === "edit" && <EditButtons form={form} />}
+            {type === "edit" && <EditButtons form={form} activity={activity!} />}
           </footer>
         </form>
       </Form>
@@ -274,12 +274,12 @@ export default function ActivityForm({ type, activity }: Props) {
 }
 
 /** Botões para edição. */
-function EditButtons({ form }: { form: ReturnType<typeof useForm<z.infer<typeof activitySchema>>> }) {
+function EditButtons({ form, activity }: { form: ReturnType<typeof useForm<z.infer<typeof activitySchema>>>; activity: typeof activityDb.$inferSelect }) {
   /** Botões de edição. */
   const buttons: ButtonWithAlertDialogProps[] = [
     {
       button: {
-        // botão de descartar alterações
+        // descartar alterações
         type: "reset",
         variant: "secondary",
         text: "Descartar alterações",
@@ -289,13 +289,27 @@ function EditButtons({ form }: { form: ReturnType<typeof useForm<z.infer<typeof 
     },
     {
       button: {
-        // botão de descartar alterações
+        // deletar atividade
         type: "button",
         variant: "destructive",
         text: "Excluir atividade",
         Icon: Trash2Icon,
       },
-      alertDialog: { title: "Excluir atividade", description: "Tem certeza que deseja excluir essa atividade?" },
+      alertDialog: {
+        title: "Excluir atividade",
+        description: "Tem certeza que deseja excluir essa atividade?",
+        onAction: async () => {
+          const result = await deleteActivity(activity.id)
+          if (result.success) {
+            // Se der certo
+            toast.success("Atividade excluída com sucesso!", { description: `A atividade '${activity.name}' foi excluída.` })
+            redirect("/atividades")
+          } else {
+            // Se der erro
+            toast.error("Erro ao excluir atividade!", { description: result.message })
+          }
+        },
+      },
     },
   ]
 
