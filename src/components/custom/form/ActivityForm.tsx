@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import z from "zod"
+import z, { set } from "zod"
 
 /** Props de `ActivityForm`. */
 interface Props {
@@ -37,17 +37,14 @@ export default function ActivityForm({ type, activity }: Props) {
   const [isLoadingTeachers, setIsLoadingTeachers] = useState(true)
 
   /** Valores originais do form para comparação e destaque das alterações. */
-  const originalValues = useMemo(
-    () => ({
-      name: activity?.name ?? "",
-      category: activity?.category ?? "",
-      description: activity?.description ?? "",
-      maxParticipants: activity?.maxParticipants ?? 20,
-      teacher: activity?.teacher ?? "",
-      coverImg: activity?.coverImg ?? "",
-    }),
-    [activity] // Dependência para atualizar os valores originais quando a atividade mudar
-  )
+  const [originalValues, setOriginalValues] = useState(() => ({
+    name: activity?.name ?? "",
+    category: activity?.category ?? "",
+    description: activity?.description ?? "",
+    maxParticipants: activity?.maxParticipants ?? 20,
+    teacher: activity?.teacher ?? "",
+    coverImg: activity?.coverImg ?? "",
+  }))
 
   /** Buscar dados das APIs */
   useEffect(() => {
@@ -138,7 +135,19 @@ export default function ActivityForm({ type, activity }: Props) {
     const operationName = type === "create" ? "criada" : "atualizada"
 
     // Atividade criada com sucesso
-    if (result.success)
+    if (result.success) {
+      // Atualizar originalValues
+      if (type === "edit")
+        setOriginalValues({
+          name: result.data.name,
+          category: result.data.category,
+          description: result.data.description,
+          maxParticipants: result.data.maxParticipants,
+          teacher: result.data.teacher,
+          coverImg: result.data.coverImg || "",
+        })
+
+      // Notificação de sucesso
       toast.success(`Atividade ${operationName} com sucesso!`, {
         description: `Atividade '${result.data.name}' ${operationName}.`,
         action: {
@@ -147,6 +156,7 @@ export default function ActivityForm({ type, activity }: Props) {
           onClick: () => router.push(`/atividades/${result.data.id}`),
         },
       })
+    }
     // Erro ao criar atividade
     else toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} atividade!`, { description: result.message })
   }
