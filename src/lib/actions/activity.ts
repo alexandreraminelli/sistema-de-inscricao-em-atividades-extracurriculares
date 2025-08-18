@@ -29,7 +29,8 @@ export async function createActivity(params: typeof activity.$inferInsert): Prom
       data: JSON.parse(JSON.stringify(newActivity)),
     }
   } catch (error) {
-    return { success: false, message: `${error || "Um erro ocorreu ao criar a atividade."}` }
+    console.error("Error creating activity:", error)
+    return { success: false, message: "Ocorreu um erro ao criar a atividade. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
 }
 
@@ -54,7 +55,8 @@ export async function updateActivity(id: string, params: Partial<typeof activity
       data: JSON.parse(JSON.stringify(updatedActivity)),
     }
   } catch (error) {
-    return { success: false, message: `${error || "Um erro ocorreu ao atualizar a atividade."}` }
+    console.error("Error updating activity:", error)
+    return { success: false, message: "Ocorreu um erro ao atualizar a atividade. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
 }
 
@@ -73,6 +75,7 @@ export async function deleteActivity(id: string): Promise<ActivityResult> {
       data: JSON.parse(JSON.stringify(deletedActivity)),
     }
   } catch (error) {
-    return { success: false, message: "Ocorreu um erro ao excluir a atividade." }
+    console.error("Error deleting activity:", error)
+    return { success: false, message: "Ocorreu um erro ao excluir a atividade. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
 }

@@ -16,7 +16,7 @@ import { redirect, useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import z, { set } from "zod"
+import z from "zod"
 
 /** Props de `ActivityForm`. */
 interface Props {
@@ -106,14 +106,16 @@ export default function ActivityForm({ type, activity }: Props) {
       ? "text-green-700 dark:text-green-400" // estilo para label de campos alterados
       : ""
   }
+  /** Valores dos campos do formulário. */
+  const formValues = form.watch()
   /** Função para verificar se há algum campo alterado para controlar o botão de salvar alterações (apenas form de edição). */
   const hasChanges = useMemo(() => {
     if (type === "create") return true // sempre habilitado para criação
     return Object.keys(originalValues).some((key) => {
       const fieldKey = key as keyof typeof originalValues
-      return form.watch(fieldKey) !== originalValues[fieldKey]
+      return formValues[fieldKey] !== originalValues[fieldKey]
     })
-  }, [form.watch(), originalValues, type])
+  }, [formValues, originalValues, type])
 
   /** Função para enviar o formulário. */
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
@@ -128,8 +130,7 @@ export default function ActivityForm({ type, activity }: Props) {
           changedFields[fieldKey] = values[fieldKey] as any
         }
       })
-
-      result = await updateActivity(activity?.id!, changedFields)
+      result = await updateActivity(activity!.id, changedFields)
     }
 
     const operationName = type === "create" ? "criada" : "atualizada"
