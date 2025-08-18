@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category as categoryDb, users } from "@/database/schema"
+import { activity as activityDb, category as categoryDb, teacher, users } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
@@ -31,7 +31,9 @@ export default async function ActivityInfoPage({ params }: Params) {
     if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
 
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
-    const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+    // Dados do professor
+    const [teacherUser] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+    const [teacherData] = await db.select().from(teacher).where(eq(teacher.id, activity.teacher)).limit(1)
 
     // Obter sessão do usuário
     const session = await getServerSession(authOptions)
@@ -75,15 +77,15 @@ export default async function ActivityInfoPage({ params }: Params) {
             <Card className="p-6">
               <section className="space-y-3">
                 {/* Nome do aplicador */}
-                <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacher.name}</h3>
+                <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacherUser.name}</h3>
                 {/* Descrição do aplicador */}
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, quod impedit excepturi cupiditate, deserunt aspernatur assumenda eveniet odio itaque est quam dicta voluptate vitae porro perferendis qui enim. Aperiam, numquam.</p>
+                <p>{teacherData.description}</p>
               </section>
             </Card>
           </article>
           {/* Resumo rápido e botões de ação */}
           <aside className="max-md:w-full md:sticky top-16">
-            <SummaryCard activity={activity} teacher={teacher} category={category} userRole={userRole} />
+            <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
           </aside>
         </main>
       </div>
