@@ -297,7 +297,7 @@ function EditButtons({ form, activity }: { form: ReturnType<typeof useForm<z.inf
       },
       alertDialog: {
         title: "Excluir atividade",
-        description: "Tem certeza que deseja excluir essa atividade?",
+        description: "Tem certeza que deseja excluir essa atividade? Essa ação não pode ser desfeita.",
         onAction: async () => {
           const result = await deleteActivity(activity.id)
           if (result.success) {

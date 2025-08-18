@@ -1,3 +1,4 @@
+import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
@@ -8,7 +9,7 @@ import { activity as activityDb, category as categoryDb, users } from "@/databas
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
-import { ClipboardCheckIcon, PencilIcon, Trash2Icon } from "lucide-react"
+import { ClipboardCheckIcon, PencilIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 import Link from "next/link"
 
@@ -140,7 +141,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
         {/* Botões pro professor */}
         {userRole === "teacher" && (
           <>
-            {/* Opção de se inscrever */}
+            {/* Opção de editar */}
             <Button variant="default" asChild>
               <Link href={`/atividades/${activity.id}/editar`}>
                 <PencilIcon />
@@ -148,10 +149,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
               </Link>
             </Button>
             {/* Botão de excluir */}
-            <Button variant="destructive">
-              <Trash2Icon />
-              Excluir
-            </Button>
+            <DeleteActivityButton activity={activity} />
           </>
         )}
       </CardFooter>
