@@ -4,6 +4,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { activity } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
 import { CalendarPlusIcon } from "lucide-react"
+import SessionForm from "../form/SessionForm"
 
 /** Props de `SessionCard`. */
 interface Props {
@@ -25,7 +26,7 @@ export default function SessionCard({ activity, userRole }: Props) {
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline">
-                <CalendarPlusIcon /> Adicionar Atividade
+                <CalendarPlusIcon /> Adicionar Horário
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -33,7 +34,9 @@ export default function SessionCard({ activity, userRole }: Props) {
                 <DialogTitle>Adicionar Horário</DialogTitle>
               </DialogHeader>
               {/* Form de adicionar horário */}
-              <section>Formulário de adicionar horário</section>
+              <section>
+                <SessionForm type="create" />
+              </section>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
