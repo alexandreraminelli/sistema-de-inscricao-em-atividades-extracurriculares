@@ -35,7 +35,7 @@ export default function SessionCard({ activity, userRole }: Props) {
               </DialogHeader>
               {/* Form de adicionar horário */}
               <section>
-                <SessionForm type="create" />
+                <SessionForm type="create" activity={activity} />
               </section>
               <DialogFooter>
                 <DialogClose asChild>
