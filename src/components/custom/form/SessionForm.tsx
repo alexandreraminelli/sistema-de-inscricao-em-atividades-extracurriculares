@@ -1,6 +1,7 @@
 "use client"
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { activity as activityDb, session as sessionDb } from "@/database/schema"
 import { createSession } from "@/lib/actions/activitySession"
@@ -27,6 +28,7 @@ export default function SessionForm({ type, activity, session }: Props) {
   const [originalValues, setOriginalValues] = useState(() => ({
     dayOfWeek: session?.dayWeek ?? undefined,
     time: session?.time ?? undefined,
+    classroom: session?.classroom ?? "",
   }))
 
   /** Definição do formulário. */
@@ -53,6 +55,7 @@ export default function SessionForm({ type, activity, session }: Props) {
         setOriginalValues({
           dayOfWeek: values.dayWeek,
           time: values.time,
+          classroom: values.classroom || "",
         })
       }
 
@@ -114,6 +117,20 @@ export default function SessionForm({ type, activity, session }: Props) {
                     ))}
                   </SelectContent>
                 </Select>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        {/* Sala da atividade */}
+        <FormField
+          control={form.control}
+          name="classroom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sala da atividade</FormLabel>
+              <FormControl>
+                <Input placeholder="Ex: U15, P20, W503, etc." {...field} />
               </FormControl>
             </FormItem>
           )}

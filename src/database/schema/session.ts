@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, unique, uuid } from "drizzle-orm/pg-core"
+import { pgEnum, pgTable, unique, uuid, varchar } from "drizzle-orm/pg-core"
 import { activity } from "./activity"
 
 /** Enumeração dos dias das semanas que uma atividade pode ser realizada. */
@@ -21,6 +21,8 @@ export const session = pgTable(
     dayWeek: DAY_WEEK_ENUM("day_week").notNull(),
     /** Horário de início e término da atividade. */
     time: SESSION_TIME_ENUM("time").notNull(),
+    /** Sala da atividade. */
+    classroom: varchar("classroom", { length: 10 }),
   },
   (table) => [
     // Constraint para evitar duplicação de horários para a mesma atividade no mesmo dia da semana

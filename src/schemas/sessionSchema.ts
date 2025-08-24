@@ -9,4 +9,6 @@ export const sessionSchema = z.object({
   dayWeek: z.enum(session.dayWeek.enumValues, "Selecione um dia da semana."),
   /** Horário da atividade. */
   time: z.enum(session.time.enumValues, "Selecione um horário."),
+  /** Sala da atividade. */
+  classroom: z.string().max(10, "A sala deve ter no máximo 10 caracteres.").optional(),
 })
