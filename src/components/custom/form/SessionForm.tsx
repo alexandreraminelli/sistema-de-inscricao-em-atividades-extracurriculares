@@ -1,5 +1,7 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import { DialogClose, DialogFooter } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -7,6 +9,7 @@ import { activity as activityDb, session as sessionDb } from "@/database/schema"
 import { createSession } from "@/lib/actions/activitySession"
 import { sessionSchema } from "@/schemas/sessionSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { LoaderCircleIcon, PlusIcon, SaveIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -20,12 +23,16 @@ interface Props {
   activity: typeof activityDb.$inferSelect
   /** Horário a ser editado. */
   session?: typeof sessionDb.$inferSelect
+
+  /** Se for um dialog */
+  inDialog?: boolean
 }
 
 /** Formulário de criação/edição de horários de atividades. */
-export default function SessionForm({ type, activity, session }: Props) {
+export default function SessionForm({ type, activity, session, inDialog }: Props) {
   /** Valores originais do form para comparação e destaque das alterações. */
   const [originalValues, setOriginalValues] = useState(() => ({
+    activity: activity.id,
     dayOfWeek: session?.dayWeek ?? undefined,
     time: session?.time ?? undefined,
     classroom: session?.classroom ?? "",
@@ -53,6 +60,7 @@ export default function SessionForm({ type, activity, session }: Props) {
       if (type === "edit") {
         // Atualizar valores originais (se for edição)
         setOriginalValues({
+          activity: activity.id,
           dayOfWeek: values.dayWeek,
           time: values.time,
           classroom: values.classroom || "",
@@ -135,6 +143,29 @@ export default function SessionForm({ type, activity, session }: Props) {
             </FormItem>
           )}
         />
+
+        {/* Footer do Dialog */}
+        {inDialog && (
+          <DialogFooter>
+            {/* Fechar dialog */}
+            <DialogClose asChild>
+              <Button variant="outline">Cancelar</Button>
+            </DialogClose>
+            {/* Submeter form */}
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
+              {type === "create" ? (
+                <>
+                  <PlusIcon /> Adicionar Horário
+                </>
+              ) : (
+                <>
+                  <SaveIcon /> Salvar Alterações
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        )}
       </form>
     </Form>
   )

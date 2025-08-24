@@ -34,14 +34,7 @@ export default function SessionCard({ activity, userRole }: Props) {
                 <DialogTitle>Adicionar Horário</DialogTitle>
               </DialogHeader>
               {/* Form de adicionar horário */}
-              <section>
-                <SessionForm type="create" activity={activity} />
-              </section>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">Cancelar</Button>
-                </DialogClose>
-              </DialogFooter>
+              <SessionForm type="create" activity={activity} inDialog />
             </DialogContent>
           </Dialog>
         )}
