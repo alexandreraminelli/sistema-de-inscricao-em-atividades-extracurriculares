@@ -50,6 +50,13 @@
       "when": 1756069022221,
       "tag": "0006_dapper_daimon_hellstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1756071418722,
+      "tag": "0007_lovely_miracleman",
+      "breakpoints": true
     }
   ]
 }
