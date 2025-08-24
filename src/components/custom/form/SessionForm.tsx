@@ -73,6 +73,11 @@ export default function SessionForm({ type, activity, session, inDialog }: Props
       })
       // Limpar form de criação
       if (type === "create") form.reset()
+    } else {
+      /* Erro */
+      toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} o horário.`, {
+        description: result?.message || "Ocorreu um erro inesperado. Tente novamente mais tarde.",
+      })
     }
   }
 
