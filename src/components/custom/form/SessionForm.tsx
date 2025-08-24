@@ -85,6 +85,12 @@ export default function SessionForm({ type, activity, session, inDialog }: Props
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {/* Nome da atividade (Read-only) */}
+        <div className="space-y-2">
+          <FormLabel>Atividade</FormLabel>
+          <Input value={activity.name} readOnly />
+        </div>
+
         {/* Dia da semana da atividade */}
         <FormField
           control={form.control}
