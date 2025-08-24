@@ -3,10 +3,12 @@
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { activity as activityDb, session as sessionDb } from "@/database/schema"
+import { createSession } from "@/lib/actions/activitySession"
 import { sessionSchema } from "@/schemas/sessionSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import z from "zod"
 
 /** Props de `SessionForm`. */
@@ -34,6 +36,37 @@ export default function SessionForm({ type, activity, session }: Props) {
     defaultValues: originalValues,
   })
 
+  /** Função para enviar o formulário. */
+  const onSubmit = async (values: z.infer<typeof sessionSchema>) => {
+    let result
+    if (type === "create") {
+      // Criar novo horário
+      result = await createSession(values)
+    } else {
+      // Atualizar horário
+    }
+
+    const operationName = type === "create" ? "criada" : "atualizada"
+    if (result?.success) {
+      /* Sucesso */
+      if (type === "edit") {
+        // Atualizar valores originais (se for edição)
+        setOriginalValues({
+          dayOfWeek: values.dayWeek,
+          startTime: values.startTime,
+          endTime: values.endTime,
+        })
+      }
+
+      // Notificação de sucesso
+      toast.success(`Horário ${operationName} com sucesso!`, {
+        description: `O horário da atividade '${activity.name}' foi ${operationName}.`,
+      })
+      // Limpar form de criação
+      if (type === "create") form.reset()
+    }
+  }
+
   // Componente
   return (
     <Form {...form}>
@@ -41,7 +74,7 @@ export default function SessionForm({ type, activity, session }: Props) {
         {/* Dia da semana da atividade */}
         <FormField
           control={form.control}
-          name="dayOfWeek"
+          name="dayWeek"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dia da Semana</FormLabel>
