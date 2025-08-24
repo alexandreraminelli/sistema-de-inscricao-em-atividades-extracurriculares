@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { activity, session } from "@/database/schema"
+import { activity, schedule } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
 import { CalendarPlusIcon } from "lucide-react"
-import SessionForm from "../form/SessionForm"
+import ScheduleForm from "../form/ScheduleForm"
 import { db } from "@/database/drizzle"
 import { eq } from "drizzle-orm"
 
@@ -17,7 +17,7 @@ interface Props {
 /** Card de horário das atividades. */
 export default async function SessionCard({ activity, userRole }: Props) {
   // Obter horários da atividade
-  const sessions = await db.select().from(session).where(eq(session.activity, activity.id))
+  const sessions = await db.select().from(schedule).where(eq(schedule.activity, activity.id))
 
   return (
     <Card className="p-6 md:px-4 items-center">
@@ -30,7 +30,7 @@ export default async function SessionCard({ activity, userRole }: Props) {
           // Se não houver horários
           <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
         ) : (
-          sessions.map((s) => <SessionInfo key={s.id} session={s} />)
+          sessions.map((s) => <SessionInfo key={s.id} schedule={s} />)
         )}
       </CardContent>
       <CardFooter className="p-0 m-0 w-full *:flex-1">
@@ -47,7 +47,7 @@ export default async function SessionCard({ activity, userRole }: Props) {
                 <DialogTitle>Adicionar Horário</DialogTitle>
               </DialogHeader>
               {/* Form de adicionar horário */}
-              <SessionForm type="create" activity={activity} inDialog />
+              <ScheduleForm type="create" activity={activity} inDialog />
             </DialogContent>
           </Dialog>
         )}
@@ -58,22 +58,22 @@ export default async function SessionCard({ activity, userRole }: Props) {
 
 /** Props de `SessionInfo`. */
 interface SessionInfoProps {
-  session: typeof session.$inferSelect
+  schedule: typeof schedule.$inferSelect
 }
 /** Card com informações de um horário. */
-function SessionInfo({ session }: SessionInfoProps) {
+function SessionInfo({ schedule }: SessionInfoProps) {
   return (
     <Card className="p-4 min-w-32  gap-1">
       <CardHeader className="p-0">
         <CardTitle className="text-nowrap text-center flex flex-col gap-2">
           {/* Dia e horário */}
-          <span>{session.dayWeek}</span>
-          <span>{session.time}</span>
+          <span>{schedule.dayWeek}</span>
+          <span>{schedule.time}</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Sala */}
-        <p className="text-muted-foreground text-center">Sala: {session.classroom || "N/A"}</p>
+        <p className="text-muted-foreground text-center">Sala: {schedule.classroom || "N/A"}</p>
       </CardContent>
     </Card>
   )

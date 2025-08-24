@@ -1,5 +1,5 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
-import SessionCard from "@/components/custom/cards/SessionCard"
+import SessionCard from "@/components/custom/cards/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"

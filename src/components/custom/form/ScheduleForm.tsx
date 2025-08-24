@@ -5,9 +5,9 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { activity as activityDb, session as sessionDb } from "@/database/schema"
-import { createSession } from "@/lib/actions/activitySession"
-import { sessionSchema } from "@/schemas/sessionSchema"
+import { activity as activityDb, schedule as scheduleDb } from "@/database/schema"
+import { createSchedule } from "@/lib/actions/schedule"
+import { scheduleSchema } from "@/schemas/scheduleSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircleIcon, PlusIcon, SaveIcon } from "lucide-react"
 import { useState } from "react"
@@ -22,34 +22,34 @@ interface Props {
   /** Atividade do horário. */
   activity: typeof activityDb.$inferSelect
   /** Horário a ser editado. */
-  session?: typeof sessionDb.$inferSelect
+  schedule?: typeof scheduleDb.$inferSelect
 
   /** Se for um dialog */
   inDialog?: boolean
 }
 
 /** Formulário de criação/edição de horários de atividades. */
-export default function SessionForm({ type, activity, session, inDialog }: Props) {
+export default function ScheduleForm({ type, activity, schedule, inDialog }: Props) {
   /** Valores originais do form para comparação e destaque das alterações. */
   const [originalValues, setOriginalValues] = useState(() => ({
     activity: activity.id,
-    dayOfWeek: session?.dayWeek ?? undefined,
-    time: session?.time ?? undefined,
-    classroom: session?.classroom ?? "",
+    dayOfWeek: schedule?.dayWeek ?? undefined,
+    time: schedule?.time ?? undefined,
+    classroom: schedule?.classroom ?? "",
   }))
 
   /** Definição do formulário. */
-  const form = useForm<z.infer<typeof sessionSchema>>({
-    resolver: zodResolver(sessionSchema),
+  const form = useForm<z.infer<typeof scheduleSchema>>({
+    resolver: zodResolver(scheduleSchema),
     defaultValues: originalValues,
   })
 
   /** Função para enviar o formulário. */
-  const onSubmit = async (values: z.infer<typeof sessionSchema>) => {
+  const onSubmit = async (values: z.infer<typeof scheduleSchema>) => {
     let result
     if (type === "create") {
       // Criar novo horário
-      result = await createSession(values)
+      result = await createSchedule(values)
     } else {
       // Atualizar horário
     }
@@ -104,7 +104,7 @@ export default function SessionForm({ type, activity, session, inDialog }: Props
                     <SelectValue placeholder="Selecione um dia da semana" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessionDb.dayWeek.enumValues.map((day) => (
+                    {scheduleDb.dayWeek.enumValues.map((day) => (
                       <SelectItem key={day} value={day}>
                         {day.charAt(0).toUpperCase() + day.slice(1)}
                       </SelectItem>
@@ -129,7 +129,7 @@ export default function SessionForm({ type, activity, session, inDialog }: Props
                     <SelectValue placeholder="Selecione um horário" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessionDb.time.enumValues.map((time) => (
+                    {scheduleDb.time.enumValues.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
                       </SelectItem>
