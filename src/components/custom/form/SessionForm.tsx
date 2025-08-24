@@ -70,7 +70,7 @@ export default function SessionForm({ type, activity, session }: Props) {
   // Componente
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {/* Dia da semana da atividade */}
         <FormField
           control={form.control}
@@ -80,7 +80,7 @@ export default function SessionForm({ type, activity, session }: Props) {
               <FormLabel>Dia da Semana</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecione um dia da semana" />
                   </SelectTrigger>
                   <SelectContent>
@@ -95,6 +95,7 @@ export default function SessionForm({ type, activity, session }: Props) {
             </FormItem>
           )}
         />
+
         {/* Hora de início */}
         <FormField
           control={form.control}
@@ -104,7 +105,7 @@ export default function SessionForm({ type, activity, session }: Props) {
               <FormLabel>Horário de Início</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecione um horário de início" />
                   </SelectTrigger>
                   <SelectContent>
@@ -128,7 +129,7 @@ export default function SessionForm({ type, activity, session }: Props) {
               <FormLabel>Horário de Término</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecione um horário de término" />
                   </SelectTrigger>
                   <SelectContent>
