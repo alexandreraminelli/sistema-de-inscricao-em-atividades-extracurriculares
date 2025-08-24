@@ -3,8 +3,10 @@ import z from "zod"
 
 /** Zod schema para horário de atividades. */
 export const sessionSchema = z.object({
+  /** ID da atividade. */
+  activity: z.uuid(),
   /** Dia da semana. */
-  dayOfWeek: z.enum(session.dayWeek.enumValues, "Selecione um dia da semana."),
+  dayWeek: z.enum(session.dayWeek.enumValues, "Selecione um dia da semana."),
   /** Horário de início da atividade. */
   startTime: z.enum(session.startTime.enumValues, "Selecione um horário de início."),
   /** Horário de término da atividade */
