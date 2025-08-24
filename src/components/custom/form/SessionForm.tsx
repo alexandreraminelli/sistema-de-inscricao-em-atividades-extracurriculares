@@ -70,7 +70,7 @@ export default function SessionForm({ type, activity, session }: Props) {
   // Componente
   return (
     <Form {...form}>
-      <form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         {/* Dia da semana da atividade */}
         <FormField
           control={form.control}
@@ -132,7 +132,7 @@ export default function SessionForm({ type, activity, session }: Props) {
                     <SelectValue placeholder="Selecione um horário de término" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessionDb.startTime.enumValues.map((time) => (
+                    {sessionDb.endTime.enumValues.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
                       </SelectItem>
