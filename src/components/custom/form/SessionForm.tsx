@@ -26,8 +26,7 @@ export default function SessionForm({ type, activity, session }: Props) {
   /** Valores originais do form para comparação e destaque das alterações. */
   const [originalValues, setOriginalValues] = useState(() => ({
     dayOfWeek: session?.dayWeek ?? undefined,
-    startTime: session?.startTime ?? undefined,
-    endTime: session?.endTime ?? undefined,
+    time: session?.time ?? undefined,
   }))
 
   /** Definição do formulário. */
@@ -53,8 +52,7 @@ export default function SessionForm({ type, activity, session }: Props) {
         // Atualizar valores originais (se for edição)
         setOriginalValues({
           dayOfWeek: values.dayWeek,
-          startTime: values.startTime,
-          endTime: values.endTime,
+          time: values.time,
         })
       }
 
@@ -96,44 +94,20 @@ export default function SessionForm({ type, activity, session }: Props) {
           )}
         />
 
-        {/* Hora de início */}
+        {/* Horário da atividade */}
         <FormField
           control={form.control}
-          name="startTime"
+          name="time"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Horário de Início</FormLabel>
+              <FormLabel>Horário da Atividade</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione um horário de início" />
+                    <SelectValue placeholder="Selecione um horário" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessionDb.startTime.enumValues.map((time) => (
-                      <SelectItem key={time} value={time}>
-                        {time}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        {/* Hora de término */}
-        <FormField
-          control={form.control}
-          name="endTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Horário de Término</FormLabel>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione um horário de término" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sessionDb.endTime.enumValues.map((time) => (
+                    {sessionDb.time.enumValues.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
                       </SelectItem>

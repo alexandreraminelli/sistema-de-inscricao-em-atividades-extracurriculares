@@ -18,7 +18,7 @@ export async function createSession(params: typeof session.$inferInsert): Promis
         and(
           eq(session.activity, params.activity), // FK da atividade
           eq(session.dayWeek, params.dayWeek), // Dia da semana
-          eq(session.startTime, params.startTime) // Hora de início
+          eq(session.time, params.time) // Horário
         )
       )
       .limit(1)
