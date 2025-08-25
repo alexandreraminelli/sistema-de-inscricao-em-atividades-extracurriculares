@@ -6,7 +6,7 @@ import { db } from "@/database/drizzle"
 import { activity, schedule } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
-import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon } from "lucide-react"
+import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon, PencilIcon, Trash2Icon } from "lucide-react"
 import ScheduleForm from "../form/ScheduleForm"
 
 /** Props de `SessionCard`. */
@@ -39,7 +39,7 @@ export default async function SessionCard({ activity, userRole }: Props) {
               // Se não houver horários
               <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
             ) : (
-              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} />)
+              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} />)
             )}
           </CardContent>
           <CardFooter className="p-0 m-0 mt-4 w-full *:flex-1">
@@ -71,13 +71,14 @@ export default async function SessionCard({ activity, userRole }: Props) {
 interface SessionInfoProps {
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
+  userRole: UserRole
 }
 /** Card com informações de um horário. */
-function SessionInfo({ activity, schedule }: SessionInfoProps) {
+function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
   return (
     <Card
-      className="p-4 min-w-32 md:w-full gap-1
-      flex-row max-md:items-center justify-around
+      className="p-4 min-w-32 md:w-full gap-y-2 gap-x-4
+      flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-32 max-md:items-center justify-around
       md:flex-col"
     >
       <CardHeader className="p-0">
@@ -95,6 +96,21 @@ function SessionInfo({ activity, schedule }: SessionInfoProps) {
           Inscritos: {"N"}/{activity.maxParticipants}
         </p>
       </CardContent>
+      <CardFooter className="justify-center gap-4 md:mt-1.5">
+        {/* Botão para professores */}
+        {userRole === "teacher" && (
+          <>
+            {/* Botão de editar */}
+            <Button variant="outline" size="icon">
+              <PencilIcon /> <span className="sr-only">Editar</span>
+            </Button>
+            {/* Botão de excluir */}
+            <Button variant="destructive" size="icon">
+              <Trash2Icon /> <span className="sr-only">Excluir</span>
+            </Button>
+          </>
+        )}
+      </CardFooter>
     </Card>
   )
 }
