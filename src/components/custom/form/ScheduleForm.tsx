@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { DialogClose, DialogFooter } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { activity as activityDb, schedule as scheduleDb } from "@/database/schema"
@@ -112,6 +112,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
                   </SelectContent>
                 </Select>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -137,6 +138,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
                   </SelectContent>
                 </Select>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -151,6 +153,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
               <FormControl>
                 <Input placeholder="Ex: U15, P20, W503, etc." {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
