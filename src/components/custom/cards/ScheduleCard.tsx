@@ -39,7 +39,7 @@ export default async function SessionCard({ activity, userRole }: Props) {
               // Se não houver horários
               <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
             ) : (
-              sessions.map((s) => <SessionInfo key={s.id} schedule={s} />)
+              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} />)
             )}
           </CardContent>
           <CardFooter className="p-0 m-0 mt-4 w-full *:flex-1">
@@ -69,12 +69,17 @@ export default async function SessionCard({ activity, userRole }: Props) {
 
 /** Props de `SessionInfo`. */
 interface SessionInfoProps {
+  activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
 }
 /** Card com informações de um horário. */
-function SessionInfo({ schedule }: SessionInfoProps) {
+function SessionInfo({ activity, schedule }: SessionInfoProps) {
   return (
-    <Card className="p-4 min-w-32 md:w-full gap-1">
+    <Card
+      className="p-4 min-w-32 md:w-full gap-1
+      flex-row max-md:items-center justify-around
+      md:flex-col"
+    >
       <CardHeader className="p-0">
         <CardTitle className="text-nowrap text-center flex flex-col gap-2">
           {/* Dia e horário */}
@@ -82,9 +87,13 @@ function SessionInfo({ schedule }: SessionInfoProps) {
           <span>{schedule.time}</span>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="text-muted-foreground text-center">
         {/* Sala */}
-        <p className="text-muted-foreground text-center">Sala: {schedule.classroom || "N/A"}</p>
+        <p>Sala: {schedule.classroom || "N/A"}</p>
+        {/* Quantidade de inscritos */}
+        <p>
+          Inscritos: {"N"}/{activity.maxParticipants}
+        </p>
       </CardContent>
     </Card>
   )
