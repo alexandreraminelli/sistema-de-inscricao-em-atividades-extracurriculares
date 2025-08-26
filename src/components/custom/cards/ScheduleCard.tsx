@@ -19,7 +19,7 @@ interface Props {
 /** Card de horário das atividades. */
 export default async function SessionCard({ activity, userRole }: Props) {
   // Obter horários da atividade
-  const sessions = await db.select().from(schedule).where(eq(schedule.activity, activity.id))
+  const sessions = await db.select().from(schedule).where(eq(schedule.activity, activity.id)).orderBy(schedule.dayWeek, schedule.time)
 
   return (
     <Card className="p-6 md:px-4 items-center">
