@@ -1,5 +1,5 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
-import SessionCard from "@/components/custom/cards/ScheduleCard"
+import ScheduleCard from "@/components/custom/cards/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
@@ -89,7 +89,7 @@ export default async function ActivityInfoPage({ params }: Params) {
             {/* Resumo */}
             <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
             {/* Horários */}
-            <SessionCard activity={activity} userRole={userRole} />
+            <ScheduleCard activity={activity} userRole={userRole} />
           </aside>
         </main>
       </div>

@@ -21,7 +21,7 @@ interface Props {
 }
 
 /** Card de horário das atividades. */
-export default function SessionCard({ activity, userRole }: Props) {
+export default function ScheduleCard({ activity, userRole }: Props) {
   // Estado e função de atualização
   const [sessions, setSessions] = useState<(typeof schedule.$inferSelect)[]>([])
   const [isPending, startTransition] = useTransition()
