@@ -67,10 +67,6 @@ export default function SessionCard({ activity, userRole }: Props) {
 
         {/* Conteúdo do collapsible */}
         <CollapsibleContent>
-          {/* Botão de atualizar horários */}
-          <Button className="mx-auto" variant="ghost" onClick={handleRefresh} disabled={isPending}>
-            <RefreshCwIcon /> Atualizar Horários
-          </Button>
           <CardContent className="p-0 m-0 mt-4 w-full md:max-w-48 lg:max-w-96 flex max-md:flex-row max-md:flex-wrap md:flex-col items-center justify-center gap-2 *:flex-1">
             {/* Lista de horários */}
             {sessions.length === 0 ? (
@@ -80,12 +76,17 @@ export default function SessionCard({ activity, userRole }: Props) {
               sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} />)
             )}
           </CardContent>
-          <CardFooter className="p-0 m-0 mt-4 w-full *:flex-1">
-            {/* Botão de adicionar horário */}
+          <CardFooter className="p-0 m-0 mt-4 gap-2.5 w-full flex-wrap *:flex-1">
+            {/* Botão de atualizar horários */}
+            <Button variant="secondary" onClick={handleRefresh} disabled={isPending}>
+              <RefreshCwIcon /> Atualizar Horários
+            </Button>
+            {/* Botões dos professores */}
             {userRole === "teacher" && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline">
+                  {/* Botão de adicionar horário */}
+                  <Button variant="default">
                     <CalendarPlusIcon /> Adicionar Horário
                   </Button>
                 </DialogTrigger>
