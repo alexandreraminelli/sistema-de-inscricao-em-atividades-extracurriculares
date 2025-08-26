@@ -1,3 +1,4 @@
+import ScheduleCard from "@/components/custom/cards/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
@@ -54,7 +55,10 @@ export default async function EditActivityPage({ params }: Params) {
           <ActivityForm type="edit" activity={activity} />
         </main>
         {/* Imagem */}
-        <aside className="self-center max-w-sm md:self-start md:sticky top-16">Informações da atividade</aside>
+        <aside className="self-center w-full md:max-w-xs md:self-start md:sticky top-16">
+          {/* Horários da atividade */}
+          <ScheduleCard activity={activity} userRole="teacher" />
+        </aside>
       </div>
     </>
   )

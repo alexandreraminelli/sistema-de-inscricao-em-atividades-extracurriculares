@@ -1,0 +1,1 @@
+ALTER TABLE "activity_session" ADD COLUMN "classroom" varchar(10);

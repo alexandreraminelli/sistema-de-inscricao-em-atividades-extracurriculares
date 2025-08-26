@@ -1,6 +1,6 @@
 import { pgTable, uuid } from "drizzle-orm/pg-core"
 import { users } from "./users"
-import { session } from "./session"
+import { schedule } from "./schedule"
 
 /** Schema da tabela de inscrição dos estudantes em atividades. */
 export const enrollment = pgTable("activity_enrollment", {
@@ -11,7 +11,7 @@ export const enrollment = pgTable("activity_enrollment", {
     .notNull()
     .references(() => users.id),
   /** ID da sessão de atividade (FK). */
-  session: uuid("session_id")
+  schedule: uuid("session_id")
     .notNull()
-    .references(() => session.id),
+    .references(() => schedule.id),
 })

@@ -1,0 +1,191 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { DialogClose, DialogFooter } from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { activity as activityDb, schedule as scheduleDb } from "@/database/schema"
+import { createSchedule, updateSchedule } from "@/lib/actions/schedule"
+import { scheduleSchema } from "@/schemas/scheduleSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { LoaderCircleIcon, PlusIcon, SaveIcon } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import z from "zod"
+
+/** Props de `SessionForm`. */
+interface Props {
+  /** Tipo de formulário (criação ou edição). */
+  type: "create" | "edit"
+  /** Atividade do horário. */
+  activity: typeof activityDb.$inferSelect
+  /** Horário a ser editado. */
+  schedule?: typeof scheduleDb.$inferSelect
+
+  /** Se for um dialog */
+  inDialog?: boolean
+  /** Função para atualizar os horários. */
+  updateSchedules?: () => void
+}
+
+/** Formulário de criação/edição de horários de atividades. */
+export default function ScheduleForm({ type, activity, schedule, inDialog, updateSchedules }: Props) {
+  /** Valores originais do form para comparação e destaque das alterações. */
+  const [originalValues, setOriginalValues] = useState(() => ({
+    activity: activity.id,
+    dayWeek: schedule?.dayWeek ?? undefined,
+    time: schedule?.time ?? undefined,
+    classroom: schedule?.classroom ?? "",
+  }))
+
+  /** Definição do formulário. */
+  const form = useForm<z.infer<typeof scheduleSchema>>({
+    resolver: zodResolver(scheduleSchema),
+    defaultValues: originalValues,
+  })
+
+  /** Função para enviar o formulário. */
+  const onSubmit = async (values: z.infer<typeof scheduleSchema>) => {
+    let result
+    if (type === "create") {
+      // Criar novo horário
+      result = await createSchedule(values)
+    } else {
+      // Atualizar horário
+      result = await updateSchedule(schedule!.id, values)
+    }
+
+    const operationName = type === "create" ? "criada" : "atualizada"
+    if (result?.success) {
+      /* Sucesso */
+      if (type === "edit") {
+        // Atualizar valores originais (se for edição)
+        setOriginalValues({
+          activity: activity.id,
+          dayWeek: values.dayWeek,
+          time: values.time,
+          classroom: values.classroom || "",
+        })
+      }
+
+      // Notificação de sucesso
+      toast.success(`Horário ${operationName} com sucesso!`, {
+        description: `O horário da atividade '${activity.name}' foi ${operationName}.`,
+      })
+      // Limpar form de criação
+      if (type === "create") form.reset()
+      // Atualizar lista de horários
+      updateSchedules?.()
+    } else {
+      /* Erro */
+      toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} o horário.`, {
+        description: result?.message || "Ocorreu um erro inesperado. Tente novamente mais tarde.",
+      })
+    }
+  }
+
+  // Componente
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {/* Nome da atividade (Read-only) */}
+        <div className="space-y-2">
+          <FormLabel>Atividade</FormLabel>
+          <Input value={activity.name} readOnly />
+        </div>
+
+        {/* Dia da semana da atividade */}
+        <FormField
+          control={form.control}
+          name="dayWeek"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dia da Semana</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione um dia da semana" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {scheduleDb.dayWeek.enumValues.map((day) => (
+                      <SelectItem key={day} value={day}>
+                        {day.charAt(0).toUpperCase() + day.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Horário da atividade */}
+        <FormField
+          control={form.control}
+          name="time"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Horário da Atividade</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione um horário" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {scheduleDb.time.enumValues.map((time) => (
+                      <SelectItem key={time} value={time}>
+                        {time}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Sala da atividade */}
+        <FormField
+          control={form.control}
+          name="classroom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sala da atividade</FormLabel>
+              <FormControl>
+                <Input placeholder="Ex: U15, P20, W503, etc." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Footer do Dialog */}
+        {inDialog && (
+          <DialogFooter>
+            {/* Fechar dialog */}
+            <DialogClose asChild>
+              <Button variant="outline">Cancelar</Button>
+            </DialogClose>
+            {/* Submeter form */}
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && <LoaderCircleIcon className="animate-spin" />} {/* Ícone de carregamento */}
+              {type === "create" ? (
+                <>
+                  <PlusIcon /> Adicionar Horário
+                </>
+              ) : (
+                <>
+                  <SaveIcon /> Salvar Alterações
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        )}
+      </form>
+    </Form>
+  )
+}

@@ -1,11 +1,12 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
+import ScheduleCard from "@/components/custom/cards/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category as categoryDb, users } from "@/database/schema"
+import { activity as activityDb, category as categoryDb, teacher, users } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
@@ -31,7 +32,9 @@ export default async function ActivityInfoPage({ params }: Params) {
     if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
 
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
-    const [teacher] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+    // Dados do professor
+    const [teacherUser] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
+    const [teacherData] = await db.select().from(teacher).where(eq(teacher.id, activity.teacher)).limit(1)
 
     // Obter sessão do usuário
     const session = await getServerSession(authOptions)
@@ -58,7 +61,7 @@ export default async function ActivityInfoPage({ params }: Params) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-10">
+        <main className="my-4 md:ms-4 flex items-center md:items-start justify-between flex-col-reverse md:flex-row gap-x-4 gap-y-8 xl:gap-x-8">
           {/* Descrição da atividade */}
           <article className="max-w-5xl space-y-6">
             {/* Título */}
@@ -75,15 +78,18 @@ export default async function ActivityInfoPage({ params }: Params) {
             <Card className="p-6">
               <section className="space-y-3">
                 {/* Nome do aplicador */}
-                <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacher.name}</h3>
+                <h3 className="font-semibold text-xl md:text-2xl">Aplicador: {teacherUser.name}</h3>
                 {/* Descrição do aplicador */}
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, quod impedit excepturi cupiditate, deserunt aspernatur assumenda eveniet odio itaque est quam dicta voluptate vitae porro perferendis qui enim. Aperiam, numquam.</p>
+                <p>{teacherData.description}</p>
               </section>
             </Card>
           </article>
           {/* Resumo rápido e botões de ação */}
-          <aside className="max-md:w-full md:sticky top-16">
-            <SummaryCard activity={activity} teacher={teacher} category={category} userRole={userRole} />
+          <aside className="h-fit md:sticky top-16 space-y-5">
+            {/* Resumo */}
+            <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
+            {/* Horários */}
+            <ScheduleCard activity={activity} userRole={userRole} />
           </aside>
         </main>
       </div>
@@ -111,23 +117,23 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
     { title: "Máx. de Participantes", value: activity.maxParticipants },
   ]
   return (
-    <Card className="p-6  max-md:mx-auto h-fit items-center flex-col gap-3 text-center md:max-w-3xs">
+    <Card className="p-6 max-md:mx-auto w-full h-fit items-center flex-col gap-3 text-center">
       <CardHeader className="p-0 m-0 w-full">
-        <CardTitle>{activity.name}</CardTitle>
+        <CardTitle className="text-lg leading-5">{activity.name}</CardTitle>
       </CardHeader>
       <Separator />
       {/* Resumo */}
-      <CardContent className="p-0 m-0 w-full space-y-2.5 md:space-y-4">
+      <CardContent className="p-0 m-0 w-full flex flex-row md:flex-col flex-wrap gap-2.5 md:gap-4 *:flex-1">
         {activityResume.map((item) => (
-          <div key={item.title}>
+          <div key={item.title} className="min-w-40">
             <h3 className="font-medium text-base">{item.title}</h3>
             <p className="font-light text-sm">{item.value}</p>
           </div>
         ))}
       </CardContent>
       <Separator />
+      {/* Botões de ação pra atividade */}
       <CardFooter className="p-0 m-0 w-full flex-row flex-wrap items-center gap-4 *:flex-1">
-        {/* Botões de ação pra atividade */}
         {/* Botões pro aluno */}
         {userRole === "student" && (
           <>
