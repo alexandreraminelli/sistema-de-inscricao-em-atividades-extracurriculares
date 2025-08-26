@@ -14,6 +14,7 @@ import ScheduleForm from "../form/ScheduleForm"
 import { useEffect, useState, useTransition } from "react"
 import { getSchedulesByActivity } from "@/lib/actions/schedule"
 import { toast } from "sonner"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 /** Props de `SessionCard`. */
 interface Props {
@@ -140,23 +141,33 @@ function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
         {userRole === "teacher" && (
           <>
             {/* Botão de editar */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="secondary" size="icon">
-                  <PencilIcon /> <span className="sr-only">Editar</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Editar Horário</DialogTitle>
-                </DialogHeader>
-                {/* Form de adicionar horário */}
-                <ScheduleForm type="edit" activity={activity} schedule={schedule} inDialog />
-              </DialogContent>
-            </Dialog>
+            <Tooltip>
+              <TooltipTrigger>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary" size="icon">
+                      <PencilIcon /> <span className="sr-only">Editar</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Editar Horário</DialogTitle>
+                    </DialogHeader>
+                    {/* Form de adicionar horário */}
+                    <ScheduleForm type="edit" activity={activity} schedule={schedule} inDialog />
+                  </DialogContent>
+                </Dialog>
+              </TooltipTrigger>
+              <TooltipContent>Editar</TooltipContent>
+            </Tooltip>
 
             {/* Botão de excluir */}
-            <DeleteScheduleButton activity={activity} schedule={schedule} />
+            <Tooltip>
+              <TooltipTrigger>
+                <DeleteScheduleButton activity={activity} schedule={schedule} />
+              </TooltipTrigger>
+              <TooltipContent>Excluir</TooltipContent>
+            </Tooltip>
           </>
         )}
       </CardFooter>
