@@ -36,6 +36,7 @@ export default function ScheduleCard({ activity, userRole }: Props) {
         toast.error("Erro ao carregar os horários", { description: result.message })
       }
     } catch (error) {
+      console.error("Erro ao carregar os horários:", error)
       toast.error("Erro ao carregar os horários")
     }
   }
