@@ -102,9 +102,21 @@ function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
         {userRole === "teacher" && (
           <>
             {/* Botão de editar */}
-            <Button variant="secondary" size="icon">
-              <PencilIcon /> <span className="sr-only">Editar</span>
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary" size="icon">
+                  <PencilIcon /> <span className="sr-only">Editar</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Editar Horário</DialogTitle>
+                </DialogHeader>
+                {/* Form de adicionar horário */}
+                <ScheduleForm type="edit" activity={activity} schedule={schedule} inDialog />
+              </DialogContent>
+            </Dialog>
+
             {/* Botão de excluir */}
             <DeleteScheduleButton activity={activity} schedule={schedule} />
           </>

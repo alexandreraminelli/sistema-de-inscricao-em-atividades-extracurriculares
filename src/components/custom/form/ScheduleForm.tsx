@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { activity as activityDb, schedule as scheduleDb } from "@/database/schema"
-import { createSchedule } from "@/lib/actions/schedule"
+import { createSchedule, updateSchedule } from "@/lib/actions/schedule"
 import { scheduleSchema } from "@/schemas/scheduleSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderCircleIcon, PlusIcon, SaveIcon } from "lucide-react"
@@ -33,7 +33,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
   /** Valores originais do form para comparação e destaque das alterações. */
   const [originalValues, setOriginalValues] = useState(() => ({
     activity: activity.id,
-    dayOfWeek: schedule?.dayWeek ?? undefined,
+    dayWeek: schedule?.dayWeek ?? undefined,
     time: schedule?.time ?? undefined,
     classroom: schedule?.classroom ?? "",
   }))
@@ -52,6 +52,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
       result = await createSchedule(values)
     } else {
       // Atualizar horário
+      result = await updateSchedule(schedule!.id, values)
     }
 
     const operationName = type === "create" ? "criada" : "atualizada"
@@ -61,7 +62,7 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
         // Atualizar valores originais (se for edição)
         setOriginalValues({
           activity: activity.id,
-          dayOfWeek: values.dayWeek,
+          dayWeek: values.dayWeek,
           time: values.time,
           classroom: values.classroom || "",
         })

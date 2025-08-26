@@ -42,6 +42,28 @@ export async function createSchedule(params: typeof schedule.$inferInsert): Prom
   }
 }
 
+/** Função para atualizar um horário de atividade no banco de dados. */
+export async function updateSchedule(id: string, params: Partial<typeof schedule.$inferInsert>): Promise<ScheduleResult> {
+  try {
+    // Verificar se horário existe
+    const existingActivity = await db.select().from(schedule).where(eq(schedule.id, id)).limit(1)
+    if (existingActivity.length === 0) return { success: false, message: "O horário não foi encontrado no banco de dados. \nEle pode ter sido excluído recentemente." }
+
+    // Verificar se novo horário (dia da semana e hora) não vai conflitar com outro já existente
+
+    // Executar atualização
+    const [updatedSchedule] = await db.update(schedule).set(params).where(eq(schedule.id, id)).returning()
+    // Retornar horário atualizado
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(updatedSchedule)),
+    }
+  } catch (error) {
+    console.error("Error updating schedule:", error)
+    return { success: false, message: "Ocorreu um erro ao atualizar o horário. Tente novamente mais tarde ou entre em contato com o suporte." }
+  }
+}
+
 /** Função para deletar um horário de atividade no banco de dados. */
 export async function deleteSchedule(id: string): Promise<ScheduleResult> {
   try {
