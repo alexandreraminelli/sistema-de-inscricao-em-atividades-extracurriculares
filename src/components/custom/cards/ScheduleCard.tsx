@@ -76,7 +76,7 @@ export default function SessionCard({ activity, userRole }: Props) {
               sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} />)
             )}
           </CardContent>
-          <CardFooter className="p-0 m-0 mt-4 gap-2.5 w-full flex-wrap *:flex-1">
+          <CardFooter className="p-0 m-0 mt-4 gap-2.5 w-full max-md:flex-wrap md:flex-col *:flex-1 md:*:w-full">
             {/* Botão de atualizar horários */}
             <Button variant="secondary" onClick={handleRefresh} disabled={isPending}>
               <RefreshCwIcon /> Atualizar Horários
