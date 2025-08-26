@@ -8,6 +8,7 @@ import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
 import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon, PencilIcon, Trash2Icon } from "lucide-react"
 import ScheduleForm from "../form/ScheduleForm"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
 /** Props de `SessionCard`. */
 interface Props {
@@ -101,13 +102,32 @@ function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
         {userRole === "teacher" && (
           <>
             {/* Botão de editar */}
-            <Button variant="outline" size="icon">
+            <Button variant="secondary" size="icon">
               <PencilIcon /> <span className="sr-only">Editar</span>
             </Button>
             {/* Botão de excluir */}
-            <Button variant="destructive" size="icon">
-              <Trash2Icon /> <span className="sr-only">Excluir</span>
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="icon">
+                  <Trash2Icon /> <span className="sr-only">Excluir</span>
+                </Button>
+              </AlertDialogTrigger>
+              {/* Alert Dialog (confirmar exclusão) */}
+              <AlertDialogContent>
+                <AlertDialogTitle>Excluir Horário</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Tem certeza de que deseja excluir esse horário? Todas as inscrições realizadas nesse horário serão canceladas. Essa ação não pode ser desfeita.
+                  <br /> <br />
+                  <span className="font-bold">
+                    {activity.name} <br /> {schedule.dayWeek} às {schedule.time}
+                  </span>
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction className="bg-destructive text-white hover:bg-destructive/90">Excluir Horário</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </>
         )}
       </CardFooter>
