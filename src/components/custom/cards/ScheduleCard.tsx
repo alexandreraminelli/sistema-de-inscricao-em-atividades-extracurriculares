@@ -29,7 +29,7 @@ export default function SessionCard({ activity, userRole }: Props) {
   const [isPending, startTransition] = useTransition()
 
   /** Função para obter horários do banco de dados. */
-  const fetchSessions = async () => {
+  const fetchSchedules = async () => {
     try {
       const result = await getSchedulesByActivity(activity.id)
       if (result.success) {
@@ -44,13 +44,13 @@ export default function SessionCard({ activity, userRole }: Props) {
 
   // Obter horários da atividade ao carregar o componente
   useEffect(() => {
-    fetchSessions()
+    fetchSchedules()
   }, [activity.id])
 
   /** Função para atualizar a lista de horários. */
   const handleRefresh = () => {
     startTransition(() => {
-      fetchSessions()
+      fetchSchedules()
     })
   }
 
@@ -74,7 +74,7 @@ export default function SessionCard({ activity, userRole }: Props) {
               // Se não houver horários
               <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
             ) : (
-              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} />)
+              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} />)
             )}
           </CardContent>
           <CardFooter className="p-0 m-0 mt-4 gap-2.5 w-full max-md:flex-wrap md:flex-col *:flex-1 md:*:w-full">
@@ -96,7 +96,7 @@ export default function SessionCard({ activity, userRole }: Props) {
                     <DialogTitle>Adicionar Horário</DialogTitle>
                   </DialogHeader>
                   {/* Form de adicionar horário */}
-                  <ScheduleForm type="create" activity={activity} inDialog />
+                  <ScheduleForm type="create" activity={activity} inDialog updateSchedules={fetchSchedules} />
                 </DialogContent>
               </Dialog>
             )}
@@ -112,9 +112,12 @@ interface SessionInfoProps {
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
   userRole: UserRole
+
+  /** Função para atualizar os horários. */
+  updateSchedules?: () => void
 }
 /** Card com informações de um horário. */
-function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
+function SessionInfo({ activity, schedule, userRole, updateSchedules }: SessionInfoProps) {
   return (
     <Card
       className="p-4 md:w-full gap-y-2 gap-x-4
@@ -154,7 +157,7 @@ function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
                       <DialogTitle>Editar Horário</DialogTitle>
                     </DialogHeader>
                     {/* Form de adicionar horário */}
-                    <ScheduleForm type="edit" activity={activity} schedule={schedule} inDialog />
+                    <ScheduleForm type="edit" activity={activity} schedule={schedule} inDialog updateSchedules={updateSchedules} />
                   </DialogContent>
                 </Dialog>
               </TooltipTrigger>
@@ -164,7 +167,7 @@ function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
             {/* Botão de excluir */}
             <Tooltip>
               <TooltipTrigger>
-                <DeleteScheduleButton activity={activity} schedule={schedule} />
+                <DeleteScheduleButton activity={activity} schedule={schedule} updateSchedules={updateSchedules} />
               </TooltipTrigger>
               <TooltipContent>Excluir</TooltipContent>
             </Tooltip>

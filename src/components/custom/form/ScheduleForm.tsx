@@ -26,10 +26,12 @@ interface Props {
 
   /** Se for um dialog */
   inDialog?: boolean
+  /** Função para atualizar os horários. */
+  updateSchedules?: () => void
 }
 
 /** Formulário de criação/edição de horários de atividades. */
-export default function ScheduleForm({ type, activity, schedule, inDialog }: Props) {
+export default function ScheduleForm({ type, activity, schedule, inDialog, updateSchedules }: Props) {
   /** Valores originais do form para comparação e destaque das alterações. */
   const [originalValues, setOriginalValues] = useState(() => ({
     activity: activity.id,
@@ -74,6 +76,8 @@ export default function ScheduleForm({ type, activity, schedule, inDialog }: Pro
       })
       // Limpar form de criação
       if (type === "create") form.reset()
+      // Atualizar lista de horários
+      updateSchedules?.()
     } else {
       /* Erro */
       toast.error(`Erro ao ${type === "create" ? "criar" : "atualizar"} o horário.`, {

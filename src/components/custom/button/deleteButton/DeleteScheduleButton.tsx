@@ -12,9 +12,11 @@ import { toast } from "sonner"
 interface Props {
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
+  /** Função para atualizar os horários. */
+  updateSchedules?: () => void
 }
 
-export default function DeleteScheduleButton({ activity, schedule }: Props) {
+export default function DeleteScheduleButton({ activity, schedule, updateSchedules }: Props) {
   // Status do processamento da ação
   const [isLoading, setIsLoading] = useState(false)
 
@@ -28,6 +30,8 @@ export default function DeleteScheduleButton({ activity, schedule }: Props) {
       toast.success("Horário excluído com sucesso!", {
         description: `O horário da atividade ${activity.name} - ${schedule.dayWeek} ${schedule.time} e suas inscrições foram excluídas.`,
       })
+      // Atualizar lista de horários
+      updateSchedules?.()
     } else {
       // Se der erro
       toast.error("Erro ao excluir horário!", {
