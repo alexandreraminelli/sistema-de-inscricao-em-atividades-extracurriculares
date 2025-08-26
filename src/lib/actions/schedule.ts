@@ -4,6 +4,21 @@ import { db } from "@/database/drizzle"
 import { schedule } from "@/database/schema"
 import { and, eq } from "drizzle-orm"
 
+/** Retorno das funções getters dos horários de atividades. */
+type GetScheduleResult = { success: true; data: (typeof schedule.$inferSelect)[] } | { success: false; message: string }
+
+/** Obter horários por atividade. */
+export async function getSchedulesByActivity(activityId: string): Promise<GetScheduleResult> {
+  try {
+    const sessions = await db.select().from(schedule).where(eq(schedule.activity, activityId)).orderBy(schedule.dayWeek, schedule.time)
+
+    return { success: true, data: JSON.parse(JSON.stringify(sessions)) }
+  } catch (error) {
+    console.error("Error fetching schedules by activity:", error)
+    return { success: false, message: "Ocorreu um erro ao buscar os horários. Tente novamente mais tarde ou entre em contato com o suporte." }
+  }
+}
+
 /** Retorno das funções de operações com horários de atividades. */
 type ScheduleResult = { success: true; data: typeof schedule.$inferSelect } | { success: false; message: string }
 

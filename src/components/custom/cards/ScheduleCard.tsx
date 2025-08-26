@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -6,9 +8,12 @@ import { db } from "@/database/drizzle"
 import { activity, schedule } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
-import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon, PencilIcon } from "lucide-react"
+import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon, PencilIcon, RefreshCwIcon } from "lucide-react"
 import DeleteScheduleButton from "../button/deleteButton/DeleteScheduleButton"
 import ScheduleForm from "../form/ScheduleForm"
+import { useEffect, useState, useTransition } from "react"
+import { getSchedulesByActivity } from "@/lib/actions/schedule"
+import { toast } from "sonner"
 
 /** Props de `SessionCard`. */
 interface Props {
@@ -17,9 +22,36 @@ interface Props {
 }
 
 /** Card de horário das atividades. */
-export default async function SessionCard({ activity, userRole }: Props) {
-  // Obter horários da atividade
-  const sessions = await db.select().from(schedule).where(eq(schedule.activity, activity.id)).orderBy(schedule.dayWeek, schedule.time)
+export default function SessionCard({ activity, userRole }: Props) {
+  // Estado e função de atualização
+  const [sessions, setSessions] = useState<(typeof schedule.$inferSelect)[]>([])
+  const [isPending, startTransition] = useTransition()
+
+  /** Função para obter horários do banco de dados. */
+  const fetchSessions = async () => {
+    try {
+      const result = await getSchedulesByActivity(activity.id)
+      if (result.success) {
+        setSessions(result.data)
+      } else {
+        toast.error("Erro ao carregar os horários", { description: result.message })
+      }
+    } catch (error) {
+      toast.error("Erro ao carregar os horários")
+    }
+  }
+
+  // Obter horários da atividade ao carregar o componente
+  useEffect(() => {
+    fetchSessions()
+  }, [activity.id])
+
+  /** Função para atualizar a lista de horários. */
+  const handleRefresh = () => {
+    startTransition(() => {
+      fetchSessions()
+    })
+  }
 
   return (
     <Card className="p-6 md:px-4 items-center">
@@ -32,10 +64,15 @@ export default async function SessionCard({ activity, userRole }: Props) {
             <ChevronDownIcon className="transition-all items-end" />
           </CardHeader>
         </CollapsibleTrigger>
+
         {/* Conteúdo do collapsible */}
         <CollapsibleContent>
+          {/* Botão de atualizar horários */}
+          <Button className="mx-auto" variant="ghost" onClick={handleRefresh} disabled={isPending}>
+            <RefreshCwIcon /> Atualizar Horários
+          </Button>
           <CardContent className="p-0 m-0 mt-4 w-full md:max-w-48 lg:max-w-96 flex max-md:flex-row max-md:flex-wrap md:flex-col items-center justify-center gap-2 *:flex-1">
-            {/* Horários da atividade */}
+            {/* Lista de horários */}
             {sessions.length === 0 ? (
               // Se não houver horários
               <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
