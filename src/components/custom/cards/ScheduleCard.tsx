@@ -78,8 +78,8 @@ interface SessionInfoProps {
 function SessionInfo({ activity, schedule, userRole }: SessionInfoProps) {
   return (
     <Card
-      className="p-4 min-w-32 md:w-full gap-y-2 gap-x-4
-      flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-32 max-md:items-center justify-around
+      className="p-4 md:w-full gap-y-2 gap-x-4
+      flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around
       md:flex-col"
     >
       <CardHeader className="p-0">
