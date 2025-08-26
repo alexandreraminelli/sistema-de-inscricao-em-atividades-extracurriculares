@@ -41,3 +41,23 @@ export async function createSchedule(params: typeof schedule.$inferInsert): Prom
     return { success: false, message: "Ocorreu um erro ao criar o horário. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
 }
+
+/** Função para deletar um horário de atividade no banco de dados. */
+export async function deleteSchedule(id: string): Promise<ScheduleResult> {
+  try {
+    // Verificar se horário existe
+    const existingSchedule = await db.select().from(schedule).where(eq(schedule.id, id)).limit(1)
+    if (existingSchedule.length === 0) return { success: false, message: "O horário não foi encontrado no banco de dados. \nEle pode já ter sido excluído recentemente." }
+
+    // Executar exclusão
+    const [deletedActivity] = await db.delete(schedule).where(eq(schedule.id, id)).returning()
+    // Retornar horário excluído
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(deletedActivity)),
+    }
+  } catch (error) {
+    console.error("Error deleting schedule:", error)
+    return { success: false, message: "Ocorreu um erro ao excluir o horário. Tente novamente mais tarde ou entre em contato com o suporte." }
+  }
+}
