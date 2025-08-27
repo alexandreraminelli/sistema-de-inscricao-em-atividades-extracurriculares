@@ -78,15 +78,10 @@ export default async function ActivityPage() {
                     </AccordionTrigger>
                     {/* Atividades da categoria */}
                     <AccordionContent className="space-y-3.5">
-                      {activities.length > 0 ? (
-                        activities.map((activity) => (
-                          // Card de atividade
-                          <ActivityCard key={activity.id} activity={activity} userRole={userRole} />
-                        ))
-                      ) : (
-                        // Se não houver atividades
-                        <p className="text-muted-foreground ms-2.5">Sem atividades.</p>
-                      )}
+                      {activities.map((activity) => (
+                        // Card de atividade
+                        <ActivityCard key={activity.id} activity={activity} userRole={userRole} />
+                      ))}
                     </AccordionContent>
                   </AccordionItem>
                 )
