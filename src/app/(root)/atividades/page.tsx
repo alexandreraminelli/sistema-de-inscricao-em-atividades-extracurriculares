@@ -64,30 +64,33 @@ export default async function ActivityPage() {
         {/* Listar atividades por categorias */}
         <section>
           <Accordion type="multiple">
-            {activitiesByCategory.map(({ category, activities }) => (
-              <AccordionItem key={category.id} value={category.id}>
-                <AccordionTrigger>
-                  {/* Título da categoria */}
-                  <h3 className="text-lg">{category.name}</h3>
-                  {/* Quantidades de atividades */}
-                  <Badge variant="secondary" className="self-center ms-auto w-7">
-                    {activities.length}
-                  </Badge>
-                </AccordionTrigger>
-                {/* Atividades da categoria */}
-                <AccordionContent className="space-y-3.5">
-                  {activities.length > 0 ? (
-                    activities.map((activity) => (
-                      // Card de atividade
-                      <ActivityCard key={activity.id} activity={activity} userRole={userRole} />
-                    ))
-                  ) : (
-                    // Se não houver atividades
-                    <p className="text-muted-foreground ms-2.5">Sem atividades.</p>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+            {activitiesByCategory.map(
+              ({ category, activities }) =>
+                activities.length > 0 && ( // Renderizar apenas categorias com atividades
+                  <AccordionItem key={category.id} value={category.id}>
+                    <AccordionTrigger>
+                      {/* Título da categoria */}
+                      <h3 className="text-lg">{category.name}</h3>
+                      {/* Quantidades de atividades */}
+                      <Badge variant="secondary" className="self-center ms-auto w-7">
+                        {activities.length}
+                      </Badge>
+                    </AccordionTrigger>
+                    {/* Atividades da categoria */}
+                    <AccordionContent className="space-y-3.5">
+                      {activities.length > 0 ? (
+                        activities.map((activity) => (
+                          // Card de atividade
+                          <ActivityCard key={activity.id} activity={activity} userRole={userRole} />
+                        ))
+                      ) : (
+                        // Se não houver atividades
+                        <p className="text-muted-foreground ms-2.5">Sem atividades.</p>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+            )}
           </Accordion>
         </section>
       </main>
