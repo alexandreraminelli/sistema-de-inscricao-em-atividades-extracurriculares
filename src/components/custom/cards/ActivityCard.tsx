@@ -1,8 +1,9 @@
+import EnrollmentButton from "@/components/custom/enrollment/EnrollmentButton"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { activity } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
-import { ClipboardCheckIcon, PencilIcon, SquareArrowOutUpRightIcon } from "lucide-react"
+import { PencilIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 import Link from "next/link"
 
 /** Props de `ActivityCard`. */
@@ -50,10 +51,7 @@ export default function ActivityCard({ activity, userRole, ...props }: Props) {
         {userRole === "student" && (
           <>
             {/* Botão de inscrição */}
-            <Button variant="default" disabled>
-              <ClipboardCheckIcon />
-              Inscrever-se
-            </Button>
+            <EnrollmentButton />
           </>
         )}
       </div>
