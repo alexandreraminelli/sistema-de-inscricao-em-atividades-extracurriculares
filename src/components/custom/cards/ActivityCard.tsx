@@ -1,4 +1,4 @@
-import EnrollmentButton from "@/components/custom/enrollment/EnrollmentButton"
+import EnrollmentDialogButton from "@/components/custom/enrollment/EnrollmentDialogButton"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { activity } from "@/database/schema"
@@ -51,7 +51,7 @@ export default function ActivityCard({ activity, userRole, ...props }: Props) {
         {userRole === "student" && (
           <>
             {/* Botão de inscrição */}
-            <EnrollmentButton activity={activity} />
+            <EnrollmentDialogButton activity={activity} />
           </>
         )}
       </div>

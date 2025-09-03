@@ -9,7 +9,7 @@ interface Props {
 }
 
 /** Botão de inscrição em atividade. */
-export default function EnrollmentButton({ activity }: Props) {
+export default function EnrollmentDialogButton({ activity }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>

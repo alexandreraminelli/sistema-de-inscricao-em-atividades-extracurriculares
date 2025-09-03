@@ -1,6 +1,6 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
 import ScheduleCard from "@/components/custom/schedule/ScheduleCard"
-import EnrollmentButton from "@/components/custom/enrollment/EnrollmentButton"
+import EnrollmentDialogButton from "@/components/custom/enrollment/EnrollmentDialogButton"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
@@ -139,7 +139,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
         {userRole === "student" && (
           <>
             {/*Botão de inscrição */}
-            <EnrollmentButton activity={activity} />
+            <EnrollmentDialogButton activity={activity} />
           </>
         )}
         {/* Botões pro professor */}
