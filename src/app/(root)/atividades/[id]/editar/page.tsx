@@ -1,4 +1,4 @@
-import ScheduleCard from "@/components/custom/cards/ScheduleCard"
+import ScheduleCard from "@/components/custom/schedule/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"

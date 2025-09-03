@@ -1,5 +1,5 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
-import ScheduleCard from "@/components/custom/cards/ScheduleCard"
+import ScheduleCard from "@/components/custom/schedule/ScheduleCard"
 import EnrollmentButton from "@/components/custom/enrollment/EnrollmentButton"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
