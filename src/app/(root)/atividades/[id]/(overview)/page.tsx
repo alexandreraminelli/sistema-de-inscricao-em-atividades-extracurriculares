@@ -139,7 +139,7 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
         {userRole === "student" && (
           <>
             {/*Botão de inscrição */}
-            <EnrollmentButton />
+            <EnrollmentButton activity={activity} />
           </>
         )}
         {/* Botões pro professor */}

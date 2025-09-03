@@ -51,7 +51,7 @@ export default function ActivityCard({ activity, userRole, ...props }: Props) {
         {userRole === "student" && (
           <>
             {/* Botão de inscrição */}
-            <EnrollmentButton />
+            <EnrollmentButton activity={activity} />
           </>
         )}
       </div>

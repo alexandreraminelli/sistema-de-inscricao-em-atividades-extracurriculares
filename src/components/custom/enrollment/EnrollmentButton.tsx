@@ -1,12 +1,29 @@
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { activity } from "@/database/schema"
 import { ClipboardCheckIcon } from "lucide-react"
 
+/** Props de `EnrollmentButton`. */
+interface Props {
+  activity: typeof activity.$inferSelect
+}
+
 /** Botão de inscrição em atividade. */
-export default function EnrollmentButton() {
+export default function EnrollmentButton({ activity }: Props) {
   return (
-    <Button variant="default" disabled>
-      <ClipboardCheckIcon />
-      Inscrever-se
-    </Button>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="default" /*disabled*/>
+          <ClipboardCheckIcon />
+          Inscrever-se
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="leading-7">Realizar Inscrição na atividade {activity.name}</DialogTitle>
+          <DialogDescription>Escolha um dos horários abaixo:</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   )
 }
