@@ -4,14 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { activity, schedule } from "@/database/schema"
-import { getSchedulesByActivity } from "@/lib/actions/schedule"
+import { activity } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
-import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon, RefreshCwIcon } from "lucide-react"
-import { useEffect, useState, useTransition } from "react"
-import { toast } from "sonner"
+import { CalendarPlusIcon, CalendarRangeIcon, ChevronDownIcon } from "lucide-react"
+import { useState } from "react"
 import ScheduleForm from "../form/ScheduleForm"
-import SessionInfo from "./SessionInfo"
+import ScheduleList from "./ScheduleList"
 
 /** Props de `SessionCard`. */
 interface Props {
@@ -21,35 +19,12 @@ interface Props {
 
 /** Card de horário das atividades. */
 export default function ScheduleCard({ activity, userRole }: Props) {
-  // Estado e função de atualização
-  const [sessions, setSessions] = useState<(typeof schedule.$inferSelect)[]>([])
-  const [isPending, startTransition] = useTransition()
+  // Estado para forçar atualização da lista de horários
+  const [refreshKey, setRefreshKey] = useState(0)
 
-  /** Função para obter horários do banco de dados. */
-  const fetchSchedules = async () => {
-    try {
-      const result = await getSchedulesByActivity(activity.id)
-      if (result.success) {
-        setSessions(result.data)
-      } else {
-        toast.error("Erro ao carregar os horários", { description: result.message })
-      }
-    } catch (error) {
-      console.error("Erro ao carregar os horários:", error)
-      toast.error("Erro ao carregar os horários")
-    }
-  }
-
-  // Obter horários da atividade ao carregar o componente
-  useEffect(() => {
-    fetchSchedules()
-  }, [activity.id])
-
-  /** Função para atualizar a lista de horários. */
-  const handleRefresh = () => {
-    startTransition(() => {
-      fetchSchedules()
-    })
+  /** Função para atualizar a lista de horários quando houver uma criação ou edição. */
+  function handleRefresh() {
+    setRefreshKey((prev) => prev + 1)
   }
 
   return (
@@ -68,18 +43,9 @@ export default function ScheduleCard({ activity, userRole }: Props) {
         <CollapsibleContent>
           <CardContent className="p-0 m-0 mt-4 w-full md:max-w-48 lg:max-w-96 flex max-md:flex-row max-md:flex-wrap md:flex-col items-center justify-center gap-2 *:flex-1">
             {/* Lista de horários */}
-            {sessions.length === 0 ? (
-              // Se não houver horários
-              <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
-            ) : (
-              sessions.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} />)
-            )}
+            <ScheduleList activity={activity} userRole={userRole} refreshKey={refreshKey} />
           </CardContent>
           <CardFooter className="p-0 m-0 mt-4 gap-2.5 w-full max-md:flex-wrap md:flex-col *:flex-1 md:*:w-full">
-            {/* Botão de atualizar horários */}
-            <Button variant="secondary" onClick={handleRefresh} disabled={isPending}>
-              <RefreshCwIcon /> Atualizar Horários
-            </Button>
             {/* Botões dos professores */}
             {userRole === "teacher" && (
               <Dialog>
@@ -94,7 +60,7 @@ export default function ScheduleCard({ activity, userRole }: Props) {
                     <DialogTitle>Adicionar Horário</DialogTitle>
                   </DialogHeader>
                   {/* Form de adicionar horário */}
-                  <ScheduleForm type="create" activity={activity} inDialog updateSchedules={fetchSchedules} />
+                  <ScheduleForm type="create" activity={activity} inDialog updateSchedules={handleRefresh} />
                 </DialogContent>
               </Dialog>
             )}
@@ -104,4 +70,3 @@ export default function ScheduleCard({ activity, userRole }: Props) {
     </Card>
   )
 }
-
