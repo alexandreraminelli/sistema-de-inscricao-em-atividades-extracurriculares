@@ -40,7 +40,7 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
           Inscritos: {"N"}/{activity.maxParticipants}
         </p>
       </CardContent>
-      <CardFooter className="justify-center gap-4 md:mt-1.5 w-fit p-0">
+      <CardFooter className="justify-center gap-4 md:mt-1.5 p-0 flex-1">
         {/* Botões para alunos */}
         {userRole === "student" && (
           <>
