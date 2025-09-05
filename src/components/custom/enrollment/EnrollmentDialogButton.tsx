@@ -1,18 +1,19 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { activity } from "@/database/schema"
-import { ClipboardCheckIcon } from "lucide-react"
 import ScheduleList from "@/components/custom/schedule/ScheduleList"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { activity, schedule } from "@/database/schema"
+import { ClipboardCheckIcon } from "lucide-react"
 
 /** Props de `EnrollmentButton`. */
 interface Props {
   activity: typeof activity.$inferSelect
+  schedules: (typeof schedule.$inferSelect)[]
 }
 
 /** Botão de inscrição em atividade. */
-export default function EnrollmentDialogButton({ activity }: Props) {
+export default function EnrollmentDialogButton({ activity, schedules }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -26,7 +27,7 @@ export default function EnrollmentDialogButton({ activity }: Props) {
           <DialogTitle className="leading-7">Realizar Inscrição na atividade {activity.name}</DialogTitle>
           <DialogDescription>Escolha um dos horários abaixo:</DialogDescription>
           {/* Lista de atividades */}
-          <ScheduleList activity={activity} userRole="student" />
+          <ScheduleList schedules={schedules} activity={activity} userRole="student" />
         </DialogHeader>
       </DialogContent>
     </Dialog>
