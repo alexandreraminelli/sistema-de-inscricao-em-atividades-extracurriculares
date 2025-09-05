@@ -3,7 +3,7 @@ import { getSchedulesByActivity } from "@/lib/actions/schedule"
 import { UserRole } from "@/types/auth/UserRole"
 import { useEffect, useState, useTransition } from "react"
 import { toast } from "sonner"
-import SessionInfo from "./SessionInfo"
+import ScheduleInfo from "./ScheduleInfo"
 import { ClassNameValue } from "tailwind-merge"
 
 /** Props de `ScheduleList`. */
@@ -55,7 +55,7 @@ export default function ScheduleList({ activity, userRole, refreshKey, className
         // Se não houver horários
         <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
       ) : (
-        schedules.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} className={classNameInfo} />)
+        schedules.map((s) => <ScheduleInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} className={classNameInfo} />)
       )}
     </>
   )

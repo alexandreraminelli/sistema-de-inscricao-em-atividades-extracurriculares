@@ -9,9 +9,10 @@ import DeleteScheduleButton from "../button/deleteButton/DeleteScheduleButton"
 import ScheduleForm from "../form/ScheduleForm"
 import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
+import EnrollmentButton from "../enrollment/EnrollmentButton"
 
-/** Props de `SessionInfo`. */
-interface SessionInfoProps {
+/** Props de `ScheduleInfo`. */
+interface Props {
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
   userRole: UserRole
@@ -21,17 +22,17 @@ interface SessionInfoProps {
   updateSchedules?: () => void
 }
 /** Card com informações de um horário. */
-export default function SessionInfo({ activity, schedule, userRole, updateSchedules, className }: SessionInfoProps) {
+export default function ScheduleInfo({ activity, schedule, userRole, updateSchedules, className }: Props) {
   return (
-    <Card className={cn("p-4 md:w-full gap-y-2 gap-x-4 flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around", className)}>
-      <CardHeader className="p-0">
+    <Card className={cn("p-4 md:w-full gap-y-3 gap-x-2 flex-row flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around *:items-center", className)}>
+      <CardHeader className="p-0 flex-1">
         <CardTitle className="text-nowrap text-center flex flex-col gap-2">
           {/* Dia e horário */}
           <span>{schedule.dayWeek}</span>
           <span>{schedule.time}</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="text-muted-foreground text-center">
+      <CardContent className="text-muted-foreground text-center flex-1">
         {/* Sala */}
         <p>Sala: {schedule.classroom || "N/A"}</p>
         {/* Quantidade de inscritos */}
@@ -39,7 +40,15 @@ export default function SessionInfo({ activity, schedule, userRole, updateSchedu
           Inscritos: {"N"}/{activity.maxParticipants}
         </p>
       </CardContent>
-      <CardFooter className="justify-center gap-4 md:mt-1.5">
+      <CardFooter className="justify-center gap-4 md:mt-1.5 w-fit p-0">
+        {/* Botões para alunos */}
+        {userRole === "student" && (
+          <>
+            {/* Botão de inscrição */}
+            <EnrollmentButton schedule={schedule} />
+          </>
+        )}
+
         {/* Botão para professores */}
         {userRole === "teacher" && (
           <>
