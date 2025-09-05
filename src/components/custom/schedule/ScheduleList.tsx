@@ -4,17 +4,19 @@ import { UserRole } from "@/types/auth/UserRole"
 import { useEffect, useState, useTransition } from "react"
 import { toast } from "sonner"
 import SessionInfo from "./SessionInfo"
+import { ClassNameValue } from "tailwind-merge"
 
 /** Props de `ScheduleList`. */
 interface Props {
   activity: typeof activity.$inferSelect
   userRole: UserRole
+  classNameInfo?: ClassNameValue
 
   /** Chave para forçar atualização da lista. */
   refreshKey?: number
 }
 /** Lista de horários das atividades. */
-export default function ScheduleList({ activity, userRole, refreshKey }: Props) {
+export default function ScheduleList({ activity, userRole, refreshKey, classNameInfo }: Props) {
   // Estado para armazenar os horários
   const [schedules, setSchedules] = useState<(typeof schedule.$inferSelect)[]>([])
   // Estado de transição para carregamento
@@ -53,7 +55,7 @@ export default function ScheduleList({ activity, userRole, refreshKey }: Props) 
         // Se não houver horários
         <p className="text-muted-foreground text-center">Ainda não há horários definidos.</p>
       ) : (
-        schedules.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} />)
+        schedules.map((s) => <SessionInfo key={s.id} activity={activity} schedule={s} userRole={userRole} updateSchedules={fetchSchedules} className={classNameInfo} />)
       )}
     </>
   )

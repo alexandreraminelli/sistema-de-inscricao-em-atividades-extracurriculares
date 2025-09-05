@@ -7,24 +7,23 @@ import { UserRole } from "@/types/auth/UserRole"
 import { PencilIcon } from "lucide-react"
 import DeleteScheduleButton from "../button/deleteButton/DeleteScheduleButton"
 import ScheduleForm from "../form/ScheduleForm"
+import { ClassNameValue } from "tailwind-merge"
+import { cn } from "@/lib/utils"
 
 /** Props de `SessionInfo`. */
 interface SessionInfoProps {
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
   userRole: UserRole
+  className?: ClassNameValue
 
   /** Função para atualizar os horários. */
   updateSchedules?: () => void
 }
 /** Card com informações de um horário. */
-export default function SessionInfo({ activity, schedule, userRole, updateSchedules }: SessionInfoProps) {
+export default function SessionInfo({ activity, schedule, userRole, updateSchedules, className }: SessionInfoProps) {
   return (
-    <Card
-      className="p-4 md:w-full gap-y-2 gap-x-4
-      flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around
-      md:flex-col"
-    >
+    <Card className={cn("p-4 md:w-full gap-y-2 gap-x-4 flex-row max-md:flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around", className)}>
       <CardHeader className="p-0">
         <CardTitle className="text-nowrap text-center flex flex-col gap-2">
           {/* Dia e horário */}
