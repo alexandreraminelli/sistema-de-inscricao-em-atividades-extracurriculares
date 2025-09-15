@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { activity, schedule, enrollment } from "@/database/schema"
 import { createEnrollment } from "@/lib/actions/enrollment"
-import { ClipboardCheckIcon } from "lucide-react"
+import { ClipboardCheckIcon, LoaderCircleIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 /** Props de `EnrollmentButton`. */
@@ -19,8 +20,12 @@ interface Props {
 export default function EnrollmentButton({ activity, schedule }: Props) {
   const { data: session } = useSession()
 
+  // Estado da submissão
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   /** Função para realizar a inscrição. */
   async function handleEnrollment() {
+    setIsSubmitting(true)
     // Montar parâmetros da inscrição
     const params: typeof enrollment.$inferInsert = {
       student: session?.user?.id!,
@@ -34,13 +39,16 @@ export default function EnrollmentButton({ activity, schedule }: Props) {
     } else {
       toast.error("Erro ao realizar inscrição", { description: result.message })
     }
+    setIsSubmitting(false)
   }
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button onClick={handleEnrollment} size="icon" variant="default">
-          <ClipboardCheckIcon />
+        <Button onClick={handleEnrollment} size="icon" variant="default" disabled={isSubmitting}>
+          {/* Ícone */}
+          {isSubmitting ? <LoaderCircleIcon className="animate-spin" /> : <ClipboardCheckIcon />}
+          {/* Label */}
           <span className="sr-only">Inscrever-se</span>
         </Button>
       </TooltipTrigger>
