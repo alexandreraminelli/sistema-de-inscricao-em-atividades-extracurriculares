@@ -1,9 +1,9 @@
-import ScheduleCard from "@/components/custom/cards/ScheduleCard"
+import ScheduleCard from "@/components/custom/schedule/ScheduleCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import ActivityForm from "@/components/custom/form/ActivityForm"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category as categoryDb } from "@/database/schema"
+import { activity as activityDb, category as categoryDb, schedule } from "@/database/schema"
 import { eq } from "drizzle-orm"
 
 /** Parâmetros da rota dinâmica de `ActivityInfoPage`. */
@@ -18,11 +18,13 @@ export default async function EditActivityPage({ params }: Params) {
   // Desestruturar parâmetros da rota dinâmica
   const { id } = await params
 
-  // Obter dados do DB
+  // Obter atividade
   const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
   if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
-  // Carregar categoria
+  // Obter categoria
   const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
+  // Obter horários
+  const schedules = await db.select().from(schedule).where(eq(schedule.activity, activity.id)).orderBy(schedule.dayWeek, schedule.time)
 
   return (
     <>
@@ -57,7 +59,7 @@ export default async function EditActivityPage({ params }: Params) {
         {/* Imagem */}
         <aside className="self-center w-full md:max-w-xs md:self-start md:sticky top-16">
           {/* Horários da atividade */}
-          <ScheduleCard activity={activity} userRole="teacher" />
+          <ScheduleCard schedules={schedules} activity={activity} userRole="teacher" />
         </aside>
       </div>
     </>

@@ -1,16 +1,17 @@
 import DeleteActivityButton from "@/components/custom/button/DeleteActivityButton"
-import ScheduleCard from "@/components/custom/cards/ScheduleCard"
+import EnrollmentDialogButton from "@/components/custom/enrollment/EnrollmentDialogButton"
 import ErrorMessage from "@/components/custom/ErrorMessage"
+import ScheduleCard from "@/components/custom/schedule/ScheduleCard"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/database/drizzle"
-import { activity as activityDb, category as categoryDb, teacher, users } from "@/database/schema"
+import { activity as activityDb, category as categoryDb, schedule, teacher, users } from "@/database/schema"
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@/types/auth/UserRole"
 import { eq } from "drizzle-orm"
-import { ClipboardCheckIcon, PencilIcon } from "lucide-react"
+import { PencilIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 import Link from "next/link"
 
@@ -27,12 +28,18 @@ export default async function ActivityInfoPage({ params }: Params) {
     // Desestruturar parâmetros da rota dinâmica
     const { id } = await params
 
-    // Obter dados do DB
+    /* Obter dados do DB */
+    // Obter atividade
     const [activity] = await db.select().from(activityDb).where(eq(activityDb.id, id)).limit(1)
     if (!activity) return <ErrorMessage title="Atividade Não Encontrada" message={["Não foi possível carregar a atividade que você está procurando. Ela pode não existir ou não estar mais disponível", "Tente novamente mais tarde ou navegue pela lista de atividades oferecidas."]} /> // se não encontrar atividade
 
+    // Obter categoria
     const [category] = await db.select().from(categoryDb).where(eq(categoryDb.id, activity.category)).limit(1)
-    // Dados do professor
+
+    // Obter horários
+    const schedules = await db.select().from(schedule).where(eq(schedule.activity, activity.id)).orderBy(schedule.dayWeek, schedule.time)
+
+    // Obter professor
     const [teacherUser] = await db.select().from(users).where(eq(users.id, activity.teacher)).limit(1)
     const [teacherData] = await db.select().from(teacher).where(eq(teacher.id, activity.teacher)).limit(1)
 
@@ -87,9 +94,9 @@ export default async function ActivityInfoPage({ params }: Params) {
           {/* Resumo rápido e botões de ação */}
           <aside className="h-fit md:sticky top-16 space-y-5">
             {/* Resumo */}
-            <SummaryCard activity={activity} teacher={teacherUser} category={category} userRole={userRole} />
+            <SummaryCard activity={activity} schedules={schedules} teacher={teacherUser} category={category} userRole={userRole} />
             {/* Horários */}
-            <ScheduleCard activity={activity} userRole={userRole} />
+            <ScheduleCard schedules={schedules} activity={activity} userRole={userRole} />
           </aside>
         </main>
       </div>
@@ -104,12 +111,13 @@ export default async function ActivityInfoPage({ params }: Params) {
 interface SummaryCardProps {
   activity: typeof activityDb.$inferSelect
   category: typeof categoryDb.$inferSelect
+  schedules: (typeof schedule.$inferSelect)[]
   teacher: typeof users.$inferSelect
 
   userRole: UserRole
 }
 /** Card de resumo da atividade. */
-function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps) {
+function SummaryCard({ activity, category, schedules, teacher, userRole }: SummaryCardProps) {
   /** Informações de resumo da atividade. */
   const activityResume = [
     { title: "Categoria", value: category.name },
@@ -137,11 +145,8 @@ function SummaryCard({ activity, category, teacher, userRole }: SummaryCardProps
         {/* Botões pro aluno */}
         {userRole === "student" && (
           <>
-            {/* Opção de se inscrever */}
-            <Button variant="default" disabled>
-              <ClipboardCheckIcon />
-              Inscrever-se
-            </Button>
+            {/*Botão de inscrição */}
+            <EnrollmentDialogButton activity={activity} schedules={schedules} />
           </>
         )}
         {/* Botões pro professor */}
