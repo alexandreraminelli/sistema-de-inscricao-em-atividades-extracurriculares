@@ -45,6 +45,24 @@ export async function createEnrollment(activityId: string, params: typeof enroll
     return { success: false, message: "Ocorreu um erro ao realizar a sua inscrição. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
 }
+/** Função para cancelar a inscrição de um aluno em uma atividade. */
+export async function cancelEnrollment(studentId: string, enrollmentId: string): Promise<EnrollmentResult> {
+  try {
+    // Verificar se inscrição existe
+    const existingActivity = await db.select().from(enrollment).where(eq(enrollment.id, enrollmentId)).limit(1)
+    if (existingActivity.length === 0) return { success: false, message: "A inscrição não foi encontrada no banco de dados. \nEla pode ter sido cancelada recentemente." }
+
+    // Deletar inscrição
+    const [deletedEnrollment] = await db.delete(enrollment).where(eq(enrollment.id, enrollmentId)).returning()
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(deletedEnrollment)),
+    }
+  } catch (error) {
+    console.error("Error cancelling enrollment:", error)
+    return { success: false, message: "Ocorreu um erro ao cancelar a sua inscrição. Tente novamente mais tarde ou entre em contato o suporte." }
+  }
+}
 
 /** Verificar se um aluno está inscrito em um horário. */
 export async function isEnrolledInSchedule(studentId: string, scheduleId: string) {
@@ -54,4 +72,14 @@ export async function isEnrolledInSchedule(studentId: string, scheduleId: string
     .where(and(eq(enrollment.student, studentId), eq(enrollment.schedule, scheduleId)))
 
   return existingEnrollment.length > 0
+}
+
+/** Obter inscrição do aluno em um horário. */
+export async function getEnrollmentInSchedule(studentId: string, scheduleId: string) {
+  const existingEnrollment = await db
+    .select()
+    .from(enrollment)
+    .where(and(eq(enrollment.student, studentId), eq(enrollment.schedule, scheduleId)))
+    .limit(1)
+  return existingEnrollment
 }

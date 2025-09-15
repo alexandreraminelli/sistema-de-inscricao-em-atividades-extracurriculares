@@ -1,10 +1,12 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { activity, schedule } from "@/database/schema"
+import { activity, enrollment as enrollmentDb, schedule } from "@/database/schema"
+import { cancelEnrollment, getEnrollmentInSchedule } from "@/lib/actions/enrollment"
 import { ClipboardXIcon, LoaderCircleIcon } from "lucide-react"
 import { Session } from "next-auth"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 /** Props de `EnrollmentButton`. */
 interface Props {
@@ -17,6 +19,26 @@ interface Props {
 export default function CancelEnrollmentButton({ session, activity, schedule }: Props) {
   // Variáveis de estado
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [enrollment, setEnrollment] = useState<any>(null)
+
+  // Obter inscrição do aluno nesse horário
+  useEffect(() => {
+    getEnrollmentInSchedule(session.user.id, schedule.id).then((result) => {
+      setEnrollment(result[0] ?? null)
+    })
+  })
+
+  async function handleCancelEnrollment() {
+    setIsSubmitting(true)
+    const result = await cancelEnrollment(session.user.id, enrollment.id)
+
+    if (result.success) {
+      toast.success("Inscrição cancelada com sucesso!", { description: "Você pode realizar uma nova inscrição em um outro horário ou atividade, caso haja vagas disponíveis." })
+    } else {
+      toast.error("Erro ao cancelar inscrição", { description: result.message })
+    }
+    setIsSubmitting(false)
+  }
 
   return (
     <Tooltip>
@@ -40,7 +62,9 @@ export default function CancelEnrollmentButton({ session, activity, schedule }: 
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Manter minha inscrição</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive hover:bg-destructive/90">Cancelar inscrição</AlertDialogAction>
+            <AlertDialogAction onClick={handleCancelEnrollment} className="bg-destructive hover:bg-destructive/90">
+              Cancelar inscrição
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
