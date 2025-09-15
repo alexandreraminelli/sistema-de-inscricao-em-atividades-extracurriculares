@@ -25,8 +25,8 @@ export default async function EnrollmentCard({ session, enrollment }: Props) {
     <Card>
       {/* Cabeçalho */}
       <CardHeader>
-        <CardTitle className="leading-5 font-semibold">{activity.name}</CardTitle>
-        <CardDescription>
+        <CardTitle className="font-semibold text-lg">{activity.name}</CardTitle>
+        <CardDescription className="text-md">
           {schedule.dayWeek} {schedule.time}
         </CardDescription>
       </CardHeader>
@@ -37,7 +37,7 @@ export default async function EnrollmentCard({ session, enrollment }: Props) {
           <strong className="font-semibold">Sala:</strong> <span className="text-muted-foreground">{schedule.classroom}</span>
         </p>
         <p>
-          <strong className="font-semibold">Código de Inscrição:</strong> <span className="text-muted-foreground">{enrollment.id}</span>
+          <strong className="font-semibold">Código de Inscrição:</strong> <span className="text-muted-foreground">{enrollment.id.toUpperCase()}</span>
         </p>
       </CardContent>
 
