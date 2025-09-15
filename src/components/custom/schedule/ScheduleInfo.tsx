@@ -45,7 +45,7 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
         {userRole === "student" && (
           <>
             {/* Botão de inscrição */}
-            <EnrollmentButton schedule={schedule} />
+            <EnrollmentButton activity={activity} schedule={schedule} />
           </>
         )}
 
