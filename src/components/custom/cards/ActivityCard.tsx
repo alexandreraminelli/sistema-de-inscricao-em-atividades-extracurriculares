@@ -1,8 +1,10 @@
 import EnrollmentDialogButton from "@/components/custom/enrollment/EnrollmentDialogButton"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { activity } from "@/database/schema"
+import { db } from "@/database/drizzle"
+import { activity, schedule } from "@/database/schema"
 import { UserRole } from "@/types/auth/UserRole"
+import { eq } from "drizzle-orm"
 import { PencilIcon, SquareArrowOutUpRightIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -15,7 +17,10 @@ interface Props extends React.ComponentProps<typeof Card> {
 }
 
 /** Card de atividades. */
-export default function ActivityCard({ activity, userRole, ...props }: Props) {
+export default async function ActivityCard({ activity, userRole, ...props }: Props) {
+  // Obter horários
+  const schedules = await db.select().from(schedule).where(eq(schedule.activity, activity.id))
+
   return (
     <Card
       className="justify-between items-center 
@@ -51,7 +56,7 @@ export default function ActivityCard({ activity, userRole, ...props }: Props) {
         {userRole === "student" && (
           <>
             {/* Botão de inscrição */}
-            <EnrollmentDialogButton activity={activity} />
+            <EnrollmentDialogButton schedules={schedules} activity={activity} />
           </>
         )}
       </div>
