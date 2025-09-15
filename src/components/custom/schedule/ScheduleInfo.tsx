@@ -10,6 +10,10 @@ import ScheduleForm from "../form/ScheduleForm"
 import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
 import EnrollmentButton from "../enrollment/EnrollmentButton"
+import { useEffect, useState } from "react"
+import { isEnrolledInSchedule } from "@/lib/actions/enrollment"
+import { useSession } from "next-auth/react"
+import CancelEnrollmentButton from "../enrollment/CancelEnrollmentButton"
 
 /** Props de `ScheduleInfo`. */
 interface Props {
@@ -23,6 +27,15 @@ interface Props {
 }
 /** Card com informações de um horário. */
 export default function ScheduleInfo({ activity, schedule, userRole, updateSchedules, className }: Props) {
+  // Obter usuário
+  const { data: session } = useSession()
+
+  const [alreadyEnrolled, setAlreadyEnrolled] = useState(false)
+
+  useEffect(() => {
+    isEnrolledInSchedule(session?.user?.id!, schedule.id).then(setAlreadyEnrolled)
+  })
+
   return (
     <Card className={cn("p-4 md:w-full gap-y-3 gap-x-2 flex-row flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around *:items-center", className)}>
       <CardHeader className="p-0 flex-1">
@@ -44,8 +57,11 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
         {/* Botões para alunos */}
         {userRole === "student" && (
           <>
-            {/* Botão de inscrição */}
-            <EnrollmentButton activity={activity} schedule={schedule} />
+            {alreadyEnrolled ? (
+              <CancelEnrollmentButton activity={activity} schedule={schedule} /> // botão de cancelar inscrição
+            ) : (
+              <EnrollmentButton session={session!} activity={activity} schedule={schedule} /> // botão de realizar inscrição
+            )}
           </>
         )}
 

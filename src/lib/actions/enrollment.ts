@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/database/drizzle"
-import { activity as activityDb, enrollment, schedule } from "@/database/schema"
+import { activity as activityDb, enrollment, schedule as scheduleDb } from "@/database/schema"
 import { and, count, eq } from "drizzle-orm"
 
 /** Retorno das funções de operações com inscrições. Se success for `true` acompanha o atributo `data`, senão, acompanha o atributo `message`. */
@@ -26,8 +26,8 @@ export async function createEnrollment(activityId: string, params: typeof enroll
     const existingEnrollment = await db
       .select()
       .from(enrollment)
-      .innerJoin(schedule, eq(enrollment.schedule, schedule.id)) // Join com schedule
-      .innerJoin(activityDb, eq(schedule.activity, activityDb.id)) // Join com activity
+      .innerJoin(scheduleDb, eq(enrollment.schedule, scheduleDb.id)) // Join com schedule
+      .innerJoin(activityDb, eq(scheduleDb.activity, activityDb.id)) // Join com activity
       .where(and(eq(enrollment.student, params.student), eq(activityDb.id, activityId)))
     if (existingEnrollment.length != 0) {
       return { success: false, message: "Você já está inscrito nessa atividade. Para mudar de horário, cancele sua inscrição e inscreva-se novamente." }
@@ -44,4 +44,14 @@ export async function createEnrollment(activityId: string, params: typeof enroll
     console.error("Error creating enrollment:", error)
     return { success: false, message: "Ocorreu um erro ao realizar a sua inscrição. Tente novamente mais tarde ou entre em contato com o suporte." }
   }
+}
+
+/** Verificar se um aluno está inscrito em um horário. */
+export async function isEnrolledInSchedule(studentId: string, scheduleId: string) {
+  const existingEnrollment = await db
+    .select()
+    .from(enrollment)
+    .where(and(eq(enrollment.student, studentId), eq(enrollment.schedule, scheduleId)))
+
+  return existingEnrollment.length > 0
 }
