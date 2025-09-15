@@ -11,7 +11,7 @@ import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
 import EnrollmentButton from "../enrollment/EnrollmentButton"
 import { useEffect, useState } from "react"
-import { isEnrolledInSchedule } from "@/lib/actions/enrollment"
+import { getEnrollmentCountBySchedule, isEnrolledInSchedule } from "@/lib/actions/enrollment"
 import { useSession } from "next-auth/react"
 import CancelEnrollmentButton from "../enrollment/CancelEnrollmentButton"
 
@@ -31,10 +31,12 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
   const { data: session } = useSession()
 
   const [alreadyEnrolled, setAlreadyEnrolled] = useState(false)
+  const [enrollmentCount, setEnrollmentCount] = useState(0)
 
   useEffect(() => {
     isEnrolledInSchedule(session?.user?.id!, schedule.id).then(setAlreadyEnrolled)
-  })
+    getEnrollmentCountBySchedule(schedule.id).then(setEnrollmentCount)
+  }, [session, schedule])
 
   return (
     <Card className={cn("p-4 md:w-full gap-y-3 gap-x-2 flex-row flex-wrap max-md:*:flex-1 max-md:*:min-w-36 max-md:items-center justify-around *:items-center", className)}>
@@ -50,7 +52,7 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
         <p>Sala: {schedule.classroom || "N/A"}</p>
         {/* Quantidade de inscritos */}
         <p>
-          Inscritos: {"N"}/{activity.maxParticipants}
+          Inscritos: {enrollmentCount}/{activity.maxParticipants}
         </p>
       </CardContent>
       <CardFooter className="justify-center gap-4 md:mt-1.5 p-0 flex-1">

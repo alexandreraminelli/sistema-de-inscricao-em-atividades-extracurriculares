@@ -83,3 +83,9 @@ export async function getEnrollmentInSchedule(studentId: string, scheduleId: str
     .limit(1)
   return existingEnrollment
 }
+
+/** Obter quantidade de inscrições para um horário. */
+export async function getEnrollmentCountBySchedule(scheduleId: string) {
+  const [enrollments] = await db.select({ count: count() }).from(enrollment).where(eq(enrollment.schedule, scheduleId))
+  return enrollments.count
+}
