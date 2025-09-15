@@ -1,3 +1,4 @@
+import EnrollmentCard from "@/components/custom/enrollment/EnrollmentCard"
 import ErrorMessage from "@/components/custom/ErrorMessage"
 import { db } from "@/database/drizzle"
 import { enrollment } from "@/database/schema"
@@ -24,12 +25,10 @@ export default async function InscricoesPage() {
         <p className="text-muted-foreground">Acompanhe suas inscrições abaixo:</p>
       </header>
 
-      <section>
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {/* Lista de inscrições */}
         {enrollments.map((enrollment) => (
-          <p key={enrollment.id}>
-            id: {enrollment.id} atividade: {enrollment.student}
-          </p>
+          <EnrollmentCard key={enrollment.id} session={session!} enrollment={enrollment} />
         ))}
       </section>
     </div>

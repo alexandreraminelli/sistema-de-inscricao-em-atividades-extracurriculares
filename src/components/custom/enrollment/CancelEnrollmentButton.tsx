@@ -1,3 +1,5 @@
+"use client"
+
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -26,7 +28,7 @@ export default function CancelEnrollmentButton({ session, activity, schedule }: 
     getEnrollmentInSchedule(session.user.id, schedule.id).then((result) => {
       setEnrollment(result[0] ?? null)
     })
-  })
+  }, [session.user.id, schedule.id])
 
   async function handleCancelEnrollment() {
     setIsSubmitting(true)
