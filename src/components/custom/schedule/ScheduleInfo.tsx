@@ -34,7 +34,7 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
   const [enrollmentCount, setEnrollmentCount] = useState(0)
 
   useEffect(() => {
-    isEnrolledInSchedule(session?.user?.id!, schedule.id).then(setAlreadyEnrolled)
+    isEnrolledInSchedule(session!.user.id, schedule.id).then(setAlreadyEnrolled)
     getEnrollmentCountBySchedule(schedule.id).then(setEnrollmentCount)
   }, [session, schedule])
 

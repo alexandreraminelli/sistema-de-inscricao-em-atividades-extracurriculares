@@ -12,7 +12,7 @@ export default async function InscricoesPage() {
   const session = await getServerSession(authOptions)
 
   // Obter lista de inscrições do aluno
-  const enrollments = await db.select().from(enrollment).where(eq(enrollment.student, session?.user?.id!))
+  const enrollments = await db.select().from(enrollment).where(eq(enrollment.student, session!.user.id))
 
   // Se não houver inscrições
   if (enrollments.length == 0) {

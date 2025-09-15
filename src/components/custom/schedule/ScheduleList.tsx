@@ -10,12 +10,9 @@ interface Props {
   userRole: UserRole
   
   classNameInfo?: ClassNameValue
-
-  /** Chave para forçar atualização da lista. */
-  refreshKey?: number
 }
 /** Lista de horários das atividades. */
-export default function ScheduleList({ activity, userRole, schedules, refreshKey, classNameInfo }: Props) {
+export default function ScheduleList({ activity, userRole, schedules, classNameInfo }: Props) {
   return (
     <section className="w-full flex flex-row md:flex-col flex-wrap gap-4 *:flex-1">
       {schedules.length === 0 ? (

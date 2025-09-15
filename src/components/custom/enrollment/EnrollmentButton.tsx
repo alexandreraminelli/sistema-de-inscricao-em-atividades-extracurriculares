@@ -2,11 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { activity, schedule, enrollment } from "@/database/schema"
+import { activity, enrollment, schedule } from "@/database/schema"
 import { createEnrollment } from "@/lib/actions/enrollment"
 import { ClipboardCheckIcon, LoaderCircleIcon } from "lucide-react"
-import { getServerSession, Session } from "next-auth"
-import { useSession } from "next-auth/react"
+import { Session } from "next-auth"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -27,7 +26,7 @@ export default function EnrollmentButton({ session, activity, schedule }: Props)
     setIsSubmitting(true)
     // Montar parâmetros da inscrição
     const params: typeof enrollment.$inferInsert = {
-      student: session?.user?.id!,
+      student: session.user.id,
       schedule: schedule.id,
     }
     // Realizar inscrição no db

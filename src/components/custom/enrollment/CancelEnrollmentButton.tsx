@@ -3,7 +3,7 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { activity, enrollment as enrollmentDb, schedule } from "@/database/schema"
+import { activity, schedule } from "@/database/schema"
 import { cancelEnrollment, getEnrollmentInSchedule } from "@/lib/actions/enrollment"
 import { ClipboardXIcon, LoaderCircleIcon } from "lucide-react"
 import { Session } from "next-auth"
