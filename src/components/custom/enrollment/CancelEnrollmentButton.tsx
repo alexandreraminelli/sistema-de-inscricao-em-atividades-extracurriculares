@@ -1,30 +1,49 @@
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { activity, schedule } from "@/database/schema"
 import { ClipboardXIcon, LoaderCircleIcon } from "lucide-react"
+import { Session } from "next-auth"
 import { useState } from "react"
 
 /** Props de `EnrollmentButton`. */
 interface Props {
+  session: Session
   activity: typeof activity.$inferSelect
   schedule: typeof schedule.$inferSelect
 }
 
 /** Botão que cancela a inscrição do aluno em um horário. */
-export default function CancelEnrollmentButton({ activity, schedule }: Props) {
+export default function CancelEnrollmentButton({ session, activity, schedule }: Props) {
   // Variáveis de estado
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button onClick={() => {}} size="icon" variant="destructive" disabled={isSubmitting}>
-          {/* Ícone */}
-          {isSubmitting ? <LoaderCircleIcon className="animate-spin" /> : <ClipboardXIcon />}
-          {/* Label */}
-          <span className="sr-only">Inscrever-se</span>
-        </Button>
-      </TooltipTrigger>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <TooltipTrigger asChild>
+            <Button onClick={() => {}} size="icon" variant="destructive" disabled={isSubmitting}>
+              {/* Ícone */}
+              {isSubmitting ? <LoaderCircleIcon className="animate-spin" /> : <ClipboardXIcon />}
+              {/* Label */}
+              <span className="sr-only">Inscrever-se</span>
+            </Button>
+          </TooltipTrigger>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza de que deseja cancelar sua inscrição?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa ação irá cancelar sua inscrição na atividade {activity.name} no horário ({schedule.dayWeek} | {schedule.time}). Você poderá se inscrever novamente, caso haja vagas disponíveis.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Manter minha inscrição</AlertDialogCancel>
+            <AlertDialogAction className="bg-destructive hover:bg-destructive/90">Cancelar inscrição</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <TooltipContent>Cancelar Inscrição</TooltipContent>
     </Tooltip>
   )

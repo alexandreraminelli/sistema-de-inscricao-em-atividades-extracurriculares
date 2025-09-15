@@ -58,7 +58,7 @@ export default function ScheduleInfo({ activity, schedule, userRole, updateSched
         {userRole === "student" && (
           <>
             {alreadyEnrolled ? (
-              <CancelEnrollmentButton activity={activity} schedule={schedule} /> // botão de cancelar inscrição
+              <CancelEnrollmentButton session={session!} activity={activity} schedule={schedule} /> // botão de cancelar inscrição
             ) : (
               <EnrollmentButton session={session!} activity={activity} schedule={schedule} /> // botão de realizar inscrição
             )}
